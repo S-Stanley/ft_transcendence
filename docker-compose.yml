@@ -10,3 +10,15 @@ services:
       - "5432:5432"
     volumes:
       - ./database/:/database/
+
+  api:
+    build: ./api
+    restart: always
+    ports:
+      - "5000:5000"
+
+  webapp:
+    build: ./webapp
+    restart: always
+    ports:
+      - "3000:3000"
