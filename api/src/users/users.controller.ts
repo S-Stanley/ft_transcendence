@@ -1,13 +1,12 @@
 import { Controller, Post, Body, HttpException } from '@nestjs/common';
-
-import { db } from '../config';
-
+import { Injectable, Inject } from '@nestjs/common';
 @Controller('users/auth/login')
+@Injectable()
 export class UsersController {
+    constructor(@Inject("PG_CONNECTION") private db: any){}
     @Post()
     findAll(@Body() body): string {
-        console.log(body);
-        return db.query("SELECT * FROM public.login($1, $2)", [body.email, body.password])
+        return this.db.query("SELECT * FROM public.login($1, $2)", [body.email, body.password])
             .then((result: { rows: any }) => {
                 if (result.rows.length === 0) {
                     throw new HttpException('User does not exist', 500);
