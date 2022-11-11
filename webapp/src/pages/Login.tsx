@@ -11,7 +11,6 @@ function App() {
 
     const handleSubmit = async(e: { preventDefault: any }): Promise<void> => {
         e.preventDefault();
-
         const req = await Helpers.Users.login(email, password);
         if (req){
             setEmail('');

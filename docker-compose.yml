@@ -10,3 +10,23 @@ services:
       - "5432:5432"
     volumes:
       - ./database/:/database/
+  api:
+    build: api/
+    restart: always
+    depends_on:
+      - postgres
+    ports:
+      - '5000:5000'
+    environment:
+      - POSTGRES_HOST=postgres
+    volumes:
+      - ./api/:/app/
+  webapp:
+    build: webapp/
+    restart: always
+    depends_on:
+      - api
+    ports:
+      - '3000:3000'
+    volumes:
+      - ./webapp/:/app/
