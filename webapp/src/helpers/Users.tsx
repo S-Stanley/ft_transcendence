@@ -15,6 +15,22 @@ const login = async(email: string, password: string): Promise<{email: string, us
     }
 }
 
+const findUserByEmail = async(email: string): Promise<{email: string, user_id: string} | null> => {
+    try {
+        const req = await axios.get(`${Config.Api.url}/users/${email}`, {
+            headers: {
+                token: localStorage.getItem('token')
+            }
+        });
+        return (req.data);
+    } catch (e) {
+        console.error(e);
+        alert('User not found');
+        return (null);
+    }
+}
+
 export default {
     login,
+    findUserByEmail
 }

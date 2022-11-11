@@ -16,6 +16,8 @@ function App() {
             setEmail('');
             setPassword('');
             localStorage.setItem('token', req.token);
+            localStorage.setItem('email', req.email);
+            localStorage.setItem('user_id', req.user_id);
             navigate('/home');
         }
     }
