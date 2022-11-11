@@ -48,8 +48,11 @@ const MenuComponent = () => {
                     <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
                         { window.location.pathname.includes('/home') ? (
                             <React.Fragment>
-                                <Button key='Home' sx={{ color: '#fff' }}>
+                                <Button key='Home' sx={{ color: '#fff' }} onClick={() => navigate('/home')}>
                                     Home
+                                </Button>
+                                <Button key='Messagerie' sx={{ color: '#fff' }} onClick={() => navigate('/home/messagerie')}>
+                                    Messagerie
                                 </Button>
                                 <Button key='Disconnect' sx={{ color: '#fff' }} onClick={disconnectUser} >
                                     Disconnect
@@ -57,7 +60,7 @@ const MenuComponent = () => {
                             </React.Fragment>
                         ) : (
                             <React.Fragment>
-                                <Button key='Login' sx={{ color: '#fff' }} onClick={() => navigate('/login')}>
+                                <Button key='Login' sx={{ color: '#fff' }} onClick={() => navigate('/')}>
                                     Login
                                 </Button>
                             </React.Fragment>

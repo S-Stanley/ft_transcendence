@@ -6,6 +6,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import Login from './pages/Login';
 import Home from './pages/Home';
+import Messagerie from './pages/Messagerie';
+import MenuComponent from './components/menu';
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
@@ -14,9 +16,11 @@ const root = ReactDOM.createRoot(
 root.render(
     <React.StrictMode>
         <BrowserRouter>
+            <MenuComponent/>
             <Routes>
                 <Route path='/' element={<Login/>} />
                 <Route path='/home' element={<Home/>} />
+                <Route path='/home/messagerie' element={<Messagerie/>} />
             </Routes>
         </BrowserRouter>
     </React.StrictMode>
