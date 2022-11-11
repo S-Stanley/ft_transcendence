@@ -1,11 +1,12 @@
 import Config from "../config/Config"
 import axios from 'axios';
 
-const login = async(email: string, password: string): Promise<{email: string, user_id:string, token: string} | null> => {
+const login = async(email: string, password: string, nickname: string): Promise<{email: string, user_id:string, token: string} | null> => {
     try {
         const req = await axios.post(`${Config.Api.url}/users/auth/login`, {
             email: email,
-            password: password
+            password: password,
+            nickname: nickname
         });
         return (req.data);
     } catch (e) {
