@@ -1,32 +1,73 @@
-import { Fragment, useState } from "react";
-import { TextField } from "@mui/material";
+import { Fragment, useEffect, useState } from "react";
+import { TextField, Button } from "@mui/material";
+import Helpers from "../helpers/Helpers";
 
 const Chat = () => {
-    const [messageContent, setMessageContent] = useState<string>('')
+
+    const [messageContent, setMessageContent] = useState<string>('');
+    const [allMessage, setAllMessage] = useState([]);
 
     const handleSubmit = async(e: { preventDefault: any }): Promise<void> => {
         e.preventDefault();
-        setMessageContent('');
+        const req = await Helpers.Messagerie.send_message_to_discussion(localStorage.getItem('chat_id') ?? '', messageContent);
+        if (req) {
+            setMessageContent('');
+        }
+        getAllMessages();
     }
+
+    const getAllMessages = async(): Promise<void> => {
+        const req = await Helpers.Messagerie.get_message_of_discussion(localStorage.getItem('chat_id') ?? '');
+        if (req) {
+            setAllMessage(req);
+        }
+    }
+
+    useEffect(() => {
+        getAllMessages();
+    }, [false]);
 
     return (
         <Fragment>
-            <form
+            <div
                 style={{
                     display: 'flex',
                     flexDirection: 'column',
                     marginLeft: '500px',
                     marginRight: '500px'
                 }}
+            >
+                {allMessage.map((msg: { id: string, content: string }) => {
+                   return (
+                        <div key={msg.id}>
+                            { msg.content }
+                        </div>
+                    )
+                })}
+            </div>
+            <form
                 onSubmit={handleSubmit}
+                style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    marginLeft: '500px',
+                    marginRight: '500px'
+                }}
             >
                 <TextField
-                    label="Standard"
+                    label="Your message"
                     variant="standard"
                     type='text'
                     value={messageContent}
                     onChange={(e) => setMessageContent(e.target.value)}
                 />
+                <br />
+                <Button
+                    variant="contained"
+                    type="submit"
+                >
+                    Validate
+                </Button>
             </form>
         </Fragment>
     );
