@@ -2,6 +2,7 @@ import { Fragment, useState } from 'react';
 import Helpers from './../helpers/Helpers';
 import MenuComponent from './../components/menu';
 import { useNavigate } from 'react-router-dom';
+import { TextField, Button, Typography } from '@mui/material';
 
 function App() {
 
@@ -23,12 +24,18 @@ function App() {
     return (
         <Fragment>
             <MenuComponent/>
-            <form onSubmit={handleSubmit}>
-                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="email" autoComplete="username" />
+            <form
+                onSubmit={handleSubmit}
+                style={{ display: 'flex', flexDirection: 'column', marginLeft: '500px', marginRight: '500px' }}
+            >
+                <Typography variant="h2" textAlign={'center'}>
+                    Login
+                </Typography>
+                <TextField label="Email" variant="standard" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
                 <br />
-                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="password"  autoComplete="current-password" />
-                <br />
-                <button type="submit">Valider</button>
+                <TextField label="Password" variant="standard" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                <br /><br />
+                <Button variant="contained" type="submit">Valider</Button>
             </form>
         </Fragment>
     );

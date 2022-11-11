@@ -1,18 +1,11 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import Button from '@mui/material/Button';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
+import { AppBar, Toolbar, IconButton, Typography, Button, Box } from '@mui/material';
 
 import { useNavigate } from 'react-router-dom';
 
 const UNPROCTED_PAGE = ['/'];
 
 const MenuComponent = () => {
-    const [openMenu, setOpenMenu] = React.useState<boolean>(false);
     const navigate = useNavigate();
 
     const checkAccess = () => {
@@ -33,49 +26,46 @@ const MenuComponent = () => {
 
     return (
         <React.Fragment key='menu'>
-            <Button onClick={() => setOpenMenu(!openMenu)}>menu</Button>
-            <Drawer open={openMenu}>
-                <Box
-                    role="presentation"
-                    onClick={() => setOpenMenu(!openMenu)}
-                    onKeyDown={() => setOpenMenu(!openMenu)}
+            <Box m={2} pt={7}>
+                <AppBar
+                    component="nav"
                 >
-                    <List>
+                    <Toolbar>
+                    <IconButton
+                        color="inherit"
+                        aria-label="open drawer"
+                        edge="start"
+                        sx={{ mr: 2, display: { sm: 'none' } }}
+                    >
+                    </IconButton>
+                    <Typography
+                        variant="h6"
+                        component="div"
+                        sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+                    >
+                        Transcendence
+                    </Typography>
+                    <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
                         { window.location.pathname.includes('/home') ? (
                             <React.Fragment>
-                                <ListItem key='Home'>
-                                    <ListItemButton>
-                                        <ListItemText primary='Home' />
-                                    </ListItemButton>
-                                </ListItem>
-                                <ListItem key='Disconnect' onClick={() => disconnectUser()}>
-                                    <ListItemButton>
-                                        <ListItemText primary='Disconnect' />
-                                    </ListItemButton>
-                                </ListItem>
-                                <ListItem key='Close' onClick={() => setOpenMenu(false) } >
-                                    <ListItemButton>
-                                        <ListItemText primary='Close' />
-                                    </ListItemButton>
-                                </ListItem>
+                                <Button key='Home' sx={{ color: '#fff' }}>
+                                    Home
+                                </Button>
+                                <Button key='Disconnect' sx={{ color: '#fff' }} onClick={disconnectUser} >
+                                    Disconnect
+                                </Button>
                             </React.Fragment>
                         ) : (
                             <React.Fragment>
-                                <ListItem key='Login'>
-                                    <ListItemButton>
-                                        <ListItemText primary='Login' />
-                                    </ListItemButton>
-                                </ListItem>
-                                <ListItem key='Close' onClick={() => setOpenMenu(false) } >
-                                    <ListItemButton>
-                                        <ListItemText primary='Close' />
-                                    </ListItemButton>
-                                </ListItem>
+                                <Button key='Login' sx={{ color: '#fff' }} onClick={() => navigate('/login')}>
+                                    Login
+                                </Button>
                             </React.Fragment>
                         )}
-                    </List>
-                </Box>
-            </Drawer>
+                    </Box>
+                    </Toolbar>
+                </AppBar>
+            </Box>
         </React.Fragment>
     );
 }
