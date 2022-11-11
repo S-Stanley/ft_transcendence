@@ -5,6 +5,7 @@ import { UsersController } from './users/users.controller';
 import { ConfigModule } from '@nestjs/config';
 import { DbModule } from './config';
 import { LoggerMiddleware } from './middleware';
+import { ChatController } from './chat/chat.controller';
 
 @Module({
     imports: [ConfigModule.forRoot({
@@ -13,7 +14,7 @@ import { LoggerMiddleware } from './middleware';
       }),
       DbModule
     ],
-    controllers: [AppController, UsersController],
+    controllers: [AppController, UsersController, ChatController],
     providers: [AppService],
 })
 export class AppModule implements NestModule {
@@ -23,6 +24,12 @@ export class AppModule implements NestModule {
             .forRoutes({
                 path: '/users/:email',
                 method: RequestMethod.GET
+            }, {
+                path: '/chat*',
+                method: RequestMethod.GET
+            }, {
+                path: '/chat*',
+                method: RequestMethod.POST
             });
     }
 }
