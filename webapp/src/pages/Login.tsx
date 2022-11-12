@@ -1,6 +1,5 @@
 import { Fragment, useState } from 'react';
 import Helpers from './../helpers/Helpers';
-import MenuComponent from './../components/menu';
 import { useNavigate } from 'react-router-dom';
 import { TextField, Button, Typography } from '@mui/material';
 
@@ -17,13 +16,14 @@ function App() {
             setEmail('');
             setPassword('');
             localStorage.setItem('token', req.token);
+            localStorage.setItem('email', req.email);
+            localStorage.setItem('user_id', req.user_id);
             navigate('/home');
         }
     }
 
     return (
         <Fragment>
-            <MenuComponent/>
             <form
                 onSubmit={handleSubmit}
                 style={{ display: 'flex', flexDirection: 'column', marginLeft: '500px', marginRight: '500px' }}

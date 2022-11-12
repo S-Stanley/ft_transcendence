@@ -4,8 +4,11 @@ import reportWebVitals from './reportWebVitals';
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
+import MenuComponent from './components/menu';
 import Login from './pages/Login';
 import Home from './pages/Home';
+import Messagerie from './pages/Messagerie';
+import Chat from './pages/Chat';
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
@@ -14,9 +17,12 @@ const root = ReactDOM.createRoot(
 root.render(
     <React.StrictMode>
         <BrowserRouter>
+            <MenuComponent/>
             <Routes>
                 <Route path='/' element={<Login/>} />
                 <Route path='/home' element={<Home/>} />
+                <Route path='/home/messagerie' element={<Messagerie/>} />
+                <Route path='/home/messagerie/chat' element={<Chat/>} />
             </Routes>
         </BrowserRouter>
     </React.StrictMode>
