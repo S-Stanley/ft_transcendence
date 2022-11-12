@@ -2,6 +2,7 @@ import { Fragment, useState } from 'react';
 import Helpers from './../helpers/Helpers';
 import { useNavigate } from 'react-router-dom';
 import { TextField, Button, Typography } from '@mui/material';
+import { toast } from 'react-toastify';
 
 function App() {
 
@@ -19,6 +20,8 @@ function App() {
             localStorage.setItem('email', req.email);
             localStorage.setItem('user_id', req.user_id);
             navigate('/home');
+        } else {
+            toast.error('Wrong email or wrong password!');
         }
     }
 
