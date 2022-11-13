@@ -37,10 +37,10 @@ const Chat = () => {
                     marginRight: '500px'
                 }}
             >
-                {allMessage.map((msg: { id: string, content: string }) => {
+                {allMessage.map((msg: { id: string, content: string, email: string }) => {
                    return (
                         <div key={msg.id}>
-                            { msg.content }
+                            { msg.email }: { msg.content }
                         </div>
                     )
                 })}
