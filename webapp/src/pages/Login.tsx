@@ -1,44 +1,41 @@
 import { Fragment, useState } from 'react';
 import Helpers from './../helpers/Helpers';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { TextField, Button, Typography } from '@mui/material';
 
-function App() {
+function Login() {
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const code_url = 'https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-6694130f6db913ca3cd2ea1112756a01c8af82f732601f915369707b205c3b1c&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Foauth2-redirect&response_type=code&state=test';
+    const search = useLocation().search;
+    const code = new URLSearchParams(search).get('code');
     const navigate = useNavigate();
 
-    const handleSubmit = async(e: { preventDefault: any }): Promise<void> => {
-        e.preventDefault();
-        const req = await Helpers.Users.login(email, password);
-        if (req){
-            setEmail('');
-            setPassword('');
-            localStorage.setItem('token', req.token);
-            localStorage.setItem('email', req.email);
-            localStorage.setItem('user_id', req.user_id);
-            navigate('/home');
-        }
+    if (code)
+    {
+        Helpers.Users.login(code).then((res) => {
+            if (res != null)
+            {
+                window.localStorage.setItem('token', res.token);
+            }
+            
+        })
     }
-
+    if (window.localStorage.getItem('token'))
+    {
+        navigate('/home');
+    }
     return (
         <Fragment>
             <form
-                onSubmit={handleSubmit}
                 style={{ display: 'flex', flexDirection: 'column', marginLeft: '500px', marginRight: '500px' }}
             >
                 <Typography variant="h2" textAlign={'center'}>
                     Login
                 </Typography>
-                <TextField label="Email" variant="standard" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                <br />
-                <TextField label="Password" variant="standard" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                <br /><br />
-                <Button variant="contained" type="submit">Valider</Button>
+                <Button variant="contained" type="submit" href={ code_url }>Authentification 42</Button>
             </form>
         </Fragment>
     );
 }
 
-export default App;
+export default Login;

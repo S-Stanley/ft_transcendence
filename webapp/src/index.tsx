@@ -23,6 +23,7 @@ root.render(
                 <Route path='/home' element={<Home/>} />
                 <Route path='/home/messagerie' element={<Messagerie/>} />
                 <Route path='/home/messagerie/chat' element={<Chat/>} />
+                <Route path='/oauth2-redirect' element={<Login/>} />
             </Routes>
         </BrowserRouter>
     </React.StrictMode>
