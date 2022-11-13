@@ -10,7 +10,6 @@ const login = async(email: string, password: string): Promise<{email: string, us
         return (req.data);
     } catch (e) {
         console.error(e);
-        alert('Wrong email or wrong password');
         return (null);
     }
 }

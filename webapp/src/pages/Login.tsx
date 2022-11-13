@@ -2,6 +2,7 @@ import { Fragment, useState } from 'react';
 import Helpers from './../helpers/Helpers';
 import { useNavigate } from 'react-router-dom';
 import { TextField, Button, Typography } from '@mui/material';
+import { toast } from 'react-toastify';
 
 function App() {
 
@@ -19,6 +20,8 @@ function App() {
             localStorage.setItem('email', req.email);
             localStorage.setItem('user_id', req.user_id);
             navigate('/home');
+        } else {
+            toast.error('Wrong email or wrong password!');
         }
     }
 
@@ -26,16 +29,16 @@ function App() {
         <Fragment>
             <form
                 onSubmit={handleSubmit}
-                style={{ display: 'flex', flexDirection: 'column', marginLeft: '500px', marginRight: '500px' }}
+                // style={{ display: 'flex', flexDirection: 'column', marginLeft: '500px', marginRight: '500px' }}
             >
                 <Typography variant="h2" textAlign={'center'}>
                     Login
                 </Typography>
-                <TextField label="Email" variant="standard" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                <TextField data-testid='email-input-login' label="Email" variant="standard" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
                 <br />
-                <TextField label="Password" variant="standard" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                <TextField data-testid='password-input-login' label="Password" variant="standard" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                 <br /><br />
-                <Button variant="contained" type="submit">Valider</Button>
+                <Button data-testid='buttom-submit-login' variant="contained" type="submit">Valider</Button>
             </form>
         </Fragment>
     );

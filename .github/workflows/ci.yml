@@ -1,0 +1,24 @@
+name: CI
+on: [pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: build
+        run: bash scripts/up.sh
+  tests-webapp:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: tests
+        run: |
+          cd api/
+          npm i
+          cd -
+          cd webapp/
+          npm i
+          cd -
+          bash scripts/up-prod.sh
+          cd webapp/
+          npm run test:e2e

@@ -3,7 +3,7 @@ import { Fragment } from "react"
 const Home = () => {
     return (
         <Fragment>
-            <p>Home</p>
+            <p data-testid='home-page-title'>Home</p>
         </Fragment>
     )
 };
