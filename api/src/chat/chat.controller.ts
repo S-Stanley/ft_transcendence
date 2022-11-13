@@ -84,7 +84,7 @@ export class ChatController {
     @Get('/:chat_id')
     async getMessagesByChatId(@Param() params) {
         const get_messages = await this.db.query(
-            'SELECT * FROM public.chat_message WHERE chat_id=$1 LIMIT 10',
+            'SELECT * FROM public.chat_message WHERE chat_id=$1 ORDER BY created_at ASC LIMIT 10',
             [params.chat_id]
         );
         const messages_with_email = await Promise.all(

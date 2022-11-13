@@ -1,19 +1,28 @@
 import { Fragment, useEffect, useState } from "react";
 import { TextField, Button } from "@mui/material";
 import Helpers from "../helpers/Helpers";
+import { io } from 'socket.io-client';
+
+const socket = io('http://localhost:5000', { transports: ['websocket'] });
 
 const Chat = () => {
 
     const [messageContent, setMessageContent] = useState<string>('');
-    const [allMessage, setAllMessage] = useState([]);
+    const [allMessage, setAllMessage] = useState<{content: string, email: string}[]>([]);
 
     const handleSubmit = async(e: { preventDefault: any }): Promise<void> => {
         e.preventDefault();
         const req = await Helpers.Messagerie.send_message_to_discussion(localStorage.getItem('chat_id') ?? '', messageContent);
         if (req) {
             setMessageContent('');
+            socket.emit('message', {
+                data: {
+                    chat_id: localStorage.getItem('chat_id'),
+                    content: messageContent,
+                    email: localStorage.getItem('email')
+                }
+            });
         }
-        getAllMessages();
     }
 
     const getAllMessages = async(): Promise<void> => {
@@ -22,6 +31,16 @@ const Chat = () => {
             setAllMessage(req);
         }
     }
+
+    socket.on('message', (data: { content: string, email: string, chat_id: string }) => {
+        if (data?.chat_id === localStorage.getItem('chat_id')){
+            const output = [...allMessage, {
+                email: data?.email,
+                content: data?.content
+            }];
+            setAllMessage(output);
+        }
+    })
 
     useEffect(() => {
         getAllMessages();
@@ -37,9 +56,9 @@ const Chat = () => {
                     marginRight: '500px'
                 }}
             >
-                {allMessage.map((msg: { id: string, content: string, email: string }) => {
+                {allMessage.map((msg: { content: string, email: string }, index) => {
                    return (
-                        <div key={msg.id}>
+                        <div key={index}>
                             { msg.email }: { msg.content }
                         </div>
                     )

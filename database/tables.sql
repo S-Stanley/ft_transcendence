@@ -19,5 +19,6 @@ CREATE TABLE IF NOT EXISTS public.chat_message(
     id          UUID PRIMARY KEY DEFAULT uuid_generate_v4() NOT NULL,
     chat_id     UUID NOT NULL,
     sent_by     UUID NOT NULL,
-    content     TEXT NOT NULL
+    content     TEXT NOT NULL,
+    created_at  TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
