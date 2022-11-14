@@ -6,6 +6,7 @@ import { ConfigModule } from '@nestjs/config';
 import { DbModule } from './config';
 import { LoggerMiddleware } from './middleware';
 import { ChatController } from './chat/chat.controller';
+import { SocketGateway } from './socket.gateway';
 
 @Module({
     imports: [ConfigModule.forRoot({
@@ -15,7 +16,7 @@ import { ChatController } from './chat/chat.controller';
       DbModule
     ],
     controllers: [AppController, UsersController, ChatController],
-    providers: [AppService],
+    providers: [AppService, SocketGateway],
 })
 export class AppModule implements NestModule {
     configure(consumer: MiddlewareConsumer) {
