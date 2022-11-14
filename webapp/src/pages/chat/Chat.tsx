@@ -1,7 +1,8 @@
 import { Fragment, useEffect, useState } from "react";
 import { TextField, Button } from "@mui/material";
-import Helpers from "../helpers/Helpers";
+import Helpers from "../../helpers/Helpers";
 import { io } from 'socket.io-client';
+import './Chat.scss'
 
 const socket = io('http://localhost:5000', { transports: ['websocket'] });
 
@@ -49,12 +50,7 @@ const Chat = () => {
     return (
         <Fragment>
             <div
-                style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    marginLeft: '500px',
-                    marginRight: '500px'
-                }}
+                id='div-message-chat'
             >
                 {allMessage.map((msg: { content: string, email: string }, index) => {
                    return (
@@ -66,12 +62,6 @@ const Chat = () => {
             </div>
             <form
                 onSubmit={handleSubmit}
-                style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    marginLeft: '500px',
-                    marginRight: '500px'
-                }}
             >
                 <TextField
                     label="Your message"

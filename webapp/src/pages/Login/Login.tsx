@@ -1,8 +1,9 @@
 import { Fragment, useState } from 'react';
-import Helpers from './../helpers/Helpers';
+import Helpers from '../../helpers/Helpers';
 import { useNavigate } from 'react-router-dom';
 import { TextField, Button, Typography } from '@mui/material';
 import { toast } from 'react-toastify';
+import './Login.scss';
 
 function App() {
 
@@ -26,10 +27,9 @@ function App() {
     }
 
     return (
-        <Fragment>
+        <div>
             <form
                 onSubmit={handleSubmit}
-                // style={{ display: 'flex', flexDirection: 'column', marginLeft: '500px', marginRight: '500px' }}
             >
                 <Typography variant="h2" textAlign={'center'}>
                     Login
@@ -40,7 +40,7 @@ function App() {
                 <br /><br />
                 <Button data-testid='buttom-submit-login' variant="contained" type="submit">Valider</Button>
             </form>
-        </Fragment>
+        </div>
     );
 }
 
