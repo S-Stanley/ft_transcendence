@@ -1,0 +1,23 @@
+#pong-game {
+    width: 600px;
+    height: 400px;
+    border: 1px solid black;
+    background-color: black;
+}
+
+#controller-area {
+    display: flex;
+}
+
+#pong-controller {
+    width: 10px;
+    height: 100px;
+    background-color: white;
+}
+
+#second-pong-controller {
+    width: 10px;
+    height: 100px;
+    background-color: white;
+    margin-left: 590px;
+}
