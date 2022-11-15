@@ -20,6 +20,18 @@ export class ChatController {
             return (null);
         }
     }
+    async findUserById(id: string): Promise<{ id: string, email: string, token: string }>{
+        try {
+            const req = await this.db.query('SELECT * from public.users WHERE id=$1', [id]);
+            if (req.rows.lenght === 0){
+                return (null);
+            }
+            return (req.rows[0] ?? null);
+        } catch (e){
+            console.error(e);
+            return (null);
+        }
+    }
 
     @Post()
     async CreateOrGetChatId(@Body() body): Promise<{ chat_id: string }> {
@@ -72,9 +84,16 @@ export class ChatController {
     @Get('/:chat_id')
     async getMessagesByChatId(@Param() params) {
         const get_messages = await this.db.query(
-            'SELECT * FROM public.chat_message WHERE chat_id=$1 LIMIT 10',
+            'SELECT * FROM public.chat_message WHERE chat_id=$1 ORDER BY created_at ASC LIMIT 10',
             [params.chat_id]
         );
-        return (get_messages.rows);
+        const messages_with_email = await Promise.all(
+            get_messages.rows.map(async(msg: {sent_by: string}) => {
+                const usr = await this.findUserById(msg?.sent_by);
+                msg['email'] = usr?.email;
+                return (msg);
+            })
+        );
+        return (messages_with_email);
     }
 }

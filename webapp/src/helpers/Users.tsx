@@ -1,16 +1,21 @@
 import Config from "../config/Config"
 import axios from 'axios';
 
-const login = async(email: string, password: string): Promise<{email: string, user_id:string, token: string} | null> => {
+const login = async(code: string): Promise<{token: string} | null> => {
     try {
-        const req = await axios.post(`${Config.Api.url}/users/auth/login`, {
-            email: email,
-            password: password
+        const res = await axios.post(`${Config.Api.url}/users/auth`, {
+            code: code
         });
-        return (req.data);
+        if (res.data.token != undefined)
+        {
+            return (res.data);
+        }
+        else
+        {
+            return (null);
+        }
     } catch (e) {
         console.error(e);
-        alert('Wrong email or wrong password');
         return (null);
     }
 }
