@@ -1,5 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import './pong.scss';
+import { io } from 'socket.io-client';
+import { useSearchParams } from 'react-router-dom';
 
 /*
     UP -> W
@@ -14,39 +16,70 @@ import './pong.scss';
 
 */
 
+const socket = io('http://localhost:5000', { transports: ['websocket'] });
+
 const Pong = () => {
 
     const [numberOfMouvement, setNumberOfMouvement] = useState<number>(0);
     const [playerId] = useState<string>('second-pong-controller');
+    const [searchParams] = useSearchParams();
 
-    const handleMovement = (e: any) => {
-        const controller = document.getElementById(playerId);
-        if (e?.key === 'w' ||e?.key === 'W' ){
-            if (!controller || numberOfMouvement < 0){
-                return;
-            }
-            const actual_margin = parseInt(controller.style.marginTop?.split('px')[0]);
-            if (actual_margin) {
-                controller.style.marginTop = `${parseInt(controller.style.marginTop?.split('px')[0]) - 5}px`;
-            }
-            setNumberOfMouvement(numberOfMouvement - 1);
+    const handleKeyPress = (e: {key: string}) => {
+        const key = e?.key.toLowerCase();
+        if (key !== 'w' && key !== 's') {
+            return ;
         }
-        if (e?.key === 's' || e?.key === 'S'){
-            if (!controller || numberOfMouvement > 58){
-                return;
+        if (key === 'w'){
+            if (numberOfMouvement <= 0) {
+                return ;
             }
-            const actual_margin = parseInt(controller.style.marginTop?.split('px')[0]);
-            if (!actual_margin) {
-                controller.style.marginTop = '5px';
-            } else {
-                controller.style.marginTop = `${parseInt(controller.style.marginTop?.split('px')[0]) + 5}px`;
+            setNumberOfMouvement(numberOfMouvement - 1)
+        }
+        if (key === 's'){
+            if (numberOfMouvement >= 58) {
+                return ;
             }
             setNumberOfMouvement(numberOfMouvement + 1);
         }
+        socket.emit('game-player-move', {
+            data: {
+                player_id: searchParams.get('player_id'),
+                position: numberOfMouvement * 5,
+                direction: key === 'w' ? 'up' : 'down',
+                game_id: '0'
+            }
+        });
     }
 
+    const handleMovement = (player_id: string, direction: string, position: string) => {
+        const controller = document.getElementById(player_id);
+        if (!controller){
+            return;
+        }
+        if (direction === 'up'){
+            const actual_margin = parseInt(controller.style.marginTop?.split('px')[0]);
+            if (actual_margin) {
+                controller.style.marginTop = `${position}px`;
+            }
+        }
+        if (direction === 'down'){
+            const actual_margin = parseInt(controller.style.marginTop?.split('px')[0]);
+            if (!actual_margin) {
+                controller.style.marginTop = '1px';
+            } else {
+                controller.style.marginTop = `${position}px`;
+            }
+        }
+    }
+
+    socket.on('game-player-move', (data: { player_id: string, direction: string, position: string, game_id: string }) => {
+        if (data?.game_id === '0'){
+            handleMovement(data?.player_id, data?.direction, data?.position);
+        }
+    });
+
     return (
-        <div id='pong-game' onKeyPress={handleMovement} tabIndex={0}>
+        <div id='pong-game' onKeyPress={handleKeyPress} tabIndex={0}>
             <div id='controller-area'>
                 <div id='pong-controller'>
 

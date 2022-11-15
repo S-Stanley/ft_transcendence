@@ -7,17 +7,21 @@
 
 #controller-area {
     display: flex;
+    justify-content:space-between;
 }
 
 #pong-controller {
     width: 10px;
     height: 100px;
     background-color: white;
+    // position: absolute;
+    top: 123px;
 }
 
 #second-pong-controller {
     width: 10px;
     height: 100px;
     background-color: white;
-    margin-left: 590px;
+    // position: absolute;
+    top: 123px;
 }

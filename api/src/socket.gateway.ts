@@ -13,4 +13,14 @@ export class SocketGateway {
             chat_id: message.data?.chat_id
         });
     }
+
+    @SubscribeMessage('game-player-move')
+    handlePlayerMove(@MessageBody() message: { data: { player_id: string, direction: string, position: string, game_id: string } }): void {
+        this.server.emit('game-player-move', {
+            player_id: message.data?.player_id,
+            position: message.data?.position,
+            direction: message.data?.direction,
+            game_id: message.data?.game_id,
+        });
+    }
 }
