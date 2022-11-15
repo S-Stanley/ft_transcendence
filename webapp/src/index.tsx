@@ -15,7 +15,6 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-    <React.StrictMode>
         <BrowserRouter>
             <MenuComponent/>
             <Routes>
@@ -26,7 +25,6 @@ root.render(
                 <Route path='/oauth2-redirect' element={<Login/>} />
             </Routes>
         </BrowserRouter>
-    </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

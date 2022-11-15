@@ -60,7 +60,7 @@ const MenuComponent = () => {
                             </React.Fragment>
                         ) : (
                             <React.Fragment>
-                                <Button key='Login' sx={{ color: '#fff' }} onClick={() => navigate('/')}>
+                                <Button key='Login' sx={{ color: '#fff' }} onClick={() => navigate('/home')}>
                                     Login
                                 </Button>
                             </React.Fragment>

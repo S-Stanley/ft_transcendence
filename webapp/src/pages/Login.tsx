@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useState, useEffect } from 'react';
 import Helpers from './../helpers/Helpers';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { TextField, Button, Typography } from '@mui/material';
@@ -10,20 +10,24 @@ function Login() {
     const code = new URLSearchParams(search).get('code');
     const navigate = useNavigate();
 
-    if (code)
-    {
-        Helpers.Users.login(code).then((res) => {
-            if (res != null)
-            {
-                window.localStorage.setItem('token', res.token);
-            }
-            
-        })
-    }
-    if (window.localStorage.getItem('token'))
-    {
-        navigate('/home');
-    }
+    useEffect(() => {
+        if (code)
+        {
+            Helpers.Users.login(code).then((res) => {
+                if (res != null)
+                {
+                    window.localStorage.setItem('token', res.token);
+                }
+                
+            })
+        }
+        if (window.localStorage.getItem('token'))
+        {
+            navigate('/home');
+        }
+    });
+
+    
     return (
         <Fragment>
             <form
