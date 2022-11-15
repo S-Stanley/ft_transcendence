@@ -6,10 +6,14 @@ const login = async(code: string): Promise<{token: string} | null> => {
         const res = await axios.post(`${Config.Api.url}/users/auth`, {
             code: code
         });
-        if (res.data.access_token != undefined)
-            return (res.data.access_token);
+        if (res.data.token != undefined)
+        {
+            return (res.data);
+        }
         else
+        {
             return (null);
+        }
     } catch (e) {
         console.error(e);
         alert('Erreur authentification');

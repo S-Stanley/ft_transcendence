@@ -1,31 +1,18 @@
-import * as React from 'react';
+import { Fragment } from 'react';
 import { AppBar, Toolbar, IconButton, Typography, Button, Box } from '@mui/material';
-
 import { useNavigate } from 'react-router-dom';
 
-const UNPROCTED_PAGE = ['/'];
 
 const MenuComponent = () => {
     const navigate = useNavigate();
 
-    const checkAccess = () => {
-        if (!UNPROCTED_PAGE.includes(window.location.pathname) && !localStorage.getItem('token')){
-            console.error('Unauthorized access');
-            navigate('/');
-        }
-    }
-
     const disconnectUser = () => {
-        localStorage.clear();
+        localStorage.removeItem('token');
         navigate('/');
     }
 
-    React.useEffect(() => {
-        checkAccess();
-    });
-
     return (
-        <React.Fragment key='menu'>
+        <Fragment key='menu'>
             <Box m={2} pt={7}>
                 <AppBar
                     component="nav"
@@ -47,7 +34,7 @@ const MenuComponent = () => {
                     </Typography>
                     <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
                         { window.location.pathname.includes('/home') ? (
-                            <React.Fragment>
+                            <Fragment>
                                 <Button key='Home' sx={{ color: '#fff' }} onClick={() => navigate('/home')}>
                                     Home
                                 </Button>
@@ -57,19 +44,17 @@ const MenuComponent = () => {
                                 <Button key='Disconnect' sx={{ color: '#fff' }} onClick={disconnectUser} >
                                     Disconnect
                                 </Button>
-                            </React.Fragment>
+                            </Fragment>
                         ) : (
-                            <React.Fragment>
-                                <Button key='Login' sx={{ color: '#fff' }} onClick={() => navigate('/home')}>
-                                    Login
-                                </Button>
-                            </React.Fragment>
+                            <Fragment>
+                                
+                            </Fragment>
                         )}
                     </Box>
                     </Toolbar>
                 </AppBar>
             </Box>
-        </React.Fragment>
+        </Fragment>
     );
 }
 

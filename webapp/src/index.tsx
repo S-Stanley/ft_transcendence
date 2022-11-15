@@ -1,18 +1,29 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
-
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-
 import MenuComponent from './components/menu';
 import Login from './pages/Login';
 import Home from './pages/Home';
 import Messagerie from './pages/Messagerie';
 import Chat from './pages/Chat';
+import axios from 'axios';
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
 );
+
+axios.interceptors.request.use(function (config) {
+    if (window.localStorage.getItem('token'))
+    {
+        if (config.headers != undefined)
+        {
+            config.headers.Authorization = window.localStorage.getItem('token');
+        }
+    }
+    return config;
+  }, function (error) {
+    return Promise.reject(error);
+  });
 
 root.render(
         <BrowserRouter>

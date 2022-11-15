@@ -1,10 +1,10 @@
-import { Fragment, useState, useEffect } from 'react';
+import { Fragment, useEffect, useState, forwardRef } from 'react';
 import Helpers from './../helpers/Helpers';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { TextField, Button, Typography } from '@mui/material';
+import { Button, Typography } from '@mui/material';
+
 
 function Login() {
-
     const code_url = 'https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-6694130f6db913ca3cd2ea1112756a01c8af82f732601f915369707b205c3b1c&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Foauth2-redirect&response_type=code&state=test';
     const search = useLocation().search;
     const code = new URLSearchParams(search).get('code');
@@ -17,17 +17,11 @@ function Login() {
                 if (res != null)
                 {
                     window.localStorage.setItem('token', res.token);
+                    navigate('/home', { state: { logged: true} });
                 }
-                
             })
         }
-        if (window.localStorage.getItem('token'))
-        {
-            navigate('/home');
-        }
     });
-
-    
     return (
         <Fragment>
             <form
@@ -41,5 +35,4 @@ function Login() {
         </Fragment>
     );
 }
-
 export default Login;
