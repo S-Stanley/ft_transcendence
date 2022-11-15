@@ -36,7 +36,7 @@ export class UserService {
                     user.tokenExpiresAt = new Date((value.data.created_at + value.data.expires_in) * 1000)
                     this.userRepository.save(user);
                     return user.accessToken;
-                })
+                });
             })
         }, (error) => {
             console.error(error);
