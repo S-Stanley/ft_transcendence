@@ -1,5 +1,7 @@
 import { Fragment } from "react"
 
+import './Home.scss'
+
 const Home = () => {
     return (
         <Fragment>

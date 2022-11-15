@@ -4,13 +4,15 @@ import reportWebVitals from './reportWebVitals';
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
+
 import 'react-toastify/dist/ReactToastify.css';
+import './global.scss';
 
 import MenuComponent from './components/menu';
-import Login from './pages/Login';
-import Home from './pages/Home';
-import Messagerie from './pages/Messagerie';
-import Chat from './pages/Chat';
+import Login from './pages/Login/Login';
+import Home from './pages/Home/Home';
+import Messagerie from './pages/messagerie/Messagerie';
+import Chat from './pages/chat/Chat';
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
