@@ -1,7 +1,8 @@
+import { Button, Typography } from '@mui/material';
+import './Login.scss';
 import { Fragment, useEffect } from 'react';
 import Helpers from './../../helpers/Helpers';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Button, Typography } from '@mui/material';
 
 
 function Login() {
@@ -23,7 +24,7 @@ function Login() {
         }
     });
     return (
-        <div>
+        <Fragment>
             <form
                 style={{ display: 'flex', flexDirection: 'column', marginLeft: '500px', marginRight: '500px' }}
             >
@@ -32,7 +33,7 @@ function Login() {
                 </Typography>
                 <Button variant="contained" type="submit" href={ code_url }>Authentification 42</Button>
             </form>
-        </div>
+        </Fragment>
     );
 }
 export default Login;

@@ -1,9 +1,8 @@
+import './Home.scss'
 import { Fragment, useState, forwardRef, useEffect } from 'react';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import { useLocation } from 'react-router-dom';
-
-import './Home.scss'
 
 const Home = () => {
     const [open, setOpen] = useState(false);
