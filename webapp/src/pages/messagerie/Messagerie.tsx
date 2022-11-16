@@ -16,7 +16,7 @@ const Messagerie = () => {
             alert('Error, you cannot send an message to yourself');
             return ;
         }
-        const req = await Helpers.Users.findUserByEmail(userToFind);
+        const req = null
         const chat = await Helpers.Messagerie.create_or_get_discussion(userToFind);
         localStorage.setItem('chat_id', chat?.chat_id);
         if (req) {

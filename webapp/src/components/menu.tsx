@@ -1,15 +1,26 @@
-import { Fragment } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { AppBar, Toolbar, IconButton, Typography, Button, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { stringify } from 'querystring';
+import Helpers from '../helpers/Helpers';
 
 
 const MenuComponent = () => {
     const navigate = useNavigate();
-
+    const [user, setUser] = useState({ 
+        email: '',
+        nickname: ''
+    });
     const disconnectUser = () => {
         localStorage.removeItem('token');
         navigate('/');
     }
+
+    useEffect(() => {
+        if (user.nickname === '') {
+            Helpers.Users.me().then((res) => setUser(res!))
+        }
+    })
 
     return (
         <Fragment key='menu'>
@@ -31,6 +42,13 @@ const MenuComponent = () => {
                         sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
                     >
                         Transcendence
+                    </Typography>
+                    <Typography
+                        variant="h6"
+                        component="div"
+                        sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+                    >
+                        Bonjour { user.nickname == '' ? 'invité' : user.nickname }
                     </Typography>
                     <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
                         { window.location.pathname.includes('/home') ? (

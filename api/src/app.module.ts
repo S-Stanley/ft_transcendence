@@ -22,10 +22,10 @@ import { SocketGateway } from './socket.gateway';
       TypeOrmModule.forRoot({
         type: 'postgres',
         host: 'localhost',
-        port: 5432,
-        username: 'postgres',
+        port: +process.env.POSTGRES_PORT,
+        username: process.env.POSTGRES_USER,
         password: '',
-        database: 'dev',
+        database: process.env.POSTGRES_DB,
         entities: [User],               // On renseigne ici les entités voulant être mappées en base de données
         synchronize: true
       }),

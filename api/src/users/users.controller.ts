@@ -1,5 +1,6 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, Get, Headers } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
+import { UserDTO } from 'src/dtos/profile.dto';
 import { UserService } from 'src/services/user.service';
 
 @Controller('users')
@@ -14,5 +15,10 @@ export class UsersController {
                 token: res
             }
         })
+    }
+
+    @Get('/me')
+    profile(@Headers('authorization') token: string) : Promise<UserDTO> {
+        return this.userService.getProfile(token.split('Bearer ')[1]);
     }
 }

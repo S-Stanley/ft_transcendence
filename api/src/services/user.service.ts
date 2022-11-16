@@ -5,6 +5,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "src/entities/user.entity";
 import { Repository } from "typeorm";
 import { firstValueFrom } from "rxjs";
+import { UserDTO } from "src/dtos/profile.dto";
 
 interface SSOReturn {
     access_token: string;
@@ -71,5 +72,17 @@ export class UserService {
             }
           )).then((res) => res.data)
           return user;
+    }
+
+    getProfile(token: string): Promise<UserDTO> {
+        return this.userRepository.findOneBy({
+            accessToken: token
+        }).then((res) => {
+            return {
+                nickname: res.nickname,
+                email: res.email
+            }
+        })
+        
     }
 }

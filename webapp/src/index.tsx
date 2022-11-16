@@ -19,7 +19,7 @@ axios.interceptors.request.use(function (config) {
     {
         if (config.headers != undefined)
         {
-            config.headers.Authorization = window.localStorage.getItem('token');
+            config.headers.Authorization = 'Bearer ' + window.localStorage.getItem('token');
         }
     }
     return config;
