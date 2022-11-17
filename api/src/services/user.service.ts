@@ -50,7 +50,7 @@ export class UserService {
         const FormData = require('form-data');
         var bodyFormData = new FormData();
         bodyFormData.append('grant_type', 'authorization_code');
-        bodyFormData.append('client_id', 'u-s4t2ud-6694130f6db913ca3cd2ea1112756a01c8af82f732601f915369707b205c3b1c');
+        bodyFormData.append('client_id', process.env.CLIENT_ID);
         bodyFormData.append('client_secret', process.env.CLIENT_SECRET);
         bodyFormData.append('code', code);
         bodyFormData.append('redirect_uri', 'http://localhost:3000/oauth2-redirect');
