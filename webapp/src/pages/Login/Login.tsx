@@ -26,12 +26,19 @@ function Login() {
     return (
         <Fragment>
             <form
-                style={{ display: 'flex', flexDirection: 'column', marginLeft: '500px', marginRight: '500px' }}
+                style={{ display: 'flex', flexDirection: 'column', marginLeft: 'auto', marginRight: 'auto', width: "200px" }}
             >
                 <Typography variant="h2" textAlign={'center'}>
                     Login
                 </Typography>
-                <Button variant="contained" type="submit" href={ code_url }>Authentification 42</Button>
+                <Button
+                    sx={{ 
+                    ':hover': {
+                            color: 'white',
+                            backgroundColor: 'grey',
+                            borderColor: 'white'
+                },
+                color: 'grey', backgroundColor: 'white', borderColor: '#888a81' }} variant="outlined" type="submit" href={ code_url }>Sign up with 42</Button>
             </form>
         </Fragment>
     );

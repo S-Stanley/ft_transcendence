@@ -6,13 +6,7 @@ import { User } from "src/entities/user.entity";
 import { Repository } from "typeorm";
 import { firstValueFrom } from "rxjs";
 import { UserDTO } from "src/dtos/profile.dto";
-
-interface SSOReturn {
-    access_token: string;
-    expires_in: number;
-    refresh_token: string;
-    created_at: number;
-}
+import { SSOReturn } from "src/dtos/ssoreturn.dto";
 
 interface User42 {
     login: string

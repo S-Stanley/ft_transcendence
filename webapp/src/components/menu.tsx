@@ -1,8 +1,8 @@
 import { Fragment, useEffect, useState } from 'react';
 import { AppBar, Toolbar, IconButton, Typography, Button, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { stringify } from 'querystring';
 import Helpers from '../helpers/Helpers';
+import '../global.scss';
 
 
 const MenuComponent = () => {
@@ -12,7 +12,7 @@ const MenuComponent = () => {
         nickname: ''
     });
     const disconnectUser = () => {
-        localStorage.removeItem('token');
+        localStorage.clear();
         navigate('/');
     }
 
@@ -27,6 +27,7 @@ const MenuComponent = () => {
             <Box m={2} pt={7}>
                 <AppBar
                     component="nav"
+                    sx={{ bgcolor: "grey" }}
                 >
                     <Toolbar>
                     <IconButton

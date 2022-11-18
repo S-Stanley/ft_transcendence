@@ -9,7 +9,7 @@ export class UsersController {
     constructor(private userService: UserService) {}
 
     @Post('/auth')
-    auth(@Body() body: { code: string }): Promise<void | { token: string; } | { token: string | void; }> {
+    authAction(@Body() body: { code: string }): Promise<void | { token: string; } | { token: string | void; }> {
         return this.userService.authUser(body.code).then((res) => {
             return { 
                 token: res
@@ -18,7 +18,7 @@ export class UsersController {
     }
 
     @Get('/me')
-    profile(@Headers('authorization') token: string) : Promise<UserDTO> {
+    getProfileAction(@Headers('authorization') token: string) : Promise<UserDTO> {
         return this.userService.getProfile(token.split('Bearer ')[1]);
     }
 }
