@@ -7,6 +7,7 @@ import { Repository } from "typeorm";
 import { firstValueFrom } from "rxjs";
 import { UserDTO } from "src/dtos/profile.dto";
 import { SSOReturn } from "src/dtos/ssoreturn.dto";
+import { TokenReturn } from "src/dtos/tokenreturn.dto";
 
 interface User42 {
     login: string
@@ -17,26 +18,22 @@ interface User42 {
 export class UserService {
     constructor(private readonly httpService: HttpService, @InjectRepository(User) private userRepository: Repository<User>) {}
 
-    authUser(code: string): Promise<string | void> {
-        const token = this.getToken(code).then((value) => {
-            return this.getUserInformationFrom42(value.data.access_token).then((res) => {
-                return this.userRepository.findOneBy({ email: res.email }).then((user) => {
-                    if (user == null) {
-                        user = new User();
-                        user.email = res.email;
-                        user.nickname = res.login;
-                    }
-                    user.accessToken = value.data.access_token;
-                    user.refreshToken = value.data.refresh_token;
-                    user.tokenExpiresAt = new Date((value.data.created_at + value.data.expires_in) * 1000)
-                    this.userRepository.save(user);
-                    return user.accessToken;
-                });
-            })
-        }, (error) => {
-            console.error(error);
+    async authUser(code: string): Promise<TokenReturn> {
+        const token = await this.getToken(code);
+        const user42 = await this.getUserInformationFrom42(token.data.access_token);
+        let user = await this.userRepository.findOneBy({ email: user42.email });
+        if (user == null) {
+            user = new User();
+            user.email = user42.email;
+            user.nickname = user42.login;
+        }
+        user.accessToken = token.data.access_token;
+        user.refreshToken = token.data.refresh_token;
+        user.tokenExpiresAt = new Date((token.data.created_at + token.data.expires_in) * 1000)
+        this.userRepository.save(user);
+        return new Promise((resolve) => {
+            resolve({token: user.accessToken});
         });
-        return token;
     }
 
     getToken(code: string): Promise<AxiosResponse<SSOReturn>> {
@@ -68,15 +65,10 @@ export class UserService {
           return user;
     }
 
-    getProfile(token: string): Promise<UserDTO> {
-        return this.userRepository.findOneBy({
-            accessToken: token
-        }).then((res) => {
-            return {
-                nickname: res.nickname,
-                email: res.email
-            }
-        })
-        
+    getProfile(user: User): UserDTO {
+        return {
+            nickname: user.nickname,
+            email: user.email
+        }
     }
 }

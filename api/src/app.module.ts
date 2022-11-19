@@ -2,7 +2,7 @@ import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/c
 import { UsersController } from './controllers/users.controller';
 import { ConfigModule } from '@nestjs/config';
 import { DbModule } from './config';
-import { LoggerMiddleware } from './middleware';
+import { AuthMiddleware } from './middleware';
 import { ChatController } from './controllers/chat.controller';
 import { HttpModule } from '@nestjs/axios';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -38,16 +38,8 @@ import { ChatService } from './services/chat.service';
 export class AppModule implements NestModule {
     configure(consumer: MiddlewareConsumer) {
         consumer
-            .apply(LoggerMiddleware)
-            .forRoutes({
-                path: '/users/:email',
-                method: RequestMethod.GET
-            }, {
-                path: '/chat*',
-                method: RequestMethod.GET
-            }, {
-                path: '/chat*',
-                method: RequestMethod.POST
-            });
+            .apply(AuthMiddleware)
+            .exclude('/users/auth')
+            .forRoutes('*');
     }
 }

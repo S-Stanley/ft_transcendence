@@ -8,7 +8,7 @@ export class Chat {
     @PrimaryGeneratedColumn()
     id: number
 
-    @OneToMany(() => Message, message => message.id)
+    @OneToMany(() => Message, message => message.chat)
     messages: Message[];
 
     @ManyToMany(() => User)

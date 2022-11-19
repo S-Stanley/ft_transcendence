@@ -1,6 +1,9 @@
 import { Controller, Post, Body, Get, Headers } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
+import { UserConnected } from 'src/configs/userconnected.decorator';
 import { UserDTO } from 'src/dtos/profile.dto';
+import { TokenReturn } from 'src/dtos/tokenreturn.dto';
+import { User } from 'src/entities/user.entity';
 import { UserService } from 'src/services/user.service';
 
 @Controller('users')
@@ -9,16 +12,12 @@ export class UsersController {
     constructor(private userService: UserService) {}
 
     @Post('/auth')
-    authAction(@Body() body: { code: string }): Promise<void | { token: string; } | { token: string | void; }> {
-        return this.userService.authUser(body.code).then((res) => {
-            return { 
-                token: res
-            }
-        })
+    authAction(@Body() body: { code: string }): Promise<TokenReturn> {
+        return this.userService.authUser(body.code);
     }
 
     @Get('/me')
-    getProfileAction(@Headers('authorization') token: string) : Promise<UserDTO> {
-        return this.userService.getProfile(token.split('Bearer ')[1]);
+    getProfileAction(@UserConnected() user: User): UserDTO {
+        return this.userService.getProfile(user);
     }
 }

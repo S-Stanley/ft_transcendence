@@ -1,6 +1,9 @@
-import { Controller, Post, Body, HttpException, Param, Get, Headers } from '@nestjs/common';
+import { Controller, Post, Body, HttpException, Param, Get} from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
+import { UserConnected } from 'src/configs/userconnected.decorator';
 import { Chat } from 'src/entities/chat.entity';
+import { Message } from 'src/entities/message.entity';
+import { User } from 'src/entities/user.entity';
 import { ChatService } from 'src/services/chat.service';
 
 @Controller('chat')
@@ -10,38 +13,20 @@ export class ChatController {
     constructor(private chatService: ChatService) {}
 
     @Post('/:name')
-    async createChatAction(@Param('name') name: string, @Headers('authorization') token: string): Promise<Chat> {
-        return this.chatService.createChat(name, token.split('Bearer ')[1]);
+    async createChatAction(@Param('name') name: string, @UserConnected() user: User): Promise<Chat> {
+        return this.chatService.createChat(name, user);
     }
 
-    // @Post('/send')
-    // async sendMessageToChat(@Body() body): Promise<boolean> {
-    //     if (!body?.chat_id || !body?.sender_id || !body?.content) {
-    //         throw new HttpException('Missing params', 500);
-    //     }
-    //     if (!isValidUUIDV4(body.chat_id) || !isValidUUIDV4(body.sender_id)) {
-    //         throw new HttpException('Wrong format for params, expecting UUID', 500);
-    //     }
-    //     await this.db.query(
-    //         'INSERT INTO chat_message (chat_id, sent_by, content) VALUES($1, $2, $3)',
-    //         [body.chat_id, body.sender_id, body.content]
-    //     );
-    //     return (true);
-    // }
+    @Get('/:name')
+    async getChatAction(@Param('name') name: string): Promise<Chat> {
+        return this.chatService.getChat(name);
+    }
 
-    // @Get('/:chat_id')
-    // async getMessagesByChatId(@Param() params) {
-    //     const get_messages = await this.db.query(
-    //         'SELECT * FROM public.chat_message WHERE chat_id=$1 ORDER BY created_at ASC LIMIT 10',
-    //         [params.chat_id]
-    //     );
-    //     const messages_with_email = await Promise.all(
-    //         get_messages.rows.map(async(msg: {sent_by: string}) => {
-    //             const usr = await this.findUserById(msg?.sent_by);
-    //             msg['email'] = usr?.email;
-    //             return (msg);
-    //         })
-    //     );
-    //     return (messages_with_email);
-    // }
+    @Post('/:name/message')
+    async sendMessageAction(@Body() body, @Param('name') name: string, @UserConnected() user: User): Promise<Message> {
+        if (!body?.message) {
+            throw new HttpException('Message is missing', 400);
+        }
+        return this.chatService.sendMessage(body.message, name, user);
+    }
 }

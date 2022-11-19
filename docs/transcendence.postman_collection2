@@ -1,0 +1,128 @@
+{
+	"info": {
+		"_postman_id": "e4531dc2-3fc1-4cb1-a7ff-821a7b40bb2a",
+		"name": "transcendence",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "/users/me",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{hostname}}/users/me",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"users",
+						"me"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/chat/:name",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{hostname}}/chat/tedfdssq",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"chat",
+						"tedfdssq"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/chat/:name",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{hostname}}/chat/test",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"chat",
+						"test"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "/chat/:name/message",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"message\": \"yo\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{hostname}}/chat/chat/message",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"chat",
+						"chat",
+						"message"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "123",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "hostname",
+			"value": "http://localhost:5000",
+			"type": "default"
+		}
+	]
+}
