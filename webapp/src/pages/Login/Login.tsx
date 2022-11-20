@@ -18,8 +18,8 @@ function Login() {
             if (req) {
                 window.localStorage.setItem('token', req.token);
                 toast.success('Successfully logged!', {
-                        position: "bottom-left",
-                    });
+                    position: "bottom-left",
+                });
                 navigate('/home');
             }
         }
