@@ -30,6 +30,15 @@ axios.interceptors.request.use(function (config) {
 root.render(
         <BrowserRouter>
             <MenuComponent/>
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                theme="colored"
+            />
             <Routes>
                 <Route path='/' element={<Login/>} />
                 <Route path='/home' element={<Home/>} />
