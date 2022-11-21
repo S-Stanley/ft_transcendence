@@ -1,7 +1,9 @@
 import { Fragment, useState } from "react";
 import { Button, TextField } from "@mui/material";
-import Helpers from "../helpers/Helpers";
+import Helpers from "../../helpers/Helpers";
 import { useNavigate } from "react-router-dom";
+
+import './Messagerie.scss'
 
 const Messagerie = () => {
 
@@ -26,12 +28,6 @@ const Messagerie = () => {
     return (
         <Fragment>
             <form
-                style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    marginLeft: '500px',
-                    marginRight: '500px'
-                }}
                 onSubmit={handleSubmit}
             >
                 <TextField

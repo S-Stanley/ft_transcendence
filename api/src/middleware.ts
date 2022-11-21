@@ -1,29 +1,26 @@
-import { Injectable, NestMiddleware, Inject, HttpException } from '@nestjs/common';
-import { Request, Response, NextFunction } from 'express';
-import { isValidUUIDV4 } from 'is-valid-uuid-v4';
+import { Injectable, NestMiddleware, HttpException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Response, NextFunction } from 'express';
+import { Repository } from 'typeorm';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class LoggerMiddleware implements NestMiddleware {
+    constructor(@InjectRepository(User) private userRepository: Repository<User>) {}
 
-    constructor(@Inject("PG_CONNECTION") private db: any){}
-
-    async use(req: Request, res: Response, next: NextFunction) {
-        const token = req.headers?.token;
+    async use(req /*Request*/, res: Response, next: NextFunction) {
+        const token = req.headers?.authorization;
         if (!token) {
-            throw new HttpException('No token was provided', 401);
+            throw new HttpException('No token was provided.', 401);
         }
-        else if (typeof(token) != 'string') {
-            throw new HttpException('Token header should be of type string', 401);
+        else if (!token.includes('Bearer ')) {
+            throw new HttpException('Token should have prefix Bearer.', 401);
         }
-        else if (!isValidUUIDV4(token)) {
-            throw new HttpException('Token is not in UUID format', 401);
+        const user = await this.userRepository.findOneBy({ accessToken: token.split('Bearer ')[1] });
+        if (user == undefined || user == null) {
+            throw new HttpException('Invalid token.', 401);
         }
-        else {
-            const sql = await this.db.query('SELECT * FROM public.users WHERE token=$1', [token]);
-            if (sql.rows.length === 0) {
-                throw new HttpException('Wrong token', 401);
-            }
-            next();
-        }
+        req.user = user;
+        next();
     }
 }
