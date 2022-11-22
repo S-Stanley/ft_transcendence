@@ -17,7 +17,7 @@ const root = ReactDOM.createRoot(
 axios.interceptors.request.use(function (config) {
     if (window.localStorage.getItem('token'))
     {
-        if (config.headers != undefined)
+        if (config.headers !== undefined)
         {
             config.headers.Authorization = 'Bearer ' + window.localStorage.getItem('token');
         }
@@ -30,15 +30,6 @@ axios.interceptors.request.use(function (config) {
 root.render(
         <BrowserRouter>
             <MenuComponent/>
-            <ToastContainer
-                position="top-right"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                theme="colored"
-            />
             <Routes>
                 <Route path='/' element={<Login/>} />
                 <Route path='/home' element={<Home/>} />

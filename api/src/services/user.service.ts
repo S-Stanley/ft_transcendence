@@ -34,7 +34,7 @@ export class UserService {
     }
 
     getToken(code: string): Promise<AxiosResponse<SSOReturn>> {
-        let bodyFormData = new FormData();
+        const bodyFormData = new FormData();
         bodyFormData.append('grant_type', 'authorization_code');
         bodyFormData.append('client_id', process.env.CLIENT_ID);
         bodyFormData.append('client_secret', process.env.CLIENT_SECRET);

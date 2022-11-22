@@ -9,7 +9,7 @@ const Home = () => {
     const { state } = useLocation();
 
     useEffect(() => {
-        if (state.logged == true)
+        if (state.logged === true)
         {
             setOpen(true);
         }

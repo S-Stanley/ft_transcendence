@@ -3,7 +3,6 @@ import { AppBar, Toolbar, IconButton, Typography, Button, Box } from '@mui/mater
 import { useNavigate } from 'react-router-dom';
 import Helpers from '../helpers/Helpers';
 
-
 const MenuComponent = () => {
     const navigate = useNavigate();
     const [user, setUser] = useState({ 
@@ -65,7 +64,6 @@ const MenuComponent = () => {
                             </Fragment>
                         ) : (
                             <Fragment>
-                                
                             </Fragment>
                         )}
                     </Box>
