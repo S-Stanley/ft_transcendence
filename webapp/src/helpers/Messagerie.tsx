@@ -47,8 +47,10 @@ const get_message_of_discussion = async (chat_id: string) => {
     }
 };
 
-export default {
+const Messagerie = {
     create_or_get_discussion,
     send_message_to_discussion,
     get_message_of_discussion,
 }
+
+export default Messagerie;

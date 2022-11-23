@@ -45,7 +45,7 @@ const Chat = () => {
 
     useEffect(() => {
         getAllMessages();
-    }, [false]);
+    });
 
     return (
         <Fragment>

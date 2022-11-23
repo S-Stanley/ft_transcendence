@@ -7,14 +7,7 @@ const login = async(code: string): Promise<{token: string} | null> => {
         const res = await axios.post(`${Config.Api.url}/users/auth`, {
             code: code
         });
-        if (res.data.token !== undefined)
-        {
-            return (res.data);
-        }
-        else
-        {
-            return (null);
-        }
+        return (res.data);
     } catch (e) {
         console.error(e);
         return (null);
@@ -40,8 +33,24 @@ const findUserByEmail = async(email: string): Promise<{email: string, user_id: s
     }
 }
 
-export default {
+const login_with_email = async(email: string, password: string): Promise<{email: string, user_id:string, token: string} | null> => {
+    try {
+        const req = await axios.post(`${Config.Api.url}/users/auth/login`, {
+            email: email,
+            password: password
+        });
+        return (req.data);
+    } catch (e) {
+        console.error(e);
+        return (null);
+    }
+}
+
+const Users = {
     login,
     me,
-    findUserByEmail
+    findUserByEmail,
+    login_with_email
 }
+
+export default Users;

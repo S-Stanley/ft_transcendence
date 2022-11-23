@@ -5,7 +5,7 @@ import Helpers from '../helpers/Helpers';
 
 const MenuComponent = () => {
     const navigate = useNavigate();
-    const [user, setUser] = useState({ 
+    const [user, setUser] = useState({
         email: '',
         nickname: ''
     });

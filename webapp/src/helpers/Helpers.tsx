@@ -1,7 +1,9 @@
 import Users from "./Users";
 import Messagerie from "./Messagerie";
 
-export default {
+const Helpers = {
     Users,
     Messagerie,
-}
+};
+
+export default Helpers;
