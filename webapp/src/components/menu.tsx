@@ -1,34 +1,31 @@
-import * as React from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { AppBar, Toolbar, IconButton, Typography, Button, Box } from '@mui/material';
-
 import { useNavigate } from 'react-router-dom';
-
-const UNPROCTED_PAGE = ['/'];
+import Helpers from '../helpers/Helpers';
 
 const MenuComponent = () => {
     const navigate = useNavigate();
-
-    const checkAccess = () => {
-        if (!UNPROCTED_PAGE.includes(window.location.pathname) && !localStorage.getItem('token')){
-            console.error('Unauthorized access');
-            navigate('/');
-        }
-    }
-
+    const [user, setUser] = useState({ 
+        email: '',
+        nickname: ''
+    });
     const disconnectUser = () => {
         localStorage.clear();
         navigate('/');
     }
 
-    React.useEffect(() => {
-        checkAccess();
-    });
+    useEffect(() => {
+        if (user.nickname === '') {
+            Helpers.Users.me().then((res) => setUser(res!))
+        }
+    })
 
     return (
-        <React.Fragment key='menu'>
+        <Fragment key='menu'>
             <Box m={2} pt={7}>
                 <AppBar
                     component="nav"
+                    sx={{ bgcolor: "grey" }}
                 >
                     <Toolbar>
                     <IconButton
@@ -45,9 +42,16 @@ const MenuComponent = () => {
                     >
                         Transcendence
                     </Typography>
+                    <Typography
+                        variant="h6"
+                        component="div"
+                        sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+                    >
+                        Bonjour { user.nickname === '' ? 'invité' : user.nickname }
+                    </Typography>
                     <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
                         { window.location.pathname.includes('/home') ? (
-                            <React.Fragment>
+                            <Fragment>
                                 <Button key='Home' sx={{ color: '#fff' }} onClick={() => navigate('/home')}>
                                     Home
                                 </Button>
@@ -57,19 +61,16 @@ const MenuComponent = () => {
                                 <Button key='Disconnect' sx={{ color: '#fff' }} onClick={disconnectUser} >
                                     Disconnect
                                 </Button>
-                            </React.Fragment>
+                            </Fragment>
                         ) : (
-                            <React.Fragment>
-                                <Button key='Login' sx={{ color: '#fff' }} onClick={() => navigate('/')}>
-                                    Login
-                                </Button>
-                            </React.Fragment>
+                            <Fragment>
+                            </Fragment>
                         )}
                     </Box>
                     </Toolbar>
                 </AppBar>
             </Box>
-        </React.Fragment>
+        </Fragment>
     );
 }
 

@@ -6,17 +6,33 @@ import { ConfigModule } from '@nestjs/config';
 import { DbModule } from './config';
 import { LoggerMiddleware } from './middleware';
 import { ChatController } from './chat/chat.controller';
+import { HttpModule } from '@nestjs/axios';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from './entities/user.entity';
+import { UserService } from './services/user.service';
 import { SocketGateway } from './socket.gateway';
 
 @Module({
     imports: [ConfigModule.forRoot({
         isGlobal: true,
-        envFilePath: ".env",
+        envFilePath: [".env", ".env.prod"],
       }),
-      DbModule
+      DbModule,
+      HttpModule,
+      TypeOrmModule.forRoot({
+        type: 'postgres',
+        host: process.env.POSTGRES_HOST,
+        port: +process.env.POSTGRES_PORT,
+        username: process.env.POSTGRES_USER,
+        password: '',
+        database: process.env.POSTGRES_DB,
+        entities: [User],               // On renseigne ici les entités voulant être mappées en base de données
+        synchronize: true
+      }),
+      TypeOrmModule.forFeature([User]),     // On renseigne ici les entités possédant un repository
     ],
     controllers: [AppController, UsersController, ChatController],
-    providers: [AppService, SocketGateway],
+    providers: [AppService, UserService, SocketGateway],
 })
 export class AppModule implements NestModule {
     configure(consumer: MiddlewareConsumer) {

@@ -1,11 +1,7 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
-
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
-
-import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
 import './global.scss';
 
 import MenuComponent from './components/menu';
@@ -18,27 +14,30 @@ const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
 );
 
+axios.interceptors.request.use(function (config) {
+    if (window.localStorage.getItem('token'))
+    {
+        if (config.headers !== undefined)
+        {
+            config.headers.Authorization = 'Bearer ' + window.localStorage.getItem('token');
+        }
+    }
+    return config;
+  }, function (error) {
+    return Promise.reject(error);
+  });
+
 root.render(
-    <React.StrictMode>
         <BrowserRouter>
             <MenuComponent/>
-            <ToastContainer
-                position="top-right"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                theme="colored"
-            />
             <Routes>
                 <Route path='/' element={<Login/>} />
                 <Route path='/home' element={<Home/>} />
                 <Route path='/home/messagerie' element={<Messagerie/>} />
                 <Route path='/home/messagerie/chat' element={<Chat/>} />
+                <Route path='/oauth2-redirect' element={<Login/>} />
             </Routes>
         </BrowserRouter>
-    </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
