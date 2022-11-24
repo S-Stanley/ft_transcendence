@@ -1,6 +1,6 @@
 import { Button, Typography } from '@mui/material';
 import './Login.scss';
-import { Fragment, useEffect } from 'react';
+import { useEffect } from 'react';
 import Helpers from './../../helpers/Helpers';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -24,23 +24,11 @@ function Login() {
         }
     });
     return (
-        <Fragment>
-            <form
-                style={{ display: 'flex', flexDirection: 'column', marginLeft: 'auto', marginRight: 'auto', width: "200px" }}
-            >
-                <Typography variant="h2" textAlign={'center'}>
-                    Login
-                </Typography>
-                <Button
-                    sx={{ 
-                    ':hover': {
-                            color: 'white',
-                            backgroundColor: 'grey',
-                            borderColor: 'white'
-                },
-                color: 'grey', backgroundColor: 'white', borderColor: '#888a81' }} variant="outlined" type="submit" href={ code_url }>Sign up with 42</Button>
+        <div className="login-page">
+            <form id="form-login">
+                <Button id="button-submit-login" type="submit" href={ code_url }>Sign up with 42</Button>
             </form>
-        </Fragment>
+        </div>
     );
 }
 export default Login;
