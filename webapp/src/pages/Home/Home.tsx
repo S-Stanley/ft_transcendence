@@ -8,18 +8,16 @@ const Home = () => {
     const [open, setOpen] = useState(false);
     const { state } = useLocation();
 
-    useEffect(() => {
-        if (state.logged === true)
-        {
+    const isLogged = () => {
+        if (state?.logged === true){
             setOpen(true);
         }
-        state.logged = false;
-    })
+    }
 
     const Alert = forwardRef<HTMLDivElement, AlertProps>(function Alert(
         props,
         ref,
-      ) {
+    ) {
         return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
     });
 
@@ -27,18 +25,21 @@ const Home = () => {
         if (reason === 'clickaway') {
           return;
         }
-    
         setOpen(false);
     };
 
+    useEffect(() => {
+        isLogged();
+    });
+
     return (
         <Fragment>
-            <p>Home</p>
-        <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
-            <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-                Successfully logged in!
-            </Alert>
-        </Snackbar>  
+            <p data-testid='home-page-title'>Home</p>
+            <Snackbar open={open} autoHideDuration={2000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                    Successfully logged in!
+                </Alert>
+            </Snackbar>
         </Fragment>
     )
 };

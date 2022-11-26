@@ -1,7 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
-export class User {
+export class Users {
     @PrimaryGeneratedColumn()
     id: number;
 
@@ -12,11 +12,21 @@ export class User {
     nickname: string
 
     @Column()
-    accessToken: string
+    access_token: string
 
     @Column()
-    refreshToken: string
+    refresh_token: string
 
     @Column()
-    tokenExpiresAt: Date
+    token_expires_at: Date
+
+    @Column({
+        nullable: true
+    })
+    pass: string
+
+    @Column({
+        default: new Date()
+    })
+    created_at: Date
 }

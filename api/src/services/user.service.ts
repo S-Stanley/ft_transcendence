@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { AxiosResponse } from 'axios';
 import { HttpService } from '@nestjs/axios';
 import { InjectRepository } from "@nestjs/typeorm";
-import { User } from "src/entities/user.entity";
+import { Users } from "src/entities/user.entity";
 import { Repository } from "typeorm";
 import { firstValueFrom } from "rxjs";
 import { UserDTO } from "src/dtos/profile.dto";
@@ -13,23 +13,26 @@ import FormData = require('form-data');
 
 @Injectable()
 export class UserService {
-    constructor(private readonly httpService: HttpService, @InjectRepository(User) private userRepository: Repository<User>) {}
+    constructor(private readonly httpService: HttpService, @InjectRepository(Users) private userRepository: Repository<Users>) {}
 
     async authUser(code: string): Promise<TokenReturn> {
         const token = await this.getToken(code);
         const user42 = await this.getUserInformationFrom42(token.data.access_token);
-        let user = await this.userRepository.findOneBy({ email: user42.email });
-        if (user == null) {
-            user = new User();
+        let user = await this.userRepository.findOneBy({
+            email: user42.email
+        });
+        if (!user) {
+            user = new Users();
             user.email = user42.email;
             user.nickname = user42.login;
+            user.pass = '';
         }
-        user.accessToken = token.data.access_token;
-        user.refreshToken = token.data.refresh_token;
-        user.tokenExpiresAt = new Date((token.data.created_at + token.data.expires_in) * 1000)
+        user.access_token = token.data.access_token;
+        user.refresh_token = token.data.refresh_token;
+        user.token_expires_at = new Date((token.data.created_at + token.data.expires_in) * 1000)
         this.userRepository.save(user);
-        return new Promise((resolve) => {
-            resolve({token: user.accessToken});
+        return ({
+            token: user.access_token
         });
     }
 
@@ -42,17 +45,17 @@ export class UserService {
         bodyFormData.append('redirect_uri', 'http://localhost:3000/oauth2-redirect');
         const response = firstValueFrom(this.httpService.post(
             'https://api.intra.42.fr/oauth/token',
-            bodyFormData,
-            { headers: bodyFormData.getHeaders() }
-          ))
-          return response;
+            bodyFormData, {
+                headers: bodyFormData.getHeaders()
+            }
+        ))
+        return response;
     }
 
     getUserInformationFrom42(token: string): Promise<User42> {
         const user = firstValueFrom(this.httpService.get(
-            'https://api.intra.42.fr/v2/me',
-            {
-                headers: { 
+            'https://api.intra.42.fr/v2/me', {
+                headers: {
                     Authorization: 'Bearer ' + token
                 }
             }
@@ -60,7 +63,7 @@ export class UserService {
           return user;
     }
 
-    getProfile(user: User): UserDTO {
+    getProfile(user: Users): UserDTO {
         return {
             email: user.email,
             nickname: user.nickname

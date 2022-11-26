@@ -2,7 +2,7 @@
 describe('Basic authentication', () => {
 
     beforeEach( async () => {
-        await page.goto('http://localhost:3000/');
+        await page.goto('http://localhost:3000/login/email/');
     });
 
     it('Should not log user because email have the wrong format', async () => {
@@ -13,7 +13,7 @@ describe('Basic authentication', () => {
         await page.keyboard.type('password');
 
         await page.click('button[data-testid="buttom-submit-login"]');
-        expect(page.url()).toEqual('http://localhost:3000/');
+        expect(page.url()).toEqual('http://localhost:3000/login/email/');
     });
 
     it('Should not log user because email is incorrect', async () => {
@@ -24,7 +24,7 @@ describe('Basic authentication', () => {
         await page.keyboard.type('password');
 
         await page.click('button[data-testid="buttom-submit-login"]');
-        expect(page.url()).toEqual('http://localhost:3000/');
+        expect(page.url()).toEqual('http://localhost:3000/login/email/');
     });
 
     it('Should not log user because password is incorrect', async () => {
@@ -35,7 +35,7 @@ describe('Basic authentication', () => {
         await page.keyboard.type('pass');
 
         await page.click('button[data-testid="buttom-submit-login"]');
-        expect(page.url()).toEqual('http://localhost:3000/');
+        expect(page.url()).toEqual('http://localhost:3000/login/email/');
     });
 
     it('Should log user', async () => {
