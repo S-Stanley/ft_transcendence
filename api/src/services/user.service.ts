@@ -26,6 +26,7 @@ export class UserService {
             user.email = user42.email;
             user.nickname = user42.login;
             user.pass = '';
+            user.avatar = user42.image.link;
         }
         user.access_token = token.data.access_token;
         user.refresh_token = token.data.refresh_token;

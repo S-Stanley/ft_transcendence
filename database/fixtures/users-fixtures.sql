@@ -5,7 +5,8 @@ INSERT INTO
         nickname,
         access_token,
         refresh_token,
-        token_expires_at
+        token_expires_at,
+        avatar
     )
 VALUES (
     'demo@42.fr',
@@ -13,12 +14,14 @@ VALUES (
     'demo',
     '',
     '',
-    '2022-11-24 22:06:26'
+    '2022-11-24 22:06:26',
+    'https://cdn.intra.42.fr/users/a899eb9e2861522b8beead0baf1a38db/sserbin.jpg'
 ), (
     'staff@transcendence.fr',
     crypt('password', gen_salt('bf',11)),
     'staff',
     '',
     '',
-    '2022-11-24 22:06:26'
+    '2022-11-24 22:06:26',
+    'https://cdn.intra.42.fr/users/a899eb9e2861522b8beead0baf1a38db/sserbin.jpg'
 );

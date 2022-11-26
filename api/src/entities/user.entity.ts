@@ -29,4 +29,9 @@ export class Users {
         default: new Date()
     })
     created_at: Date
+
+    @Column({
+        nullable: false
+    })
+    avatar: string
 }
