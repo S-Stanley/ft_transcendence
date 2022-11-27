@@ -14,8 +14,12 @@
     "@types/node": "^16.18.3",
     "@types/react": "^18.0.25",
     "@types/react-dom": "^18.0.8",
+    "@typescript-eslint/eslint-plugin": "^5.44.0",
+    "@typescript-eslint/parser": "^5.44.0",
     "axios": "^1.1.3",
     "date-fns": "^2.29.3",
+    "eslint": "^8.28.0",
+    "eslint-plugin-react": "^7.31.11",
     "express": "^4.18.2",
     "path": "^0.12.7",
     "puppeteer": "^19.2.2",
@@ -35,7 +39,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test:e2e": "jest",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "yarn run eslint '**/**.tsx' '**/**.*js' --ignore-pattern build/"
   },
   "eslintConfig": {
     "extends": [
