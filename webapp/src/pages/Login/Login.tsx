@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 
 
 function Login() {
-    const code_url = `https://api.intra.42.fr/oauth/authorize?client_id=${process.env.REACT_APP_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&response_type=code`;
+    const code_url = `https://api.intra.42.fr/oauth/authorize?client_id=u-s4t2ud-8eb36c218c1ff84e8e4a815e0a21d0b2ce13d4712f1e1cce95761c6fbcfaa960&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Foauth2-redirect&response_type`;
     const search = useLocation().search;
     const code = new URLSearchParams(search).get('code');
     const navigate = useNavigate();

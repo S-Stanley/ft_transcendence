@@ -4,6 +4,12 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import axios from 'axios';
 import './global.scss';
 
+import NewLeaderboard from './pages/NewFrontend/Leaderboard';
+import NewPlay from './pages/NewFrontend/Play';
+import NewHome from "./pages/NewFrontend/Home";
+import NewUser from "./pages/NewFrontend/User";
+import NewStatistics from './pages/NewFrontend/Statistics';
+
 import MenuComponent from './components/menu';
 import Login from './pages/Login/Login';
 import Home from './pages/Home/Home';
@@ -47,6 +53,13 @@ root.render(
                 <Route path='/home/messagerie/chat' element={<Chat/>} />
                 <Route path='/oauth2-redirect' element={<Login/>} />
                 <Route path='/login/email' element={<EmailLogin/>} />
+
+                <Route path="new/home" element={<NewHome />} />
+                <Route path="new/play" element={<NewPlay />} />
+                <Route path="new/user" element={<NewUser />} />
+                <Route path="new/leaderboard" element={<NewLeaderboard />} />
+                <Route path="new/statistics" element={<NewStatistics />} />
+
             </Routes>
         </BrowserRouter>
 );
