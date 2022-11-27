@@ -10,6 +10,8 @@ import Home from './pages/Home/Home';
 import Messagerie from './pages/messagerie/Messagerie';
 import Chat from './pages/chat/Chat';
 import EmailLogin from './pages/Login/EmailLogin';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
@@ -28,6 +30,15 @@ axios.interceptors.request.use((config) => {
 
 root.render(
         <BrowserRouter>
+            <ToastContainer
+                position="bottom-left"
+                autoClose={5000}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnHover
+                theme="light"
+            />
             <MenuComponent/>
             <Routes>
                 <Route path='/' element={<Login/>} />
