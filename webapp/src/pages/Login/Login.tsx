@@ -3,6 +3,7 @@ import './Login.scss';
 import { useEffect } from 'react';
 import Helpers from './../../helpers/Helpers';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 
 function Login() {
@@ -16,11 +17,10 @@ function Login() {
             const req = await Helpers.Users.login(code);
             if (req) {
                 window.localStorage.setItem('token', req.token);
-                navigate('/home', {
-                    state: {
-                        logged: true
-                    }
-                });
+                toast.success('Successfully logged!', {
+                        position: "bottom-left",
+                    });
+                navigate('/home');
             }
         }
     }
