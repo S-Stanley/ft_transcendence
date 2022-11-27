@@ -1,23 +1,36 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
+/* By default, the field nullable is set by true. To be more explicit
+on the scope of this project, we add this field*/
+
 @Entity()
 export class Users {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({
+        nullable: false
+    })
     email: string
 
-    @Column()
+    @Column({
+        nullable: false
+    })
     nickname: string
 
-    @Column()
+    @Column({
+        nullable: false
+    })
     access_token: string
 
-    @Column()
+    @Column({
+        nullable: false
+    })
     refresh_token: string
 
-    @Column()
+    @Column({
+        nullable: false
+    })
     token_expires_at: Date
 
     @Column({
@@ -26,7 +39,8 @@ export class Users {
     pass: string
 
     @Column({
-        default: new Date()
+        default: new Date(),
+        nullable: false
     })
     created_at: Date
 
