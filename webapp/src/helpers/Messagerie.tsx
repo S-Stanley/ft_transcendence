@@ -1,4 +1,4 @@
-import Config from "../config/Config"
+import Config from "../config/Config";
 import axios from 'axios';
 
 const create_or_get_discussion = async (email: string) => {
@@ -51,6 +51,6 @@ const Messagerie = {
     create_or_get_discussion,
     send_message_to_discussion,
     get_message_of_discussion,
-}
+};
 
 export default Messagerie;

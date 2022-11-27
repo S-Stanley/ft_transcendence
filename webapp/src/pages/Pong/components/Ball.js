@@ -32,13 +32,13 @@ export default class Ball {
         this.y = 50;
         this.direction = {
             x: 0,
-        }
+        };
         while (Math.abs(this.direction.x) <= .2 || Math.abs(this.direction.x) >= 0.9){
             const heading = randomNumberBetween(0, 2 * Math.PI);
             this.direction = {
                 x: Math.cos(heading),
                 y: Math.sin(heading)
-            }
+            };
         }
         this.velocity = INITIAL_VELOCITY;
     }
@@ -48,15 +48,15 @@ export default class Ball {
         this.y = 50;
         this.direction = {
             x: 0,
-        }
+        };
         while (Math.abs(this.direction.x) <= .2 || Math.abs(this.direction.x) >= 0.9){
             const heading = randomNumberBetween(0, 2 * Math.PI);
             this.direction = {
                 x: Math.cos(heading),
                 y: Math.sin(heading)
-            }
+            };
         }
-        this.velocity = 0;     
+        this.velocity = 0;
     }
 
     update(delta, paddleRects){
