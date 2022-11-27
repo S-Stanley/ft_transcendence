@@ -7,7 +7,8 @@ CREATE TABLE IF NOT EXISTS public.users(
     token_expires_at    DATE DEFAULT NULL,
     pass                VARCHAR(255) NOT NULL,
     token               UUID DEFAULT uuid_generate_v4() NOT NULL,
-    created_at          DATE DEFAULT NULL
+    created_at          DATE DEFAULT NULL,
+    avatar              VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS public.chat(
