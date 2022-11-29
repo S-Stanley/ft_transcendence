@@ -17,13 +17,12 @@
     "@typescript-eslint/eslint-plugin": "^5.44.0",
     "@typescript-eslint/parser": "^5.44.0",
     "axios": "^1.1.3",
+    "cypress": "11.2.0",
     "date-fns": "^2.29.3",
     "eslint": "^8.28.0",
     "eslint-plugin-react": "^7.31.11",
     "express": "^4.18.2",
     "path": "^0.12.7",
-    "puppeteer": "^19.2.2",
-    "puppeteer-core": "^19.2.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-perfect-scrollbar": "^1.5.8",
@@ -38,9 +37,10 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test:e2e": "jest",
-    "eject": "react-scripts eject",
-    "lint": "yarn run eslint '**/**.tsx' '**/**.*js' --ignore-pattern build/"
+    "lint": "yarn run eslint '**/**.tsx' '**/**.*js' --ignore-pattern build/",
+    "test:e2e": "yarn cypress run",
+    "test:open": "yarn cypress open",
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [

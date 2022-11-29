@@ -34,9 +34,19 @@ function EmailLogin() {
                 <Typography variant="h2" textAlign={'center'}>
                     Login
                 </Typography>
-                <TextField data-testid='email-input-login' label="Email" variant="standard" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                <TextField
+                    inputProps={{
+                        'id': "email-input-login"
+                    }}
+                    label="Email"
+                    variant="standard"
+                    type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
                 <br />
-                <TextField data-testid='password-input-login' label="Password" variant="standard" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                <TextField
+                    inputProps={{
+                        'id': "password-input-login"
+                    }}
+                    data-testid='password-input-login' label="Password" variant="standard" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                 <br /><br />
                 <Button id='login-email-submit' data-testid='buttom-submit-login' type="submit">Submit</Button>
             </form>
