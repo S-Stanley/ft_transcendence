@@ -2,6 +2,7 @@ import { Fragment, useEffect, useState } from 'react';
 import { AppBar, Toolbar, IconButton, Typography, Button, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import Helpers from '../helpers/Helpers';
+import './Menu.scss';
 
 const MenuComponent = () => {
     const navigate = useNavigate();
@@ -47,7 +48,11 @@ const MenuComponent = () => {
                         component="div"
                         sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
                     >
-                        Bonjour { user.nickname === '' ? 'invité' : user.nickname }
+                        Bonjour { user.nickname === '' ? 'invité' :
+                            <Button id="button-nickname" onClick={() => navigate(`/users/${user.nickname}`)}>
+                                { user.nickname }
+                            </Button>
+                        }
                     </Typography>
                     <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
                         { window.location.pathname.includes('/home') ? (
