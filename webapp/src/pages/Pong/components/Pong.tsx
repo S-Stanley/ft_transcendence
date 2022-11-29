@@ -1,9 +1,13 @@
-import { Fragment, useEffect } from "react"
+import { Fragment, useEffect, useState } from "react"
 
 import './Pong.scss'
 
 import Ball from './Ball.js';
 import Paddle from './Paddle.js';
+import { Button, Typography } from "@mui/material";
+import React from "react";
+import { End } from "./End";
+
 
 let lastTime: any = null;
 let ball:any = null;
@@ -13,6 +17,8 @@ let playerScoreElem: any = null;
 let computerScoreElem: any = null;
 
 const Pong = () => {
+
+    const [end, setEnd] = useState<boolean>(false);
 
     function update(time: any) {
         if (lastTime != null){
@@ -43,6 +49,8 @@ const Pong = () => {
         }
         ball.reset();
         computerPaddle.reset();
+        if (parseInt(computerScoreElem.textContent) === 1 || parseInt(playerScoreElem.textContent) === 1)
+            setEnd(true);
     }
 
     document.addEventListener('mousemove', e => {
@@ -61,13 +69,15 @@ const Pong = () => {
         window.requestAnimationFrame(update);
     })
 
-
     return (
         <section id='pong-section'>
-            <div className="score">
+            {end? <End scoreOne={parseInt(computerScoreElem.textContent)} scoreTwo={parseInt(playerScoreElem.textContent)} />
+                : 
+                <div className="score">
                 <div id='player-score'>0</div>
                 <div id='computer-score'>0</div>
-            </div>
+                </div>
+            }
             <div className='ball' id='ball'></div>
             <div className='paddle left' id='player-paddle'></div>
             <div className='paddle right' id='computer-paddle'></div>
