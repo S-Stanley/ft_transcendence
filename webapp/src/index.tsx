@@ -4,14 +4,20 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import axios from 'axios';
 import './global.scss';
 
-import MenuComponent from './components/menu';
+import Leaderboard from './pages/Leaderboard';
+import Home from "./pages/Home";
+import User from "./pages/User";
+import Statistics from './pages/Statistics';
 import Login from './pages/Login/Login';
-import Home from './pages/Home/Home';
-import Messagerie from './pages/messagerie/Messagerie';
-import Chat from './pages/chat/Chat';
+import Messaging from './pages/messagerie';
+import Chat from './pages/chat';
 import EmailLogin from './pages/Login/EmailLogin';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import MenuComponent from './components/menu';
+import Game from './pages/Pong/Game';
+import { Play } from './pages/Play';
+
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
@@ -42,11 +48,16 @@ root.render(
             <MenuComponent/>
             <Routes>
                 <Route path='/' element={<Login/>} />
-                <Route path='/home' element={<Home/>} />
-                <Route path='/home/messagerie' element={<Messagerie/>} />
-                <Route path='/home/messagerie/chat' element={<Chat/>} />
+                <Route path='/login' element={<EmailLogin/>} />
                 <Route path='/oauth2-redirect' element={<Login/>} />
-                <Route path='/login/email' element={<EmailLogin/>} />
+                <Route path='/home' element={<Home/>} />
+                <Route path='/messagerie' element={<Messaging/>} />
+                <Route path='/chat' element={<Chat/>} />
+                <Route path="/play" element={<Play />} />
+                <Route path="/play/pong" element={<Game />} />
+                <Route path="/user" element={<User />} />
+                <Route path="/leaderboard" element={<Leaderboard />} />
+                <Route path="/statistics" element={<Statistics />} />
             </Routes>
         </BrowserRouter>
 );
