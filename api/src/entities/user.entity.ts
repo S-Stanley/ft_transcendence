@@ -6,46 +6,46 @@ on the scope of this project, we add this field*/
 @Entity()
 export class Users {
     @PrimaryGeneratedColumn()
-    id: number;
+        id: number;
 
     @Column({
         nullable: false
     })
-    email: string
+        email: string;
 
     @Column({
         nullable: false
     })
-    nickname: string
+        nickname: string;
 
     @Column({
         nullable: false
     })
-    access_token: string
+        access_token: string;
 
     @Column({
         nullable: false
     })
-    refresh_token: string
+        refresh_token: string;
 
     @Column({
         nullable: false
     })
-    token_expires_at: Date
+        token_expires_at: Date;
 
     @Column({
         nullable: true
     })
-    pass: string
+        pass: string;
 
     @Column({
         default: new Date(),
         nullable: false
     })
-    created_at: Date
+        created_at: Date;
 
     @Column({
         nullable: false
     })
-    avatar: string
+        avatar: string;
 }

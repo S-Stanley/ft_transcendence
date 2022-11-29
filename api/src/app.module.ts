@@ -30,7 +30,7 @@ import { SocketGateway } from './socket.gateway';
             entities: [Users],               // On renseigne ici les entités voulant être mappées en base de données
         }),
         TypeOrmModule.forFeature([Users]),     // On renseigne ici les entités possédant un repository
-    ],
+        ],
     controllers: [AppController, UsersController, ChatController],
     providers: [AppService, UserService, SocketGateway],
 })
