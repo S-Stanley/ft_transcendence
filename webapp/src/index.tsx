@@ -14,7 +14,6 @@ import Chat from './pages/chat';
 import EmailLogin from './pages/Login/EmailLogin';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import MenuComponent from './components/menu';
 import Game from './pages/Pong/Game';
 import { Play } from './pages/Play';
 
@@ -45,7 +44,6 @@ root.render(
             pauseOnHover
             theme="light"
         />
-        <MenuComponent/>
         <Routes>
             <Route path='/' element={<Login/>} />
             <Route path='/login' element={<EmailLogin/>} />
