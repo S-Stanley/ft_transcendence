@@ -4,12 +4,25 @@ import { AccountProfile } from './components/AccountProfile';
 
 const Account = () => (
 		<>
-			<Box
+		<Box
+			component="main"
+			sx={{
+				flexGrow: 1,
+				py: 8
+			}}>
+			<AccountProfile />
+		</Box>
+
+			<AccountProfileDetails />
+
+
+
+			{/* <Box
 				component="main"
-				sx={{
-					flexGrow: 1,
-					py: 8
-				}}
+				// sx={{
+				// 	flexGrow: 1,
+				// 	py: 8
+				// }}
 			>
 				<Container maxWidth="lg">
 					<Typography
@@ -20,7 +33,7 @@ const Account = () => (
 					</Typography>
 					<Grid
 						container
-						spacing={3}
+						// spacing={3}
 					>
 						<Grid
 							item
@@ -28,19 +41,22 @@ const Account = () => (
 							md={6}
 							xs={12}
 						>
-							<AccountProfile />
+						<AccountProfile />
 						</Grid>
+					</Grid>
+				</Container>
 						<Grid
 							item
 							lg={8}
 							md={6}
 							xs={12}
+							sx={{
+								ml:'100px'
+							}}
 						>
-							<AccountProfileDetails />
+						<AccountProfileDetails />
 						</Grid>
-					</Grid>
-				</Container>
-			</Box>
+			</Box> */}
 		</>
 	);
 
