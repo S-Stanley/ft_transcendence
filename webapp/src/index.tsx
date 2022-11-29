@@ -5,7 +5,6 @@ import axios from 'axios';
 import './global.scss';
 
 import Leaderboard from './pages/Leaderboard';
-import Play from './pages/Play';
 import Home from "./pages/Home";
 import User from "./pages/User";
 import Statistics from './pages/Statistics';
@@ -16,6 +15,8 @@ import EmailLogin from './pages/Login/EmailLogin';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import MenuComponent from './components/menu';
+import Game from './pages/Pong/Game';
+import { Play } from './pages/Play';
 
 
 const root = ReactDOM.createRoot(
@@ -53,6 +54,7 @@ root.render(
                 <Route path='/messagerie' element={<Messaging/>} />
                 <Route path='/chat' element={<Chat/>} />
                 <Route path="/play" element={<Play />} />
+                <Route path="/play/pong" element={<Game />} />
                 <Route path="/user" element={<User />} />
                 <Route path="/leaderboard" element={<Leaderboard />} />
                 <Route path="/statistics" element={<Statistics />} />
