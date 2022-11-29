@@ -6,7 +6,7 @@ import { Button } from '@mui/material';
 const Game = () => {
     return (
         <Fragment>
-            <Button href="/play">
+            <Button href="/play" variant="contained" color="secondary">
                 Exit
             </Button>
             <Pong/>
