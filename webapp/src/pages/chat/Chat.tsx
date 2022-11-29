@@ -6,7 +6,7 @@ import './Chat.scss'
 
 const socket = io('http://localhost:5000', { transports: ['websocket'] });
 
-const Chat = () => {
+const ChatBar = () => {
 
     const [messageContent, setMessageContent] = useState<string>('');
     const [allMessage, setAllMessage] = useState<{content: string, email: string}[]>([]);
@@ -82,4 +82,4 @@ const Chat = () => {
     );
 };
 
-export default Chat;
+export default ChatBar;

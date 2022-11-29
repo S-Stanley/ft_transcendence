@@ -1,7 +1,7 @@
 import { Button } from '@mui/material';
 import './Login.scss';
 import { useEffect } from 'react';
-import Helpers from './../../helpers/Helpers';
+import Helpers from '../../helpers/Helpers';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 

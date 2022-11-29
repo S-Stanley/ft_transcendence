@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 import './Messagerie.scss'
 
-const Messagerie = () => {
+const MessageBar = () => {
 
     const [userToFind, setUserToFind] = useState<string>("");
     const navigate = useNavigate();
@@ -27,6 +27,10 @@ const Messagerie = () => {
 
     return (
         <Fragment>
+            <div
+                id='div-message-messaging'
+            >
+            </div>
             <form
                 onSubmit={handleSubmit}
             >
@@ -49,4 +53,4 @@ const Messagerie = () => {
     );
 };
 
-export default Messagerie;
+export default MessageBar;

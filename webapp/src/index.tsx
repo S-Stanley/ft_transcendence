@@ -4,20 +4,19 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import axios from 'axios';
 import './global.scss';
 
-import NewLeaderboard from './pages/NewFrontend/Leaderboard';
-import NewPlay from './pages/NewFrontend/Play';
-import NewHome from "./pages/NewFrontend/Home";
-import NewUser from "./pages/NewFrontend/User";
-import NewStatistics from './pages/NewFrontend/Statistics';
-
-import MenuComponent from './components/menu';
+import Leaderboard from './pages/Leaderboard';
+import Play from './pages/Play';
+import Home from "./pages/Home";
+import User from "./pages/User";
+import Statistics from './pages/Statistics';
 import Login from './pages/Login/Login';
-import Home from './pages/Home/Home';
-import Messagerie from './pages/messagerie/Messagerie';
-import Chat from './pages/chat/Chat';
+import Messaging from './pages/messagerie';
+import Chat from './pages/chat';
 import EmailLogin from './pages/Login/EmailLogin';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import MenuComponent from './components/menu';
+
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
@@ -48,18 +47,15 @@ root.render(
             <MenuComponent/>
             <Routes>
                 <Route path='/' element={<Login/>} />
-                <Route path='/home' element={<Home/>} />
-                <Route path='/home/messagerie' element={<Messagerie/>} />
-                <Route path='/home/messagerie/chat' element={<Chat/>} />
+                <Route path='/login' element={<EmailLogin/>} />
                 <Route path='/oauth2-redirect' element={<Login/>} />
-                <Route path='/login/email' element={<EmailLogin/>} />
-
-                <Route path="new/home" element={<NewHome />} />
-                <Route path="new/play" element={<NewPlay />} />
-                <Route path="new/user" element={<NewUser />} />
-                <Route path="new/leaderboard" element={<NewLeaderboard />} />
-                <Route path="new/statistics" element={<NewStatistics />} />
-
+                <Route path='/home' element={<Home/>} />
+                <Route path='/messagerie' element={<Messaging/>} />
+                <Route path='/chat' element={<Chat/>} />
+                <Route path="/play" element={<Play />} />
+                <Route path="/user" element={<User />} />
+                <Route path="/leaderboard" element={<Leaderboard />} />
+                <Route path="/statistics" element={<Statistics />} />
             </Routes>
         </BrowserRouter>
 );
