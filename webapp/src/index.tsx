@@ -35,32 +35,31 @@ axios.interceptors.request.use((config) => {
 });
 
 root.render(
-        <BrowserRouter>
-            <ToastContainer
-                position="bottom-left"
-                autoClose={5000}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnHover
-                theme="light"
-            />
-            <MenuComponent/>
-            <Routes>
-                <Route path='/' element={<Login/>} />
-                <Route path='/login' element={<EmailLogin/>} />
-                <Route path='/oauth2-redirect' element={<Login/>} />
-                <Route path='/home' element={<Home/>} />
-                <Route path='/messagerie' element={<Messaging/>} />
-                <Route path='/chat' element={<Chat/>} />
-                <Route path="/play" element={<Play />} />
-                <Route path="/play/pong" element={<Game />} />
-                <Route path="/user" element={<User />} />
-                <Route path='/users/:nickname' element={<UserProfile/>} />
-                <Route path="/leaderboard" element={<Leaderboard />} />
-                <Route path="/statistics" element={<Statistics />} />
-            </Routes>
-        </BrowserRouter>
+    <BrowserRouter>
+        <ToastContainer
+            position="bottom-left"
+            autoClose={5000}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnHover
+            theme="light"
+        />
+        <Routes>
+            <Route path='/' element={<Login/>} />
+            <Route path='/login' element={<EmailLogin/>} />
+            <Route path='/oauth2-redirect' element={<Login/>} />
+            <Route path='/home' element={<Home/>} />
+            <Route path='/messagerie' element={<Messaging/>} />
+            <Route path='/chat' element={<Chat/>} />
+            <Route path="/play" element={<Play />} />
+            <Route path="/play/pong" element={<Game />} />
+            <Route path="/user" element={<User />} />
+            <Route path='/users/:nickname' element={<UserProfile/>} />
+            <Route path="/leaderboard" element={<Leaderboard />} />
+            <Route path="/statistics" element={<Statistics />} />
+        </Routes>
+    </BrowserRouter>
 );
 
 // If you want to start measuring performance in your app, pass a function

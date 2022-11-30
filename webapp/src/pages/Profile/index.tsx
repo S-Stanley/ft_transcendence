@@ -33,7 +33,7 @@ const UserProfile = () => {
     const disconnectUser = () => {
         localStorage.clear();
         navigate('/');
-    }
+    };
     if (user.nickname === '') {
         Helpers.Users.me().then((res) => setUser(res!));
     }
@@ -123,6 +123,6 @@ const UserProfile = () => {
             </Box>
         </ThemeProvider>
     );
-}
+};
 
 export default UserProfile;

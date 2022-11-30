@@ -75,10 +75,10 @@ const User = () => {
                             sx={{ flexGrow: 0, display: { xs: 'none', sm: 'block' } }}
                         >
                             Arigato { user.nickname === '' ? 'invité' :
-                                    <Button id="button-nickname" onClick={() => navigate(`/users/${user.nickname}`)}>
-                                        { user.nickname }
-                                    </Button>
-                                }
+                                <Button id="button-nickname" onClick={() => navigate(`/users/${user.nickname}`)}>
+                                    { user.nickname }
+                                </Button>
+                            }
                         </Typography>
                         <IconButton color="inherit">
                             <Badge color="secondary">

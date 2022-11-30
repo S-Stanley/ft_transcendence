@@ -69,6 +69,6 @@ export class UserService {
             email: user.email,
             nickname: user.nickname,
             avatar: user.avatar
-        }
+        };
     }
 }

@@ -36,6 +36,6 @@ const Profile = () => {
             <div style={{ borderTop: '1px solid black', marginLeft: '30%', marginRight: '35%' }}/>
         </Fragment>
     );
-}
+};
 
 export default Profile;

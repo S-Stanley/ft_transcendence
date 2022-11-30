@@ -17,7 +17,7 @@ import Helpers from '../../helpers/Helpers';
 import { useNavigate } from 'react-router-dom';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { Button } from '@mui/material';
-import './Home.scss'
+import './Home.scss';
 
 const Home = () => {
     const [open, setOpen] = React.useState(true);
