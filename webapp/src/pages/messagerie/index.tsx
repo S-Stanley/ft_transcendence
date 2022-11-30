@@ -32,14 +32,14 @@ const Messaging = () => {
     const disconnectUser = () => {
         localStorage.clear();
         navigate('/');
-    }
+    };
 
     useEffect(() => {
         if (user.nickname === '') {
-            Helpers.Users.me().then((res) => setUser(res!))
+            Helpers.Users.me().then((res) => setUser(res!));
         }
-    })
-    
+    });
+
     return (
         <ThemeProvider theme={mdTheme}>
             <Box sx={{ display: 'flex' }}>
@@ -125,6 +125,6 @@ const Messaging = () => {
             </Box>
         </ThemeProvider>
     );
-} 
+};
 
-export default Messaging
+export default Messaging;

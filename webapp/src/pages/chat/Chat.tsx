@@ -2,7 +2,7 @@ import { Fragment, useEffect, useState } from "react";
 import { TextField, Button } from "@mui/material";
 import Helpers from "../../helpers/Helpers";
 import { io } from 'socket.io-client';
-import './Chat.scss'
+import './Chat.scss';
 
 const socket = io('http://localhost:5000', { transports: ['websocket'] });
 
@@ -24,14 +24,14 @@ const ChatBar = () => {
                 }
             });
         }
-    }
+    };
 
     const getAllMessages = async(): Promise<void> => {
         const req = await Helpers.Messagerie.get_message_of_discussion(localStorage.getItem('chat_id') ?? '');
         if (req) {
             setAllMessage(req);
         }
-    }
+    };
 
     socket.on('message', (data: { content: string, email: string, chat_id: string }) => {
         if (data?.chat_id === localStorage.getItem('chat_id')){
@@ -41,7 +41,7 @@ const ChatBar = () => {
             }];
             setAllMessage(output);
         }
-    })
+    });
 
     useEffect(() => {
         getAllMessages();
@@ -53,11 +53,11 @@ const ChatBar = () => {
                 id='div-message-chat'
             >
                 {allMessage.map((msg: { content: string, email: string }, index) => {
-                   return (
+                    return (
                         <div key={index}>
                             { msg.email }: { msg.content }
                         </div>
-                    )
+                    );
                 })}
             </div>
             <form

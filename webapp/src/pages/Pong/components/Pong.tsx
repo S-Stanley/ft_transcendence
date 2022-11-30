@@ -1,10 +1,9 @@
-import { Fragment, useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 
-import './Pong.scss'
+import './Pong.scss';
 
 import Ball from './Ball.js';
 import Paddle from './Paddle.js';
-import { Button, Typography } from "@mui/material";
 import React from "react";
 import { End } from "./End";
 
@@ -37,7 +36,7 @@ const Pong = () => {
 
     function isLose(){
         const rect = ball.rect();
-        return (rect.right >= window.innerWidth || rect.left <= 0)
+        return (rect.right >= window.innerWidth || rect.left <= 0);
     }
 
     function handleLose(){
@@ -67,22 +66,22 @@ const Pong = () => {
         computerScoreElem = document.getElementById('computer-score');
 
         window.requestAnimationFrame(update);
-    })
+    });
 
     return (
         <section id='pong-section'>
             {end? <End scoreOne={parseInt(computerScoreElem.textContent)} scoreTwo={parseInt(playerScoreElem.textContent)} />
-                : 
+                :
                 <div className="score">
-                <div id='player-score'>0</div>
-                <div id='computer-score'>0</div>
+                    <div id='player-score'>0</div>
+                    <div id='computer-score'>0</div>
                 </div>
             }
             <div className='ball' id='ball'></div>
             <div className='paddle left' id='player-paddle'></div>
             <div className='paddle right' id='computer-paddle'></div>
         </section>
-    )
+    );
 };
 
 export default Pong;

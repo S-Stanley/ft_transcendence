@@ -50,7 +50,7 @@ export class ChatController {
         if (find_chat.rows.length !== 0) {
             return ({
                 chat_id: find_chat.rows[0].id
-            })
+            });
         }
         const create_chart = await this.db.query('INSERT INTO chat DEFAULT VALUES RETURNING id');
         await this.db.query(

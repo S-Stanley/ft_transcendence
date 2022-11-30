@@ -5,4 +5,4 @@ module.exports = {
         // slowMo: 50
     },
     browser: 'chromium'
-}
+};

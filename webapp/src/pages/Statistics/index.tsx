@@ -32,14 +32,14 @@ const Statistics = () => {
     const disconnectUser = () => {
         localStorage.clear();
         navigate('/');
-    }
+    };
 
     useEffect(() => {
         if (user.nickname === '') {
-            Helpers.Users.me().then((res) => setUser(res!))
+            Helpers.Users.me().then((res) => setUser(res!));
         }
-    })
-    
+    });
+
     return (
         <ThemeProvider theme={mdTheme}>
             <Box sx={{ display: 'flex' }}>
@@ -126,6 +126,6 @@ const Statistics = () => {
             </Box>
         </ThemeProvider>
     );
-}
+};
 
-export default Statistics
+export default Statistics;

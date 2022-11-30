@@ -31,14 +31,14 @@ const User = () => {
     const disconnectUser = () => {
         localStorage.clear();
         navigate('/');
-    }
+    };
 
     useEffect(() => {
         if (user.nickname === '') {
-            Helpers.Users.me().then((res) => setUser(res!))
+            Helpers.Users.me().then((res) => setUser(res!));
         }
-    })
-    
+    });
+
     return (
         <ThemeProvider theme={mdTheme}>
             <Box sx={{ display: 'flex' }}>
@@ -125,6 +125,6 @@ const User = () => {
             </Box>
         </ThemeProvider>
     );
-}
+};
 
-export default User
+export default User;

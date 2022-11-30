@@ -30,7 +30,7 @@ export class UserService {
         }
         user.access_token = token.data.access_token;
         user.refresh_token = token.data.refresh_token;
-        user.token_expires_at = new Date((token.data.created_at + token.data.expires_in) * 1000)
+        user.token_expires_at = new Date((token.data.created_at + token.data.expires_in) * 1000);
         this.userRepository.save(user);
         return ({
             token: user.access_token
@@ -49,7 +49,7 @@ export class UserService {
             bodyFormData, {
                 headers: bodyFormData.getHeaders()
             }
-        ))
+        ));
         return response;
     }
 
@@ -60,8 +60,8 @@ export class UserService {
                     Authorization: 'Bearer ' + token
                 }
             }
-          )).then((res) => res.data)
-          return user;
+        )).then((res) => res.data);
+        return user;
     }
 
     getProfile(user: Users): UserDTO {

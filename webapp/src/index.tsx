@@ -14,7 +14,6 @@ import Chat from './pages/chat';
 import EmailLogin from './pages/Login/EmailLogin';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import MenuComponent from './components/menu';
 import Game from './pages/Pong/Game';
 import { Play } from './pages/Play';
 import UserProfile from './pages/Profile';
@@ -31,9 +30,9 @@ axios.interceptors.request.use((config) => {
         }
     }
     return config;
-  }, (error) => {
+}, (error) => {
     return Promise.reject(error);
-  });
+});
 
 root.render(
         <BrowserRouter>

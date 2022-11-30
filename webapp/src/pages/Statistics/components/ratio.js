@@ -19,7 +19,7 @@ export const Ratio = (props) => (
                         gutterBottom
                         variant="overline"
                     >
-                        RATIO WIN/LOSE 
+                        RATIO WIN/LOSE
                     </Typography>
                     <Typography
                         color="textPrimary"
