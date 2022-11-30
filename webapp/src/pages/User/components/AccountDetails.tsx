@@ -24,7 +24,7 @@ export const AccountProfileDetails = (props:any) => {
     });
 
     const handleChange = (event:any) => {
-        event.preventDefault()
+        event.preventDefault();
         setValues({
             ...values,
             [event.target.name]: event.target.value
@@ -44,7 +44,7 @@ export const AccountProfileDetails = (props:any) => {
                 />
                 <Divider />
                 <CardContent>
-                    
+
                     <Grid
                         container
                         spacing={3}
@@ -113,14 +113,14 @@ export const AccountProfileDetails = (props:any) => {
                 </CardContent>
                 <Divider />
                 <FormControlLabel
-                            control={(
-                                <Checkbox
-                                    color="primary"
-                                    defaultChecked
-                                />
-                            )}
-                            label="2FA Authentication"
+                    control={(
+                        <Checkbox
+                            color="primary"
+                            defaultChecked
                         />
+                    )}
+                    label="2FA Authentication"
+                />
                 <Box
                     sx={{
                         display: 'flex',

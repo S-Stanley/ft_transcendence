@@ -3,7 +3,7 @@ import { Button, TextField } from "@mui/material";
 import Helpers from "../../helpers/Helpers";
 import { useNavigate } from "react-router-dom";
 
-import './Messagerie.scss'
+import './Messagerie.scss';
 
 const MessageBar = () => {
 
@@ -23,7 +23,7 @@ const MessageBar = () => {
             setUserToFind('');
             navigate('/home/messagerie/chat');
         }
-    }
+    };
 
     return (
         <Fragment>

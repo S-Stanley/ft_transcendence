@@ -1,4 +1,4 @@
-import './Home.scss'
+import './Home.scss';
 import { Fragment } from 'react';
 import Pong from '../components/Pong';
 
@@ -7,6 +7,6 @@ const Home = () => {
         <Fragment>
             <Pong/>
         </Fragment>
-    )
+    );
 };
 export default Home;

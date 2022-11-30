@@ -23,7 +23,7 @@ function Login() {
                 navigate('/home');
             }
         }
-    }
+    };
 
     useEffect(() => {
         loggUser();

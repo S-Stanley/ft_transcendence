@@ -1,4 +1,4 @@
-import './Game.scss'
+import './Game.scss';
 import { Fragment } from 'react';
 import Pong from './components/Pong';
 import { Button } from '@mui/material';
@@ -11,6 +11,6 @@ const Game = () => {
             </Button>
             <Pong/>
         </Fragment>
-    )
+    );
 };
 export default Game;

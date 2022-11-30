@@ -6,8 +6,8 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - name: build
-        run: bash scripts/up.sh
-  tests-webapp:
+        run: bash scripts/up-prod.sh
+  lint-webapp:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
@@ -21,4 +21,4 @@ jobs:
           cd -
           bash scripts/up-prod.sh
           cd webapp/
-          npm run test:e2e
+          yarn run lint

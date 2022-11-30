@@ -24,7 +24,7 @@ function EmailLogin() {
         } else {
             toast.error('Wrong email or wrong password!');
         }
-    }
+    };
 
     return (
         <div>

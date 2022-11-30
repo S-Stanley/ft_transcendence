@@ -30,14 +30,14 @@ export const Play = () => {
     const disconnectUser = () => {
         localStorage.clear();
         navigate('/');
-    }
+    };
 
     useEffect(() => {
         if (user.nickname === '') {
-            Helpers.Users.me().then((res) => setUser(res!))
+            Helpers.Users.me().then((res) => setUser(res!));
         }
-    })
-    
+    });
+
     return (
         <ThemeProvider theme={mdTheme}>
             <Box sx={{ display: 'flex' }}>
@@ -115,7 +115,7 @@ export const Play = () => {
                     }}
                 >
                     <Toolbar />
-                    <Button 
+                    <Button
                         color="secondary"
                         variant="contained"
                         size="large"
@@ -131,4 +131,4 @@ export const Play = () => {
             </Box>
         </ThemeProvider>
     );
-}
+};

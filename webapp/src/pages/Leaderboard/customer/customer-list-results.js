@@ -87,13 +87,13 @@ export const CustomerListResults = ({ customers, ...rest }) => {
                                         {customer.email}
                                     </TableCell>
                                     <TableCell>
-                                    <Button
-                                        size="small"
-                                        color="primary"
-                                        variant="outlined"
-                                    >
+                                        <Button
+                                            size="small"
+                                            color="primary"
+                                            variant="outlined"
+                                        >
                                         Add Friend
-                                    </Button>
+                                        </Button>
                                     </TableCell>
                                 </TableRow>
                             ))}
