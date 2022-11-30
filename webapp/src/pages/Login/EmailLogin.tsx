@@ -3,7 +3,7 @@ import Helpers from '../../helpers/Helpers';
 import { useNavigate } from 'react-router-dom';
 import { TextField, Button, Typography } from '@mui/material';
 import { toast } from 'react-toastify';
-import './Login.scss';
+import './EmailLogin.scss';
 
 function EmailLogin() {
 
@@ -27,8 +27,8 @@ function EmailLogin() {
     };
 
     return (
-        <div>
-            <form
+        <div className='login-email-page'>
+            <form className='login-form'
                 onSubmit={handleSubmit}
             >
                 <Typography variant="h2" textAlign={'center'}>
@@ -38,7 +38,7 @@ function EmailLogin() {
                 <br />
                 <TextField data-testid='password-input-login' label="Password" variant="standard" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
                 <br /><br />
-                <Button data-testid='buttom-submit-login' variant="contained" type="submit">Valider</Button>
+                <Button id='login-email-submit' data-testid='buttom-submit-login' type="submit">Submit</Button>
             </form>
         </div>
     );
