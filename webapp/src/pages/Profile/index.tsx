@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ThemeProvider } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -9,17 +9,16 @@ import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import { mainListItems, secondaryListItems } from '../Utils/listItems';
-import Welcome from './Welcome';
-import { mdTheme, Drawer, AppBar } from '../Utils/Dashboard';
-import { useEffect, useState } from 'react';
-import Helpers from '../../helpers/Helpers';
-import { useNavigate } from 'react-router-dom';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import { mainListItems, secondaryListItems } from '../Utils/listItems';
+import { mdTheme, Drawer, AppBar } from '../Utils/Dashboard';
+import { useNavigate } from 'react-router-dom';
+import Helpers from '../../helpers/Helpers';
 import { Button } from '@mui/material';
-import './Home.scss';
+import Profile from './Profile';
 
-const Home = () => {
+
+const UserProfile = () => {
     const [open, setOpen] = React.useState(true);
     const toggleDrawer = () => {
         setOpen(!open);
@@ -28,19 +27,16 @@ const Home = () => {
     const navigate = useNavigate();
     const [user, setUser] = useState({
         email: '',
-        nickname: ''
+        nickname: '',
+        avatar: ''
     });
     const disconnectUser = () => {
         localStorage.clear();
         navigate('/');
     };
-
-    useEffect(() => {
-        if (user.nickname === '') {
-            Helpers.Users.me().then((res) => setUser(res!));
-        }
-    });
-
+    if (user.nickname === '') {
+        Helpers.Users.me().then((res) => setUser(res!));
+    }
     return (
         <ThemeProvider theme={mdTheme}>
             <Box sx={{ display: 'flex' }}>
@@ -122,11 +118,11 @@ const Home = () => {
                     }}
                 >
                     <Toolbar />
-                    <Welcome />
+                    <Profile />
                 </Box>
             </Box>
         </ThemeProvider>
     );
 };
 
-export default Home;
+export default UserProfile;
