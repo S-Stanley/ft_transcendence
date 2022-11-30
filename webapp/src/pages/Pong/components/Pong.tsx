@@ -7,13 +7,14 @@ import Paddle from './Paddle.js';
 import React from "react";
 import { End } from "./End";
 
-
 let lastTime: any = null;
 let ball:any = null;
 let playerPaddle: any = null;
 let computerPaddle: any = null;
 let playerScoreElem: any = null;
 let computerScoreElem: any = null;
+let computerPongs: number = 0;
+let playerPongs: number = 0;
 
 const Pong = () => {
 
@@ -22,6 +23,10 @@ const Pong = () => {
     function update(time: any) {
         if (lastTime != null){
             const delta = time - lastTime;
+            if (isCollision(playerPaddle.rect(), ball.rect()))
+                playerPongs = playerPongs + 1;
+            if (isCollision(computerPaddle.rect(), ball.rect()))
+                computerPongs = computerPongs + 1;
             ball.update(delta, [playerPaddle.rect(), computerPaddle.rect()]);
             computerPaddle.update(delta, ball.y);
             if (isLose()){
@@ -32,6 +37,10 @@ const Pong = () => {
         }
         lastTime = time;
         window.requestAnimationFrame(update);
+    }
+
+    function isCollision(rect1:any, rect2:any){
+        return (rect1.left <= rect2.right && rect1.right >= rect2.left && rect1.top <= rect2.bottom && rect1.bottom >= rect2.top);
     }
 
     function isLose(){
@@ -46,10 +55,13 @@ const Pong = () => {
         } else {
             computerScoreElem.textContent = parseInt(computerScoreElem.textContent) + 1;
         }
+        if (parseInt(computerScoreElem.textContent) === 1 || parseInt(playerScoreElem.textContent) === 1)
+        {
+            setEnd(true);
+            //post to database
+        }
         ball.reset();
         computerPaddle.reset();
-        if (parseInt(computerScoreElem.textContent) === 1 || parseInt(playerScoreElem.textContent) === 1)
-            setEnd(true);
     }
 
     document.addEventListener('mousemove', e => {
