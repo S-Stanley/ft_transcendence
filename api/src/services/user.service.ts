@@ -67,7 +67,8 @@ export class UserService {
     getProfile(user: Users): UserDTO {
         return {
             email: user.email,
-            nickname: user.nickname
+            nickname: user.nickname,
+            avatar: user.avatar
         }
     }
 }

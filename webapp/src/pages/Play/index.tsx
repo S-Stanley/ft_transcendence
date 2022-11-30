@@ -71,9 +71,13 @@ export const Play = () => {
                         <Typography
                             variant="h6"
                             component="div"
-                            sx={{ marginRight: '310px', flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+                            sx={{ flexGrow: 0, display: { xs: 'none', sm: 'block' } }}
                         >
-                            Arigato { user.nickname === '' ? 'invité' : user.nickname }
+                            Arigato { user.nickname === '' ? 'invité' :
+                                <Button id="button-nickname" onClick={() => navigate(`/users/${user.nickname}`)}>
+                                    { user.nickname }
+                                </Button>
+                            }
                         </Typography>
                         <IconButton color="inherit">
                             <Badge color="secondary">

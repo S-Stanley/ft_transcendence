@@ -17,6 +17,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import MenuComponent from './components/menu';
 import Game from './pages/Pong/Game';
 import { Play } from './pages/Play';
+import UserProfile from './pages/Profile';
 
 
 const root = ReactDOM.createRoot(
@@ -56,6 +57,7 @@ root.render(
                 <Route path="/play" element={<Play />} />
                 <Route path="/play/pong" element={<Game />} />
                 <Route path="/user" element={<User />} />
+                <Route path='/users/:nickname' element={<UserProfile/>} />
                 <Route path="/leaderboard" element={<Leaderboard />} />
                 <Route path="/statistics" element={<Statistics />} />
             </Routes>
