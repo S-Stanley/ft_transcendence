@@ -11,6 +11,16 @@ CREATE TABLE IF NOT EXISTS public.users(
     avatar              VARCHAR(255) NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS public.history(
+    id                  SERIAL PRIMARY KEY NOT NULL,
+    player_id           INT DEFAULT NULL,
+    player_score        INT DEFAULT NULL,
+    player_pongs        INT DEFAULT NULL,
+    opp_score           INT DEFAULT NULL,
+    opp_name            VARCHAR(255) DEFAULT NULL,
+    created_at          DATE DEFAULT NOW() NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS public.chat(
     id          UUID PRIMARY KEY DEFAULT uuid_generate_v4() NOT NULL
 );

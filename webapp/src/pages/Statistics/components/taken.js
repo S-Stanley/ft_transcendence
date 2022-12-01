@@ -25,7 +25,7 @@ export const Taken = (props) => (
                         color="textPrimary"
                         variant="h4"
                     >
-                        {props.goalsTaken}
+                        {props.goalstaken}
                     </Typography>
                 </Grid>
                 <Grid item>

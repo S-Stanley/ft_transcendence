@@ -9,8 +9,11 @@ import { ChatController } from './chat/chat.controller';
 import { HttpModule } from '@nestjs/axios';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Users } from './entities/user.entity';
+import { History } from './entities/history.entity';
 import { UserService } from './services/user.service';
 import { SocketGateway } from './socket.gateway';
+import { HistoryController } from './history/history.controller';
+import { HistoryService } from './services/history.service';
 
 @Module({
     imports:
@@ -27,12 +30,12 @@ import { SocketGateway } from './socket.gateway';
             username: process.env.POSTGRES_USER,
             password: '',
             database: process.env.POSTGRES_DB,
-            entities: [Users],               // On renseigne ici les entités voulant être mappées en base de données
+            entities: [Users, History],               // On renseigne ici les entités voulant être mappées en base de données
         }),
-        TypeOrmModule.forFeature([Users]),     // On renseigne ici les entités possédant un repository
+        TypeOrmModule.forFeature([Users, History]),     // On renseigne ici les entités possédant un repository
         ],
-    controllers: [AppController, UsersController, ChatController],
-    providers: [AppService, UserService, SocketGateway],
+    controllers: [AppController, UsersController, ChatController, HistoryController],
+    providers: [AppService, UserService, SocketGateway, HistoryService],
 })
 export class AppModule implements NestModule {
     configure(consumer: MiddlewareConsumer) {
@@ -47,6 +50,9 @@ export class AppModule implements NestModule {
             }, {
                 path: '/chat*',
                 method: RequestMethod.POST
+            }, {
+                path: '/history*',
+                method: RequestMethod.GET,
             });
     }
 }

@@ -1,5 +1,5 @@
 import { Box, Container, Grid, Typography } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Loses } from './components/lost';
 import { MatchHistory } from './components/match-history';
 import { Ratio } from './components/ratio';
@@ -8,16 +8,48 @@ import { Wins } from './components/won';
 import { Default } from './components/default';
 import { Scored } from './components/scored';
 import { Taken } from './components/taken';
+import Helpers from '../../helpers/Helpers';
 
 const UserStats = () => {
 
-    const [values] = useState({
-        numberPongs: '24',
-        matchWon: '13',
-        matchLost: '8',
-        goalsScored: '46',
-        goalsTaken: '34',
+    const [values, setValues] = useState({
+        numberPongs: '',
+        matchWon: '',
+        matchLost: '',
+        goalsScored: '',
+        goalsTaken: '',
     });
+
+    const calculateStats = (props:any) => {
+        let pongs = 0;
+        let won = 0;
+        let lost = 0;
+        let scored = 0;
+        let taken = 0;
+        props.map((value:any) => {
+            pongs += value.player_pongs;
+            if (value.player_score === 1)
+                won += 1;
+            else
+                lost += 1;
+            scored += value.player_score;
+            taken += value.opp_score;
+        });
+        setValues({
+            numberPongs: pongs.toString(),
+            matchWon: won.toString(),
+            matchLost: lost.toString(),
+            goalsScored: scored.toString(),
+            goalsTaken: taken.toString(),
+        });
+    };
+
+    const getHistory = async () => {
+        const res = await Helpers.History.get_match();
+        calculateStats(res.data.result.reverse());
+    };
+
+    useEffect(() => {getHistory();});
 
     return (
         <>
@@ -91,7 +123,7 @@ const UserStats = () => {
                             sm={6}
                             xs={12}
                         >
-                            <Scored goalScored={values.goalsScored} />
+                            <Scored goalsscored={values.goalsScored} />
                         </Grid>
                         <Grid
                             item
@@ -100,7 +132,7 @@ const UserStats = () => {
                             sm={6}
                             xs={12}
                         >
-                            <Taken goalsTaken={values.goalsTaken} />
+                            <Taken goalstaken={values.goalsTaken} />
                         </Grid>
                         <Grid
                             item
