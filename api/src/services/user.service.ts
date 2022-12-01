@@ -64,7 +64,18 @@ export class UserService {
         return user;
     }
 
-    getProfile(user: Users): UserDTO {
+    getOwnProfile(user: Users): UserDTO {
+        return {
+            email: user.email,
+            nickname: user.nickname,
+            avatar: user.avatar
+        };
+    }
+
+    async getUserProfile(nickname: string): Promise<UserDTO> {
+        const user = await this.userRepository.findOneBy({
+            nickname: nickname
+        });
         return {
             email: user.email,
             nickname: user.nickname,
