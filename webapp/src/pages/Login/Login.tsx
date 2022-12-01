@@ -30,7 +30,7 @@ function Login() {
     });
     return (
         <div className="login-page">
-            <form id="form-login">
+            <form>
                 <Button id="button-submit-login" type="submit" href={ code_url }>Sign up with 42</Button>
             </form>
         </div>
