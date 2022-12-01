@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, HttpException, Inject } from '@nestjs/common';
+import { Controller, Post, Body, Get, HttpException, Inject, Param } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
 import { UserConnected } from 'src/configs/userconnected.decorator';
 import { UserDTO } from 'src/dtos/profile.dto';
@@ -17,8 +17,13 @@ export class UsersController {
     }
 
     @Get('/me')
-    getProfileAction(@UserConnected() user: Users): UserDTO {
-        return this.userService.getProfile(user);
+    getOwnProfileAction(@UserConnected() user: Users): UserDTO {
+        return this.userService.getOwnProfile(user);
+    }
+
+    @Get('/:nickname')
+    getUserProfileAction(@Param('nickname') nickname: string) : Promise<UserDTO> {
+        return this.userService.getUserProfile(nickname);
     }
 
     @Post('/auth/login')
