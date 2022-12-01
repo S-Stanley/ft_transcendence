@@ -18,6 +18,10 @@ const me = async(): Promise<User | null> => {
     return await axios.get(`${Config.Api.url}/users/me`).then((res) => res.data);
 };
 
+const getUser = async(nickname: string): Promise<User | null> => {
+    return await axios.get(`${Config.Api.url}/users/${nickname}`).then((res) => res.data);
+};
+
 const findUserByEmail = async(email: string): Promise<{email: string, user_id: string} | null> => {
     try {
         const req = await axios.get(`${Config.Api.url}/users/${email}`, {
@@ -50,7 +54,8 @@ const Users = {
     login,
     me,
     findUserByEmail,
-    login_with_email
+    login_with_email,
+    getUser
 };
 
 export default Users;
