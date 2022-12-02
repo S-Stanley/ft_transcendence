@@ -40,10 +40,12 @@ const Profile = () => {
                 <div id='statistics'>
                     <UserStats/>
                 </div>
-                <Typography id='achievements'>
-                    Achievements
+                <Typography id='achievements'
+                    sx={{ mb: 3 }}
+                    variant="h4"
+                >
+						Achievements
                 </Typography>
-                <div style={{ borderTop: '1px solid black', marginLeft: '22%', marginRight: '35%' }}/>
             </h2>
         </Fragment>
     );
