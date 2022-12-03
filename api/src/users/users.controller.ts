@@ -65,7 +65,8 @@ export class UsersController {
                     return ({
                         user_id: result.rows[0].id,
                         email: result.rows[0].email,
-                        token: result.rows[0].token,
+                        token: result.rows[0].access_token,
+                        nickname: result.rows[0].nickname,
                     });
                 }
             })
