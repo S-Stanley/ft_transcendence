@@ -42,6 +42,19 @@ export class UsersController {
         return this.userService.getUserProfile(nickname);
     }
 
+    @Get('/email/:email')
+    async getUserByEmail(@Param('email') email: string) : Promise<UserDTO> {
+        const req = await this.db.query('SELECT * from public.users WHERE email=$1', [email]);
+        if (!req || req.rows.length === 0){
+            return (null);
+        }
+        return ({
+            email: req.rows[0].email,
+            nickname: req.rows[0].nickname,
+            avatar: req.rows[0].avatar,
+        });
+    }
+
     @Post('/auth/login')
     Login(@Body() body): string {
         return this.db.query("SELECT * FROM public.login($1, $2)", [body.email, body.password])

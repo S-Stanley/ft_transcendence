@@ -21,7 +21,7 @@ const MessageBar = () => {
         localStorage.setItem('chat_id', chat?.chat_id);
         if (req) {
             setUserToFind('');
-            navigate('/home/messagerie/chat');
+            navigate('/chat');
         }
     };
 
