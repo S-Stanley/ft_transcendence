@@ -42,7 +42,6 @@ export class UsersController {
         return this.userService.getUserProfile(nickname);
     }
 
-
     @Post('/auth/login')
     Login(@Body() body): string {
         return this.db.query("SELECT * FROM public.login($1, $2)", [body.email, body.password])
