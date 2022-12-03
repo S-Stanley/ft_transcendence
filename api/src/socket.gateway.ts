@@ -6,10 +6,10 @@ export class SocketGateway {
         server;
 
     @SubscribeMessage('message')
-    handleMessage(@MessageBody() message: { data: { content: string, email: string, chat_id: string } }): void {
+    handleMessage(@MessageBody() message: { data: { content: string, nickname: string, chat_id: string } }): void {
         this.server.emit('message', {
             content: message.data?.content,
-            email: message.data?.email,
+            nickname: message.data?.nickname,
             chat_id: message.data?.chat_id
         });
     }

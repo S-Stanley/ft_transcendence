@@ -10,7 +10,7 @@ const socket = io('http://localhost:5000', { transports: ['websocket'] });
 const ChatBar = () => {
 
     const [messageContent, setMessageContent] = useState<string>('');
-    const [allMessage, setAllMessage] = useState<{content: string, email: string}[]>([]);
+    const [allMessage, setAllMessage] = useState<{content: string, nickname: string}[]>([]);
     const location = useLocation();
 
     const handleSubmit = async(e: { preventDefault: any }): Promise<void> => {
@@ -22,7 +22,7 @@ const ChatBar = () => {
                 data: {
                     chat_id: location?.state?.chat_id,
                     content: messageContent,
-                    email: localStorage.getItem('email')
+                    nickname: localStorage.getItem('nickname')
                 }
             });
         }
@@ -35,10 +35,10 @@ const ChatBar = () => {
         }
     };
 
-    socket.on('message', (data: { content: string, email: string, chat_id: string }) => {
+    socket.on('message', (data: { content: string, nickname: string, chat_id: string }) => {
         if (data?.chat_id === location?.state?.chat_id){
             const output = [...allMessage, {
-                email: data?.email,
+                nickname: data?.nickname,
                 content: data?.content
             }];
             setAllMessage(output);
@@ -54,10 +54,10 @@ const ChatBar = () => {
             <div
                 id='div-message-chat'
             >
-                {allMessage.map((msg: { content: string, email: string }, index) => {
+                {allMessage.map((msg: { content: string, nickname: string }, index) => {
                     return (
                         <div key={index}>
-                            { msg.email }: { msg.content }
+                            { msg.nickname }: { msg.content }
                         </div>
                     );
                 })}
