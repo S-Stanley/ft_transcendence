@@ -1,8 +1,9 @@
-import { Injectable } from "@nestjs/common";
+import { HttpException, Inject, Injectable } from "@nestjs/common";
 import { AxiosResponse } from 'axios';
 import { HttpService } from '@nestjs/axios';
 import { InjectRepository } from "@nestjs/typeorm";
 import { Users } from "src/entities/user.entity";
+import { History } from "src/entities/history.entity";
 import { Repository } from "typeorm";
 import { firstValueFrom } from "rxjs";
 import { UserDTO } from "src/dtos/profile.dto";
@@ -13,7 +14,7 @@ import FormData = require('form-data');
 
 @Injectable()
 export class UserService {
-    constructor(private readonly httpService: HttpService, @InjectRepository(Users) private userRepository: Repository<Users>) {}
+    constructor(@Inject("PG_CONNECTION") private db: any,private readonly httpService: HttpService, @InjectRepository(Users) private userRepository: Repository<Users>, @InjectRepository(History) private historyRepository: Repository<History>) {}
 
     async authUser(code: string): Promise<TokenReturn> {
         const token = await this.getToken(code);
@@ -82,4 +83,17 @@ export class UserService {
             avatar: user.avatar
         };
     }
+
+    async findUserFromEmail(email:string): Promise<number> {
+        const data = await this.db.query(`SELECT * FROM users WHERE email='${email}'`)
+            .then((result: { rows: any }) => {
+                if (result.rows.length === 0) {
+                    throw new HttpException('Cant find id of the user', 500);
+                } else {
+                    return ({user_id: result.rows[0].id,});
+                }
+            });
+        return (data.user_id);
+    }
+
 }

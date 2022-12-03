@@ -1,4 +1,3 @@
-import { format } from 'date-fns';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import {
     Box,
@@ -14,18 +13,15 @@ import {
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { SeverityPill } from './severity-pill';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import Helpers from '../../../helpers/Helpers';
 
 export const MatchHistory = (props) => {
 
     const [values, setValues] = useState([]);
 
-    const getHistory = () => {
-        axios
-            .get('http://localhost:3333/users/history')
-            .then(response => {
-                setValues(response.data.reverse());
-            });
+    const getHistory = async () => {
+        const res = await Helpers.History.get_match();
+        setValues(res.data.result.reverse());
     };
 
     useEffect(() => {getHistory();});
@@ -42,10 +38,10 @@ export const MatchHistory = (props) => {
                                 Date
                                 </TableCell>
                                 <TableCell>
-                                Mode
+                                Opponent
                                 </TableCell>
                                 <TableCell>
-                                Opponent
+                                Number Pongs
                                 </TableCell>
                                 <TableCell>
                                 Score
@@ -59,22 +55,22 @@ export const MatchHistory = (props) => {
                                     key={value.id}
                                 >
                                     <TableCell>
-                                        {format(Date.parse(value.createdAt), 'dd/MM/yyyy')}
+                                        01/12/2022 (hc)
                                     </TableCell>
                                     <TableCell>
-                                        {value.mode}
+                                        {value.opp_name}
                                     </TableCell>
                                     <TableCell>
-                                        {value.opponent}
+                                        {value.player_pongs}
                                     </TableCell>
                                     <TableCell>
                                         <SeverityPill
                                             color={
-                                                ((value.my_score > value.opp_score) && 'success')
-                                            || ((value.my_score < value.opp_score) && 'error')
+                                                ((value.player_score === 1) && 'success')
+                                            || ((value.player_score === 0) && 'error')
                                             || 'secondary'}
                                         >
-                                            {value.my_score.toString() + " - " + value.opp_score.toString()}
+                                            {value.player_score.toString() + " - " + value.opp_score.toString()}
                                         </SeverityPill>
                                     </TableCell>
                                 </TableRow>
