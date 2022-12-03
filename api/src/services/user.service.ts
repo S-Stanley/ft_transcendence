@@ -8,7 +8,7 @@ import { Repository } from "typeorm";
 import { firstValueFrom } from "rxjs";
 import { UserDTO } from "src/dtos/profile.dto";
 import { SSOReturn } from "src/dtos/ssoreturn.dto";
-import { TokenReturn } from "src/dtos/tokenreturn.dto";
+import { UserAuth } from "src/dtos/userauth";
 import { User42 } from 'src/dtos/user42.dto';
 import FormData = require('form-data');
 
@@ -16,7 +16,7 @@ import FormData = require('form-data');
 export class UserService {
     constructor(@Inject("PG_CONNECTION") private db: any,private readonly httpService: HttpService, @InjectRepository(Users) private userRepository: Repository<Users>, @InjectRepository(History) private historyRepository: Repository<History>) {}
 
-    async authUser(code: string): Promise<TokenReturn> {
+    async authUser(code: string): Promise<UserAuth> {
         const token = await this.getToken(code);
         const user42 = await this.getUserInformationFrom42(token.data.access_token);
         let user = await this.userRepository.findOneBy({
@@ -32,9 +32,13 @@ export class UserService {
         user.access_token = token.data.access_token;
         user.refresh_token = token.data.refresh_token;
         user.token_expires_at = new Date((token.data.created_at + token.data.expires_in) * 1000);
-        this.userRepository.save(user);
+        const usr = await this.userRepository.save(user);
         return ({
-            token: user.access_token
+            token: usr.access_token,
+            email: usr.email,
+            user_id: usr.id.toString(),
+            nickname: usr.nickname,
+            avatar: usr.avatar,
         });
     }
 

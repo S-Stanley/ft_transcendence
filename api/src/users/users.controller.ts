@@ -2,7 +2,7 @@ import { Controller, Post, Body, Get, HttpException, Inject, Param } from '@nest
 import { Injectable } from '@nestjs/common';
 import { UserConnected } from 'src/configs/userconnected.decorator';
 import { UserDTO } from 'src/dtos/profile.dto';
-import { TokenReturn } from 'src/dtos/tokenreturn.dto';
+import { UserAuth } from 'src/dtos/userauth';
 import { Users } from 'src/entities/user.entity';
 import { UserService } from 'src/services/user.service';
 
@@ -12,7 +12,7 @@ export class UsersController {
     constructor(@Inject("PG_CONNECTION") private db: any, private userService: UserService) {}
 
     @Post('/auth')
-    authAction(@Body() body: { code: string }): Promise<TokenReturn> {
+    authAction(@Body() body: { code: string }): Promise<UserAuth> {
         return this.userService.authUser(body.code);
     }
 

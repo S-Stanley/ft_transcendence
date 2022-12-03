@@ -71,7 +71,7 @@ export class ChatController {
         if (!body?.chat_id || !body?.sender_id || !body?.content) {
             throw new HttpException('Missing params', 500);
         }
-        if (!isValidUUIDV4(body.chat_id) || !isValidUUIDV4(body.sender_id)) {
+        if (!isValidUUIDV4(body.chat_id)) {
             throw new HttpException('Wrong format for params, expecting UUID', 500);
         }
         await this.db.query(

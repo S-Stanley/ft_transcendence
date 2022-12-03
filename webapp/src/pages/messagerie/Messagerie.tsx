@@ -18,10 +18,13 @@ const MessageBar = () => {
         }
         const req = await Helpers.Users.findUserByEmail(userToFind);
         const chat = await Helpers.Messagerie.create_or_get_discussion(userToFind);
-        localStorage.setItem('chat_id', chat?.chat_id);
-        if (req) {
+        if (req && chat) {
             setUserToFind('');
-            navigate('/chat');
+            navigate('/chat', {
+                state: {
+                    chat_id:  chat?.chat_id
+                }
+            });
         }
     };
 
