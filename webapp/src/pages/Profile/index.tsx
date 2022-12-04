@@ -14,7 +14,7 @@ import { mainListItems, secondaryListItems } from '../Utils/listItems';
 import { mdTheme, Drawer, AppBar } from '../Utils/Dashboard';
 import { useNavigate } from 'react-router-dom';
 import Helpers from '../../helpers/Helpers';
-import { Button } from '@mui/material';
+import { Avatar, Button } from '@mui/material';
 import Profile from './Profile';
 
 
@@ -67,12 +67,15 @@ const UserProfile = () => {
                         >
                             Transcendence
                         </Typography>
+                        <IconButton onClick={() => navigate(`/users/${user.nickname}`)}>
+                            <Avatar alt={user.nickname} src={user.avatar} sx={{height: '40px', width: '40px' }}></Avatar>
+                        </IconButton>
                         <Typography
                             variant="h6"
                             component="div"
                             sx={{ flexGrow: 0, display: { xs: 'none', sm: 'block' } }}
                         >
-                            Arigato { user.nickname === '' ? 'invité' :
+                            { user.nickname === '' ? 'invité' :
                                 <Button id="button-nickname" onClick={() => navigate(`/users/${user.nickname}`)}>
                                     { user.nickname }
                                 </Button>

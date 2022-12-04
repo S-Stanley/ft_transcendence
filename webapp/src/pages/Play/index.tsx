@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button } from "@mui/material";
+import { Avatar, Button } from "@mui/material";
 import { ThemeProvider } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -25,7 +25,8 @@ export const Play = () => {
     const navigate = useNavigate();
     const [user, setUser] = useState({
         email: '',
-        nickname: ''
+        nickname: '',
+        avatar: '',
     });
     const disconnectUser = () => {
         localStorage.clear();
@@ -68,12 +69,15 @@ export const Play = () => {
                         >
                             Transcendence
                         </Typography>
+                        <IconButton onClick={() => navigate(`/users/${user.nickname}`)}>
+                            <Avatar alt={user.nickname} src={user.avatar} sx={{height: '40px', width: '40px' }}></Avatar>
+                        </IconButton>
                         <Typography
                             variant="h6"
                             component="div"
                             sx={{ flexGrow: 0, display: { xs: 'none', sm: 'block' } }}
                         >
-                            Arigato { user.nickname === '' ? 'invité' :
+                            { user.nickname === '' ? 'invité' :
                                 <Button id="button-nickname" onClick={() => navigate(`/users/${user.nickname}`)}>
                                     { user.nickname }
                                 </Button>
