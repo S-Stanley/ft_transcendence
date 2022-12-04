@@ -58,6 +58,7 @@ root.render(
             <Route path='/users/:nickname' element={<UserProfile/>} />
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/statistics" element={<Statistics />} />
+            <Route path="/login/email" element={<EmailLogin />} />
         </Routes>
     </BrowserRouter>
 );
