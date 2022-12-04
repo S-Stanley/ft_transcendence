@@ -56,7 +56,7 @@ const ChatBar = () => {
             >
                 {allMessage.map((msg: { content: string, nickname: string }, index) => {
                     return (
-                        <div key={index}>
+                        <div key={index} id={`message-content-${index}`}>
                             { msg.nickname }: { msg.content }
                         </div>
                     );
@@ -71,11 +71,15 @@ const ChatBar = () => {
                     type='text'
                     value={messageContent}
                     onChange={(e) => setMessageContent(e.target.value)}
+                    inputProps={{
+                        'id': 'input-private-chat'
+                    }}
                 />
                 <br />
                 <Button
                     variant="contained"
                     type="submit"
+                    id='submit-button-chat'
                 >
                     Validate
                 </Button>

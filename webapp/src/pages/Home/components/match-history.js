@@ -24,7 +24,9 @@ export const MatchHistory = (props) => {
         setValues(res.data.result);
     };
 
-    useEffect(() => {getHistory();});
+    useEffect(() => {
+        getHistory();
+    }, [false]);
 
     return (
         <Card {...props}>

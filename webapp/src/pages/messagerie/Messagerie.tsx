@@ -43,11 +43,15 @@ const MessageBar = () => {
                     type='email'
                     value={userToFind}
                     onChange={(e) => setUserToFind(e.target.value)}
+                    inputProps={{
+                        'id': 'input-messagerie-email'
+                    }}
                 />
                 <br />
                 <Button
                     variant="contained"
                     type="submit"
+                    id='submit-button-messagerie'
                 >
                     Validate
                 </Button>

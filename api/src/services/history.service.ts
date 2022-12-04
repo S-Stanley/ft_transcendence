@@ -33,7 +33,9 @@ export class HistoryService {
             })
             .catch((e: any) => {
                 console.error(e);
-                throw new HttpException('Problem occured when fetching history', 500);
+                return ({
+                    result: [],
+                });
             });
         return (res);
     }
