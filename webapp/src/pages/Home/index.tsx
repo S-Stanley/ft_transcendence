@@ -16,7 +16,7 @@ import { useEffect, useState } from 'react';
 import Helpers from '../../helpers/Helpers';
 import { useNavigate } from 'react-router-dom';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import { Button } from '@mui/material';
+import { Avatar, Button } from '@mui/material';
 import './Home.scss';
 
 const Home = () => {
@@ -28,7 +28,8 @@ const Home = () => {
     const navigate = useNavigate();
     const [user, setUser] = useState({
         email: '',
-        nickname: ''
+        nickname: '',
+        avatar: '',
     });
     const disconnectUser = () => {
         localStorage.clear();
@@ -71,12 +72,15 @@ const Home = () => {
                         >
                             Transcendence
                         </Typography>
+                        <IconButton onClick={() => navigate(`/users/${user.nickname}`)}>
+                            <Avatar alt={user.nickname} src={user.avatar} sx={{height: '40px', width: '40px' }}></Avatar>
+                        </IconButton>
                         <Typography
                             variant="h6"
                             component="div"
                             sx={{ flexGrow: 0, display: { xs: 'none', sm: 'block' } }}
                         >
-                            Arigato { user.nickname === '' ? 'invité' :
+                            { user.nickname === '' ? 'invité' :
                                 <Button id="button-nickname" onClick={() => navigate(`/users/${user.nickname}`)}>
                                     { user.nickname }
                                 </Button>

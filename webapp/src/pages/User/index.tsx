@@ -15,7 +15,7 @@ import { mdTheme, Drawer, AppBar } from '../Utils/Dashboard';
 import Account from './Account';
 import { useNavigate } from 'react-router-dom';
 import Helpers from '../../helpers/Helpers';
-import { Button } from '@mui/material';
+import { Avatar, Button } from '@mui/material';
 
 const User = () => {
     const [open, setOpen] = React.useState(true);
@@ -26,7 +26,8 @@ const User = () => {
     const navigate = useNavigate();
     const [user, setUser] = useState({
         email: '',
-        nickname: ''
+        nickname: '',
+        avatar: '',
     });
     const disconnectUser = () => {
         localStorage.clear();
@@ -69,12 +70,15 @@ const User = () => {
                         >
                             Transcendence
                         </Typography>
+                        <IconButton onClick={() => navigate(`/users/${user.nickname}`)}>
+                            <Avatar alt={user.nickname} src={user.avatar} sx={{height: '40px', width: '40px' }}></Avatar>
+                        </IconButton>
                         <Typography
                             variant="h6"
                             component="div"
                             sx={{ flexGrow: 0, display: { xs: 'none', sm: 'block' } }}
                         >
-                            Arigato { user.nickname === '' ? 'invité' :
+                            { user.nickname === '' ? 'invité' :
                                 <Button id="button-nickname" onClick={() => navigate(`/users/${user.nickname}`)}>
                                     { user.nickname }
                                 </Button>
