@@ -35,14 +35,12 @@ const ChatBar = () => {
         }
     };
 
-    socket.on('message', (data: { content: string, nickname: string, chat_id: string }) => {
-        if (data?.chat_id === location?.state?.chat_id){
-            const output = [...allMessage, {
-                nickname: data?.nickname,
-                content: data?.content
-            }];
-            setAllMessage(output);
-        }
+    socket.on(location?.state?.chat_id, (data: { content: string, nickname: string, chat_id: string }) => {
+        const output = [...allMessage, {
+            nickname: data?.nickname,
+            content: data?.content
+        }];
+        setAllMessage(output);
     });
 
     useEffect(() => {
