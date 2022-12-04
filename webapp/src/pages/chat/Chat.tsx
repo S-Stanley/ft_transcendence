@@ -3,40 +3,42 @@ import { TextField, Button } from "@mui/material";
 import Helpers from "../../helpers/Helpers";
 import { io } from 'socket.io-client';
 import './Chat.scss';
+import { useLocation } from "react-router-dom";
 
 const socket = io('http://localhost:5000', { transports: ['websocket'] });
 
 const ChatBar = () => {
 
     const [messageContent, setMessageContent] = useState<string>('');
-    const [allMessage, setAllMessage] = useState<{content: string, email: string}[]>([]);
+    const [allMessage, setAllMessage] = useState<{content: string, nickname: string}[]>([]);
+    const location = useLocation();
 
     const handleSubmit = async(e: { preventDefault: any }): Promise<void> => {
         e.preventDefault();
-        const req = await Helpers.Messagerie.send_message_to_discussion(localStorage.getItem('chat_id') ?? '', messageContent);
+        const req = await Helpers.Messagerie.send_message_to_discussion(location?.state?.chat_id ?? '', messageContent);
         if (req) {
             setMessageContent('');
             socket.emit('message', {
                 data: {
-                    chat_id: localStorage.getItem('chat_id'),
+                    chat_id: location?.state?.chat_id,
                     content: messageContent,
-                    email: localStorage.getItem('email')
+                    nickname: localStorage.getItem('nickname')
                 }
             });
         }
     };
 
     const getAllMessages = async(): Promise<void> => {
-        const req = await Helpers.Messagerie.get_message_of_discussion(localStorage.getItem('chat_id') ?? '');
+        const req = await Helpers.Messagerie.get_message_of_discussion(location?.state?.chat_id ?? '');
         if (req) {
             setAllMessage(req);
         }
     };
 
-    socket.on('message', (data: { content: string, email: string, chat_id: string }) => {
-        if (data?.chat_id === localStorage.getItem('chat_id')){
+    socket.on('message', (data: { content: string, nickname: string, chat_id: string }) => {
+        if (data?.chat_id === location?.state?.chat_id){
             const output = [...allMessage, {
-                email: data?.email,
+                nickname: data?.nickname,
                 content: data?.content
             }];
             setAllMessage(output);
@@ -45,17 +47,17 @@ const ChatBar = () => {
 
     useEffect(() => {
         getAllMessages();
-    });
+    }, [false]);
 
     return (
         <Fragment>
             <div
                 id='div-message-chat'
             >
-                {allMessage.map((msg: { content: string, email: string }, index) => {
+                {allMessage.map((msg: { content: string, nickname: string }, index) => {
                     return (
-                        <div key={index}>
-                            { msg.email }: { msg.content }
+                        <div key={index} id={`message-content-${index}`}>
+                            { msg.nickname }: { msg.content }
                         </div>
                     );
                 })}
@@ -69,11 +71,15 @@ const ChatBar = () => {
                     type='text'
                     value={messageContent}
                     onChange={(e) => setMessageContent(e.target.value)}
+                    inputProps={{
+                        'id': 'input-private-chat'
+                    }}
                 />
                 <br />
                 <Button
                     variant="contained"
                     type="submit"
+                    id='submit-button-chat'
                 >
                     Validate
                 </Button>

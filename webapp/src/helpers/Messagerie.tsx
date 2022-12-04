@@ -23,10 +23,6 @@ const send_message_to_discussion = async (chat_id: string, content: string) => {
             chat_id: chat_id,
             sender_id: localStorage.getItem('user_id'),
             content: content,
-        }, {
-            headers: {
-                token: localStorage.getItem('token'),
-            }
         });
         return (req.data);
     } catch (e) {

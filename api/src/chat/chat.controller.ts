@@ -1,6 +1,7 @@
 import { Controller, Post, Body, HttpException, Param, Get } from '@nestjs/common';
 import { Injectable, Inject } from '@nestjs/common';
 import { isValidUUIDV4 } from 'is-valid-uuid-v4';
+import { Users } from 'src/entities/user.entity';
 
 @Controller('chat')
 @Injectable()
@@ -20,7 +21,7 @@ export class ChatController {
             return (null);
         }
     }
-    async findUserById(id: string): Promise<{ id: string, email: string, token: string }>{
+    async findUserById(id: string): Promise<Users | null>{
         try {
             const req = await this.db.query('SELECT * from public.users WHERE id=$1', [id]);
             if (req.rows.lenght === 0){
@@ -71,7 +72,7 @@ export class ChatController {
         if (!body?.chat_id || !body?.sender_id || !body?.content) {
             throw new HttpException('Missing params', 500);
         }
-        if (!isValidUUIDV4(body.chat_id) || !isValidUUIDV4(body.sender_id)) {
+        if (!isValidUUIDV4(body.chat_id)) {
             throw new HttpException('Wrong format for params, expecting UUID', 500);
         }
         await this.db.query(
@@ -91,6 +92,7 @@ export class ChatController {
             get_messages.rows.map(async(msg: {sent_by: string}) => {
                 const usr = await this.findUserById(msg?.sent_by);
                 msg['email'] = usr?.email;
+                msg['nickname'] = usr?.nickname;
                 return (msg);
             })
         );

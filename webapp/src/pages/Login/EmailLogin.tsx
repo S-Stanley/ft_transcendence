@@ -20,6 +20,7 @@ function EmailLogin() {
             localStorage.setItem('token', req.token);
             localStorage.setItem('email', req.email);
             localStorage.setItem('user_id', req.user_id);
+            localStorage.setItem('nickname', req.nickname);
             navigate('/home');
         } else {
             toast.error('Wrong email or wrong password!');

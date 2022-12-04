@@ -17,6 +17,9 @@ function Login() {
             const req = await Helpers.Users.login(code);
             if (req) {
                 window.localStorage.setItem('token', req.token);
+                window.localStorage.setItem('email', req.email);
+                window.localStorage.setItem('user_id', req.user_id);
+                window.localStorage.setItem('nickname', req.nickname);
                 toast.success('Successfully logged!', {
                     position: "bottom-left",
                 });

@@ -2,7 +2,7 @@ import Config from "../config/Config";
 import axios from 'axios';
 import { User } from "../interfaces/user";
 
-const login = async(code: string): Promise<{token: string} | null> => {
+const login = async(code: string): Promise<User | null> => {
     try {
         const res = await axios.post(`${Config.Api.url}/users/auth`, {
             code: code
@@ -22,13 +22,9 @@ const getUser = async(nickname: string): Promise<User | null> => {
     return await axios.get(`${Config.Api.url}/users/${nickname}`).then((res) => res.data);
 };
 
-const findUserByEmail = async(email: string): Promise<{email: string, user_id: string} | null> => {
+const findUserByEmail = async(email: string): Promise<User | null> => {
     try {
-        const req = await axios.get(`${Config.Api.url}/users/${email}`, {
-            headers: {
-                token: localStorage.getItem('token')
-            }
-        });
+        const req = await axios.get(`${Config.Api.url}/users/email/${email}`);
         return (req.data);
     } catch (e) {
         console.error(e);
@@ -37,7 +33,7 @@ const findUserByEmail = async(email: string): Promise<{email: string, user_id: s
     }
 };
 
-const login_with_email = async(email: string, password: string): Promise<{email: string, user_id:string, token: string} | null> => {
+const login_with_email = async(email: string, password: string): Promise<User | null> => {
     try {
         const req = await axios.post(`${Config.Api.url}/users/auth/login`, {
             email: email,

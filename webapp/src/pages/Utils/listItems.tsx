@@ -49,7 +49,7 @@ export const secondaryListItems = (
             <ListItemIcon>
                 <EmailIcon />
             </ListItemIcon>
-            <ListItemText primary="Messaging" />
+            <ListItemText primary="Messaging" id='messagerie-menu' />
         </ListItemButton>
         <ListItemButton href="/chat">
             <ListItemIcon>
