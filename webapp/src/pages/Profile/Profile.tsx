@@ -27,6 +27,18 @@ const Profile = () => {
             );
         }
     }
+    const statusMap = new Map([
+        ['online', 'success'],
+        ['offline', 'error'],
+        ['in-game', 'primary']
+    ]);
+    const getColorStatus = (): any => {
+        const color = statusMap.get(user.current_status);
+        if (color === undefined) {
+            return 'error';
+        }
+        return color;
+    };
     return (
         <Fragment>
             <h1>
@@ -35,7 +47,7 @@ const Profile = () => {
                     justifyContent='center'
                     alignItems='center'
                 >
-                    <Badge color={user.current_status === 'online' ? 'success' : 'error'} badgeContent='' sx={{ margin:3 }} anchorOrigin={{
+                    <Badge color={getColorStatus()} badgeContent='' sx={{ margin:3 }} anchorOrigin={{
                         vertical: 'bottom',
                         horizontal: 'right',
                     }}>
