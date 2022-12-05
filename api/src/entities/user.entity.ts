@@ -50,6 +50,7 @@ export class Users {
         avatar: string;
 
     @Column({
+        default: 'offline',
         nullable: false
     })
         current_status: string;

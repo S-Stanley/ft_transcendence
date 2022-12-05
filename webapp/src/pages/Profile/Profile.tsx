@@ -34,7 +34,7 @@ const Profile = () => {
     ]);
     const getColorStatus = (): any => {
         const color = statusMap.get(user.current_status);
-        if (color === undefined) {
+        if (!color) {
             return 'error';
         }
         return color;
