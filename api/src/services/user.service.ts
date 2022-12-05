@@ -42,7 +42,7 @@ export class UserService {
         });
     }
 
-    getToken(code: string): Promise<AxiosResponse<SSOReturn>> {
+    getToken(code: string): Promise<any> {
         const bodyFormData = new FormData();
         bodyFormData.append('grant_type', 'authorization_code');
         bodyFormData.append('client_id', process.env.CLIENT_ID);
