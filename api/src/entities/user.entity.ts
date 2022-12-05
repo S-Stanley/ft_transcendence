@@ -14,7 +14,8 @@ export class Users {
         email: string;
 
     @Column({
-        nullable: false
+        nullable: false,
+        unique: true
     })
         nickname: string;
 

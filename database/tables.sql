@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS public.users(
     id                  SERIAL PRIMARY KEY NOT NULL,
     email               VARCHAR(255) NOT NULL,
-    nickname            VARCHAR(255) NOT NULL,
+    nickname            VARCHAR(255) NOT NULL UNIQUE,
     access_token        VARCHAR(255) DEFAULT NULL,
     refresh_token       VARCHAR(255) DEFAULT NULL,
     token_expires_at    DATE DEFAULT NULL,
