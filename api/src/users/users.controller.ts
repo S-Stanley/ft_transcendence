@@ -38,7 +38,7 @@ export class UsersController {
     }
 
     @Post('/status')
-    updateStatusAction(@Body() body: { nickname: string, current_status: string}): Promise<string> {
+    updateStatusAction(@Body() body: { nickname: string, current_status: string}): Promise<void> {
         return this.userService.updateStatus(body.nickname, body.current_status);
     }
 

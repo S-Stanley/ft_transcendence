@@ -102,13 +102,12 @@ export class UserService {
         return (data.user_id);
     }
 
-    async updateStatus(nickname: string, current_status: string): Promise<string> {
+    async updateStatus(nickname: string, current_status: string): Promise<void> {
         const user = await this.userRepository.findOneBy({
             nickname: nickname
         });
         user.current_status = current_status;
         await this.userRepository.save(user);
-        return 'kek';
     }
 
 }
