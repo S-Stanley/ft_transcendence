@@ -30,6 +30,7 @@ const Leaderboard = () => {
         avatar: '',
     });
     const disconnectUser = () => {
+        Helpers.Users.updateStatus(user.nickname, 'offline');
         localStorage.clear();
         navigate('/');
     };

@@ -8,7 +8,8 @@ CREATE TABLE IF NOT EXISTS public.users(
     pass                VARCHAR(255) NOT NULL,
     token               UUID DEFAULT uuid_generate_v4() NOT NULL,
     created_at          DATE DEFAULT NULL,
-    avatar              VARCHAR(255) NOT NULL
+    avatar              VARCHAR(255) NOT NULL,
+    current_status      VARCHAR(255) DEFAULT 'offline'
 );
 
 CREATE TABLE IF NOT EXISTS public.history(

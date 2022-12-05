@@ -46,12 +46,26 @@ const login_with_email = async(email: string, password: string): Promise<User | 
     }
 };
 
+const updateStatus = async(nickname: string, current_status: string): Promise<any> => {
+    try {
+        const res = await axios.post(`${Config.Api.url}/users/status`, {
+            nickname: nickname,
+            current_status: current_status
+        });
+        return (res.data);
+    } catch (e) {
+        console.error(e);
+        return (null);
+    }
+};
+
 const Users = {
     login,
     me,
     findUserByEmail,
     login_with_email,
-    getUser
+    getUser,
+    updateStatus
 };
 
 export default Users;

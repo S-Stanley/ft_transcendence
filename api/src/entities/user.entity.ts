@@ -48,4 +48,9 @@ export class Users {
         nullable: false
     })
         avatar: string;
+
+    @Column({
+        nullable: false
+    })
+        current_status: string;
 }
