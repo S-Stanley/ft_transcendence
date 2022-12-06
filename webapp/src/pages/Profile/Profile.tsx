@@ -6,7 +6,7 @@ import UserStats from '../Statistics/UserStats';
 import Helpers from '../../helpers/Helpers';
 import { useNavigate } from 'react-router-dom';
 import { Box } from '@mui/system';
-
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
 const Profile = () => {
     const [user, setUser] = useState({
@@ -57,9 +57,16 @@ const Profile = () => {
                 <Typography id='nickname'>
                     { user.nickname }
                 </Typography>
-                <Button id='edit-button' onClick={() => navigate('/user')}>
-                    Edit Profile
-                </Button>
+                { user.nickname === localStorage.getItem('nickname') ?
+                    <Button id='edit-button' onClick={() => navigate('/user')}>
+                        Edit Profile
+                    </Button>
+                    :
+                    <Button id='add-friend-button'>
+                        Add Friend
+                        <PersonAddIcon sx={{ml: 1, mb: 0.2}}/>
+                    </Button>
+                }
             </h1>
             <h2>
                 <div id='statistics'>
