@@ -13,7 +13,8 @@ const Profile = () => {
         email: '',
         nickname: '',
         avatar: '',
-        current_status: ''
+        current_status: '',
+        friends: ['']
     });
     const userToGet = window.location.pathname.split('/')[2];
     const navigate = useNavigate();
@@ -39,6 +40,18 @@ const Profile = () => {
         }
         return color;
     };
+    const isFriend = (): boolean => {
+        try {
+            if (user.friends && user.friends.indexOf(localStorage.getItem('nickname')!) >= 0) {
+                return true;
+            }
+            return false;
+        }
+        catch (e) {
+            console.log(e);
+            return false;
+        }
+    };
     return (
         <Fragment>
             <h1>
@@ -47,12 +60,16 @@ const Profile = () => {
                     justifyContent='center'
                     alignItems='center'
                 >
-                    <Badge color={getColorStatus()} badgeContent='' sx={{ margin:3 }} anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'right',
-                    }}>
+                    { isFriend() ?
+                        <Badge color={getColorStatus()} badgeContent='' sx={{ margin:3 }} anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'right',
+                        }}>
+                            <Avatar id='avatar-display' alt={user.nickname} src={user.avatar}/>
+                        </Badge>
+                        :
                         <Avatar id='avatar-display' alt={user.nickname} src={user.avatar}/>
-                    </Badge>
+                    }
                 </Box>
                 <Typography id='nickname'>
                     { user.nickname }

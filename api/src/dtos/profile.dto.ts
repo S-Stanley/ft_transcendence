@@ -3,4 +3,5 @@ export interface UserDTO {
     nickname: string;
     avatar: string;
     current_status: string;
+    friends: string[];
 }

@@ -74,7 +74,8 @@ export class UserService {
             email: user.email,
             nickname: user.nickname,
             avatar: user.avatar,
-            current_status: user.current_status
+            current_status: user.current_status,
+            friends: user.friends
         };
     }
 
@@ -86,7 +87,8 @@ export class UserService {
             email: user.email,
             nickname: user.nickname,
             avatar: user.avatar,
-            current_status: user.current_status
+            current_status: user.current_status,
+            friends: user.friends
         };
     }
 

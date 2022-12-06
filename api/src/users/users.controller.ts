@@ -62,7 +62,8 @@ export class UsersController {
             email: req.rows[0].email,
             nickname: req.rows[0].nickname,
             avatar: req.rows[0].avatar,
-            current_status: req.rows[0].current_status
+            current_status: req.rows[0].current_status,
+            friends: req.rows[0].friends
         });
     }
 
