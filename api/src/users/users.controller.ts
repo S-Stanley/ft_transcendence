@@ -37,6 +37,11 @@ export class UsersController {
             });
     }
 
+    @Post('/status')
+    updateStatusAction(@Body() body: { nickname: string, current_status: string}): Promise<void> {
+        return this.userService.updateStatus(body.nickname, body.current_status);
+    }
+
     @Get('/:nickname')
     getUserProfileAction(@Param('nickname') nickname: string) : Promise<UserDTO> {
         return this.userService.getUserProfile(nickname);
@@ -52,6 +57,7 @@ export class UsersController {
             email: req.rows[0].email,
             nickname: req.rows[0].nickname,
             avatar: req.rows[0].avatar,
+            current_status: req.rows[0].current_status
         });
     }
 

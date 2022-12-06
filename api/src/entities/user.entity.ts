@@ -14,7 +14,8 @@ export class Users {
         email: string;
 
     @Column({
-        nullable: false
+        nullable: false,
+        unique: true
     })
         nickname: string;
 
@@ -48,4 +49,10 @@ export class Users {
         nullable: false
     })
         avatar: string;
+
+    @Column({
+        default: 'offline',
+        nullable: false
+    })
+        current_status: string;
 }

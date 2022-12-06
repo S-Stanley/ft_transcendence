@@ -1,14 +1,15 @@
 CREATE TABLE IF NOT EXISTS public.users(
     id                  SERIAL PRIMARY KEY NOT NULL,
     email               VARCHAR(255) NOT NULL,
-    nickname            VARCHAR(255) NOT NULL,
+    nickname            VARCHAR(255) NOT NULL UNIQUE,
     access_token        VARCHAR(255) DEFAULT NULL,
     refresh_token       VARCHAR(255) DEFAULT NULL,
     token_expires_at    DATE DEFAULT NULL,
     pass                VARCHAR(255) NOT NULL,
     token               UUID DEFAULT uuid_generate_v4() NOT NULL,
     created_at          DATE DEFAULT NULL,
-    avatar              VARCHAR(255) NOT NULL
+    avatar              VARCHAR(255) NOT NULL,
+    current_status      VARCHAR(255) DEFAULT 'offline'
 );
 
 CREATE TABLE IF NOT EXISTS public.history(

@@ -1,5 +1,6 @@
 import { Button, Typography } from "@mui/material";
 import React from "react";
+import Helpers from "../../../helpers/Helpers";
 
 export const End = ( props: { scoreOne: number; scoreTwo: number } ) => {
 
@@ -25,6 +26,7 @@ export const End = ( props: { scoreOne: number; scoreTwo: number } ) => {
                 size="large"
                 sx={{ ml:'730px', }}
                 href='/play'
+                onClick={() => Helpers.Users.updateStatus(localStorage.getItem('nickname')!, 'online')}
             >
 				Menu
             </Button>

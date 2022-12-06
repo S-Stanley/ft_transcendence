@@ -73,7 +73,8 @@ export class UserService {
         return {
             email: user.email,
             nickname: user.nickname,
-            avatar: user.avatar
+            avatar: user.avatar,
+            current_status: user.current_status
         };
     }
 
@@ -84,7 +85,8 @@ export class UserService {
         return {
             email: user.email,
             nickname: user.nickname,
-            avatar: user.avatar
+            avatar: user.avatar,
+            current_status: user.current_status
         };
     }
 
@@ -98,6 +100,14 @@ export class UserService {
                 }
             });
         return (data.user_id);
+    }
+
+    async updateStatus(nickname: string, current_status: string): Promise<void> {
+        const user = await this.userRepository.findOneBy({
+            nickname: nickname
+        });
+        user.current_status = current_status;
+        await this.userRepository.save(user);
     }
 
 }
