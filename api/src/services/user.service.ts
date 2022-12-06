@@ -110,4 +110,17 @@ export class UserService {
         await this.userRepository.save(user);
     }
 
+    async addFriend(friend: string, nickname: string): Promise<void> {
+        const user = await this.userRepository.findOneBy({
+            nickname: nickname
+        });
+        if (!user.friends) {
+            user.friends = [];
+        }
+        if (user.friends.indexOf(friend) == -1) {
+            user.friends.push(friend);
+            await this.userRepository.save(user);
+        }
+    }
+
 }

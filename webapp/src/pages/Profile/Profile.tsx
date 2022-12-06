@@ -62,7 +62,7 @@ const Profile = () => {
                         Edit Profile
                     </Button>
                     :
-                    <Button id='add-friend-button'>
+                    <Button id='add-friend-button' onClick={() => Helpers.Users.addFriend(user.nickname, localStorage.getItem('nickname')!)}>
                         Add Friend
                         <PersonAddIcon sx={{ml: 1, mb: 0.2}}/>
                     </Button>

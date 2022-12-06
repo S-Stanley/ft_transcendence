@@ -55,4 +55,9 @@ export class Users {
         nullable: false
     })
         current_status: string;
+
+    @Column('text', {
+        nullable: true
+    })
+        friends: string[];
 }

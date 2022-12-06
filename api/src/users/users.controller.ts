@@ -37,6 +37,11 @@ export class UsersController {
             });
     }
 
+    @Post('/add/:friend')
+    addFriendAction(@Param('friend') friend: string, @Body() body: { nickname: string }): Promise<void> {
+        return this.userService.addFriend(friend, body.nickname);
+    }
+
     @Post('/status')
     updateStatusAction(@Body() body: { nickname: string, current_status: string}): Promise<void> {
         return this.userService.updateStatus(body.nickname, body.current_status);
