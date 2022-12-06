@@ -1,5 +1,6 @@
 CREATE TABLE IF NOT EXISTS public.users(
     id                  SERIAL PRIMARY KEY NOT NULL,
+    id_42               INT DEFAULT NULL,
     email               VARCHAR(255) NOT NULL,
     nickname            VARCHAR(255) NOT NULL,
     access_token        VARCHAR(255) DEFAULT NULL,

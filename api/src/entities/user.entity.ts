@@ -11,6 +11,11 @@ export class Users {
     @Column({
         nullable: false
     })
+        id_42: number;
+
+    @Column({
+        nullable: false
+    })
         email: string;
 
     @Column({

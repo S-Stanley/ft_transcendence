@@ -46,12 +46,59 @@ const login_with_email = async(email: string, password: string): Promise<User | 
     }
 };
 
+const changeUserData = async (email:string, nickname:string): Promise<User | null | undefined> => {
+    try {
+        const res = await axios.get(`${Config.Api.url}/users/me`);
+        const req = await axios.post(`${Config.Api.url}/users/update`, {
+            email: email,
+            nickname: nickname,
+            id_42: res.data.id_42,
+        });
+        if (req.data.row[0])
+            return (req.data.rows[0]);
+    } catch (e) {
+        console.error(e);
+        return (null);
+    }
+};
+
+const checkNickname = async (nickname:string): Promise<boolean | undefined> => {
+    try {
+        const req = await axios.post(`${Config.Api.url}/users/checkNickname`, {
+            nickname: nickname,
+        });
+        if (req.data === true)
+            return (true);
+        return (false);
+    } catch (e) {
+        console.error(e);
+        return (false);
+    }
+};
+
+const checkEmail = async (email:string): Promise<boolean | undefined> => {
+    try {
+        const req = await axios.post(`${Config.Api.url}/users/checkEmail`, {
+            email: email,
+        });
+        if (req.data === true)
+            return (true);
+        return (false);
+    } catch (e) {
+        console.error(e);
+        return (false);
+    }
+};
+
 const Users = {
     login,
     me,
     findUserByEmail,
     login_with_email,
-    getUser
+    getUser,
+    changeUserData,
+    checkNickname,
+    checkEmail,
 };
 
 export default Users;
