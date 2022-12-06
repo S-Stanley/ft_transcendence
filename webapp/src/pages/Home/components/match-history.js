@@ -32,7 +32,7 @@ export const MatchHistory = (props) => {
         <Card {...props}>
             <CardHeader />
             <PerfectScrollbar>
-                <Box sx={{ minWidth: 800 }}>
+                <Box sx={{ minWidth: 800, }}>
                     <Table>
                         <TableHead>
                             <TableRow>

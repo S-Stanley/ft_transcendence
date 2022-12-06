@@ -6,8 +6,6 @@ import ListSubheader from '@mui/material/ListSubheader';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import NetworkPingIcon from '@mui/icons-material/NetworkPing';
 import PeopleIcon from '@mui/icons-material/People';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import PersonIcon from '@mui/icons-material/Person';
 import LocalPlayIcon from '@mui/icons-material/LocalPlay';
 import SendIcon from '@mui/icons-material/Send';
 import EmailIcon from '@mui/icons-material/Email';
@@ -25,12 +23,6 @@ export const mainListItems = (
                 <NetworkPingIcon />
             </ListItemIcon>
             <ListItemText primary="Play" />
-        </ListItemButton>
-        <ListItemButton href="/statistics">
-            <ListItemIcon>
-                <BarChartIcon />
-            </ListItemIcon>
-            <ListItemText primary="Statistics" />
         </ListItemButton>
         <ListItemButton href="/leaderboard">
             <ListItemIcon>
@@ -62,12 +54,6 @@ export const secondaryListItems = (
                 <PeopleIcon />
             </ListItemIcon>
             <ListItemText primary="Friends" />
-        </ListItemButton>
-        <ListItemButton href="/user">
-            <ListItemIcon>
-                <PersonIcon />
-            </ListItemIcon>
-            <ListItemText primary="User" />
         </ListItemButton>
     </React.Fragment>
 );

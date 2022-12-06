@@ -1,10 +1,10 @@
 import './Profile.scss';
 import { Fragment, useState } from 'react';
-import Typography from '@mui/material/Typography';
-import { Avatar, Button } from '@mui/material';
-import UserStats from '../Statistics/UserStats';
+import { Box } from '@mui/material';
+import Statistics from './components/Statistics';
 import Helpers from '../../helpers/Helpers';
-import { useNavigate } from 'react-router-dom';
+import { mdTheme } from '../Utils/Dashboard';
+import NewAppBar from '../Utils/NewAppBar';
 
 
 const Profile = () => {
@@ -14,7 +14,6 @@ const Profile = () => {
         avatar: ''
     });
     const userToGet = window.location.pathname.split('/')[2];
-    const navigate = useNavigate();
     if (user.nickname === '') {
         Helpers.Users.getUser(userToGet).then((res) => setUser(res!));
         if (user.nickname === '') {
@@ -26,26 +25,26 @@ const Profile = () => {
         }
     }
     return (
-        <Fragment>
-            <h1>
-                <Avatar id='avatar-display' alt={user.nickname} src={user.avatar}/>
-                <Typography id='nickname'>
-                    { user.nickname }
-                </Typography>
-                <Button id='edit-button' onClick={() => navigate('/user')}>
-                    Edit Profile
-                </Button>
-            </h1>
-            <h2>
+        <>
+            <NewAppBar/>
+            <Box
+                component="main" position="fixed"
+                sx={{
+                    top:'100px',
+                    left:'200px',
+                    right:'200px',
+                    backgroundColor: mdTheme.palette.grey[900],
+                    flexGrow: 1,
+                    height: '100vh',
+                    overflow: 'auto',
+                }}
+            >
                 <div id='statistics'>
-                    <UserStats/>
+                    <Statistics />
                 </div>
-                <Typography id='achievements'>
-                    Achievements
-                </Typography>
                 <div style={{ borderTop: '1px solid black', marginLeft: '22%', marginRight: '35%' }}/>
-            </h2>
-        </Fragment>
+            </Box>
+        </>
     );
 };
 

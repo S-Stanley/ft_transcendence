@@ -8,8 +8,6 @@ export default function Choose() {
             <Typography component="h2" variant="h6" color="primary" gutterBottom>
                 Connected Friends
             </Typography>
-            <br></br>
-            <br></br>
             <Button
                 color="secondary"
                 variant="contained"
