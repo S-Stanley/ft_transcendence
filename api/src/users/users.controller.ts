@@ -37,6 +37,7 @@ export class UsersController {
             });
     }
 
+<<<<<<< HEAD
     @Post('/add/:friend')
     addFriendAction(@Param('friend') friend: string, @Body() body: { nickname: string }): Promise<void> {
         return this.userService.addFriend(friend, body.nickname);
@@ -79,6 +80,19 @@ export class UsersController {
         return this.db.query(`SELECT * FROM users WHERE id_42=${body.id_42}`);
     }
 
+=======
+    @Get('all')
+    getAllUsers(): Promise<UserDTO> {
+        return this.db.query('SELECT * FROM users').then((result: {rows: any}) => {
+            return (result);
+        })
+            .catch((e:any) => {
+                console.error(e);
+                throw new HttpException('Problem occured when fetching all users', 500);
+            });
+    }
+
+>>>>>>> 1719295 (feat(webapp): search friends, go to profile page and add)
     @Post('/status')
     updateStatusAction(@Body() body: { nickname: string, current_status: string}): Promise<void> {
         return this.userService.updateStatus(body.nickname, body.current_status);
