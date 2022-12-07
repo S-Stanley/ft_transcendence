@@ -75,7 +75,6 @@ const updateStatus = async(nickname: string, current_status: string): Promise<an
     }
 };
 
-
 const checkNickname = async (nickname:string): Promise<boolean | undefined> => {
     try {
         const req = await axios.post(`${Config.Api.url}/users/checkNickname`, {
