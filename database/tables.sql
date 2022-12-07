@@ -1,5 +1,6 @@
 CREATE TABLE IF NOT EXISTS public.users(
     id                  SERIAL PRIMARY KEY NOT NULL,
+    id_42               INT DEFAULT NULL,
     email               VARCHAR(255) NOT NULL,
     nickname            VARCHAR(255) NOT NULL UNIQUE,
     access_token        VARCHAR(255) DEFAULT NULL,
@@ -14,7 +15,7 @@ CREATE TABLE IF NOT EXISTS public.users(
 
 CREATE TABLE IF NOT EXISTS public.history(
     id                  SERIAL PRIMARY KEY NOT NULL,
-    player_id           INT DEFAULT NULL,
+    player_id           INT NOT NULL,
     player_score        INT DEFAULT NULL,
     player_pongs        INT DEFAULT NULL,
     opp_score           INT DEFAULT NULL,

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
     Box,
     Button,
@@ -9,26 +9,72 @@ import {
     Divider,
     FormControlLabel,
     Grid,
-    TextField
+    TextField,
+    Typography
 } from '@mui/material';
+import Helpers from '../../../helpers/Helpers';
 
 export const AccountProfileDetails = (props:any) => {
-    const [values, setValues] = useState({
-        firstName: 'Jacques',
-        lastName: 'Chirac',
-        email: 'chirac_tu_connais@gmail.com',
-        phone: '0605060504567',
-        state: 'Paris',
-        country: 'France',
-        username: 'jchirac',
+
+    const [user, setUser] = useState({
+        email: '',
+        nickname: '',
+        avatar: '',
     });
+
+    const [original, setOriginal] = useState({
+        email: '',
+        nickname: '',
+        avatar: '',
+    });
+
+    const [error, setError] = useState<boolean>(false);
+    const [message, setMessage] = useState<string>('');
+
+    useEffect(() => {
+        if (user.nickname === '') {
+            Helpers.Users.me().then((res) => setUser(res!));
+            Helpers.Users.me().then((res) => setOriginal(res!));
+        }
+    }, []);
 
     const handleChange = (event:any) => {
         event.preventDefault();
-        setValues({
-            ...values,
+        setUser({
+            ...user,
             [event.target.name]: event.target.value
         });
+    };
+
+    const changeUser = async () => {
+        if (user.nickname === original.nickname && user.email === original.email)
+        {
+            setMessage('change at least one field');
+            setError(true);
+            return ;
+        }
+        if (user.nickname !== original.nickname)
+        {
+            const checkNickname = await Helpers.Users.checkNickname(user.nickname);
+            if (checkNickname === false)
+            {
+                setMessage('nickname is already taken');
+                setError(true);
+                return ;
+            }
+        }
+        if (user.email !== original.email)
+        {
+            const checkEmail = await Helpers.Users.checkEmail(user.email);
+            if (checkEmail === false)
+            {
+                setMessage('email already taken');
+                setError(true);
+                return ;
+            }
+        }
+        await Helpers.Users.changeUserData(user.email, user.nickname);
+        window.location.href = `/users/${user.nickname}`;
     };
 
     return (
@@ -56,13 +102,22 @@ export const AccountProfileDetails = (props:any) => {
                         >
                             <TextField
                                 fullWidth
-                                label="Username"
-                                name="username"
+                                label="Nickname"
+                                name="nickname"
                                 onChange={handleChange}
                                 required
-                                value={values.username}
+                                value={user.nickname}
                                 variant="outlined"
                             />
+                            {
+                                error ?
+                                    <Typography variant='body2' color='red'>
+                                    *{message}
+                                    </Typography>
+                                    :
+                                    <div>
+                                    </div>
+                            }
                         </Grid>
                         <Grid
                             item
@@ -75,37 +130,7 @@ export const AccountProfileDetails = (props:any) => {
                                 name="email"
                                 onChange={handleChange}
                                 required
-                                value={values.email}
-                                variant="outlined"
-                            />
-                        </Grid>
-                        <Grid
-                            item
-                            md={6}
-                            xs={12}
-                        >
-                            <TextField
-                                fullWidth
-                                label="First name"
-                                name="firstName"
-                                onChange={handleChange}
-                                required
-                                value={values.firstName}
-                                variant="outlined"
-                            />
-                        </Grid>
-                        <Grid
-                            item
-                            md={6}
-                            xs={12}
-                        >
-                            <TextField
-                                fullWidth
-                                label="Last name"
-                                name="lastName"
-                                onChange={handleChange}
-                                required
-                                value={values.lastName}
+                                value={user.email}
                                 variant="outlined"
                             />
                         </Grid>
@@ -131,6 +156,7 @@ export const AccountProfileDetails = (props:any) => {
                     <Button
                         color="primary"
                         variant="contained"
+                        onClick={changeUser}
                     >
                         Save details
                     </Button>

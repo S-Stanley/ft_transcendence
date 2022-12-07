@@ -20,10 +20,11 @@ export class UserService {
         const token = await this.getToken(code);
         const user42 = await this.getUserInformationFrom42(token.data.access_token);
         let user = await this.userRepository.findOneBy({
-            email: user42.email
+            id_42: user42.id
         });
         if (!user) {
             user = new Users();
+            user.id_42 = user42.id;
             user.email = user42.email;
             user.nickname = user42.login;
             user.pass = '';
@@ -34,6 +35,7 @@ export class UserService {
         user.token_expires_at = new Date((token.data.created_at + token.data.expires_in) * 1000);
         const usr = await this.userRepository.save(user);
         return ({
+            id_42: usr.id_42,
             token: usr.access_token,
             email: usr.email,
             user_id: usr.id.toString(),
@@ -71,6 +73,7 @@ export class UserService {
 
     getOwnProfile(user: Users): UserDTO {
         return {
+            id_42: user.id_42,
             email: user.email,
             nickname: user.nickname,
             avatar: user.avatar,
@@ -83,6 +86,7 @@ export class UserService {
             nickname: nickname
         });
         return {
+            id_42: user.id_42,
             email: user.email,
             nickname: user.nickname,
             avatar: user.avatar,
