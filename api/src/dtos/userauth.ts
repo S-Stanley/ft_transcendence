@@ -1,4 +1,5 @@
 export interface UserAuth {
+    id_42: number,
     token?: string,
     email: string,
     user_id: string,

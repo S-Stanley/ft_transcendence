@@ -1,5 +1,6 @@
 INSERT INTO
     public.users (
+        id_42,
         email,
         pass,
         nickname,
@@ -9,6 +10,7 @@ INSERT INTO
         avatar
     )
 VALUES (
+    123456,
     'demo@42.fr',
     crypt('password', gen_salt('bf',11)),
     'demo',
@@ -17,6 +19,7 @@ VALUES (
     '2022-11-24 22:06:26',
     'https://cdn.intra.42.fr/users/a899eb9e2861522b8beead0baf1a38db/sserbin.jpg'
 ), (
+    45678,
     'staff@transcendence.fr',
     crypt('password', gen_salt('bf',11)),
     'staff',
