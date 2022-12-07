@@ -40,6 +40,8 @@ export class UsersController {
     @Post('/add/:friend')
     addFriendAction(@Param('friend') friend: string, @Body() body: { nickname: string }): Promise<void> {
         return this.userService.addFriend(friend, body.nickname);
+    }
+
     @Post('/checkNickname')
     checkNickname(@Body() body: { nickname: string }): Promise<boolean> {
         return this.db.query(`SELECT * FROM users WHERE nickname='${body.nickname}'`)

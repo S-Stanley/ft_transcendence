@@ -84,6 +84,9 @@ const addFriend = async(friend: string, nickname: string): Promise<any> => {
     } catch (e) {
         console.error(e);
         return (null);
+    }
+};
+
 const checkNickname = async (nickname:string): Promise<boolean | undefined> => {
     try {
         const req = await axios.post(`${Config.Api.url}/users/checkNickname`, {
