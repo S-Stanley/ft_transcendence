@@ -3,5 +3,6 @@ export interface User {
     nickname: string,
     avatar: string,
     user_id: string,
-    token: string
+    token: string,
+    current_status: string
 }

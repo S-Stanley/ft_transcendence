@@ -1,8 +1,6 @@
 #avatar-display {
-    margin-left: auto;
-    margin-right: auto;
-    width: 150px;
-    height: 150px;
+    width: 11rem;
+    height: 11rem;
 }
 
 #nickname {
@@ -27,12 +25,16 @@
 
 #achievements {
     display: block;
-    margin-left: 22%;
-    font-size: 2rem;
+    position: relative;
+    bottom: 10rem;
+    margin-left: 19%;
+    font-size: 1.5rem;
 }
 
 #statistics {
-    display: block;
-    max-width: 60%;
-    margin-left: 20%;
+    position: relative;
+    bottom: 6rem;
+    transform: scale(0.8);
+    margin-left: 10%;
+    max-width: 80%
 }

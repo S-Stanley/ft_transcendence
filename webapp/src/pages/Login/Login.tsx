@@ -24,6 +24,7 @@ function Login() {
                     position: "bottom-left",
                 });
                 navigate('/home');
+                Helpers.Users.updateStatus(req.nickname, 'online');
             }
         }
     };

@@ -69,10 +69,14 @@ export class UsersController {
 
     @Post('/update')
     async changeUserData(@Body() body: { email: string, nickname: string, id_42: number}): Promise<UserDTO> {
-        console.log(`the email is ${body.email}, the nickname is ${body.nickname}, the id is ${body.id_42}`);
         await this.db.query(`UPDATE users SET email='${body.email}' WHERE id_42='${body.id_42}'`);
         await this.db.query(`UPDATE users SET nickname='${body.nickname}' WHERE id_42='${body.id_42}'`);
         return this.db.query(`SELECT * FROM users WHERE id_42=${body.id_42}`);
+    }
+
+    @Post('/status')
+    updateStatusAction(@Body() body: { nickname: string, current_status: string}): Promise<void> {
+        return this.userService.updateStatus(body.nickname, body.current_status);
     }
 
     @Get('/:nickname')
@@ -91,6 +95,7 @@ export class UsersController {
             email: req.rows[0].email,
             nickname: req.rows[0].nickname,
             avatar: req.rows[0].avatar,
+            current_status: req.rows[0].current_status
         });
     }
 

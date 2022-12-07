@@ -29,6 +29,7 @@ export const Play = () => {
         avatar: '',
     });
     const disconnectUser = () => {
+        Helpers.Users.updateStatus(user.nickname, 'offline');
         localStorage.clear();
         navigate('/');
     };

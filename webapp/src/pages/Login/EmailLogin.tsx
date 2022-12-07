@@ -22,6 +22,7 @@ function EmailLogin() {
             localStorage.setItem('user_id', req.user_id);
             localStorage.setItem('nickname', req.nickname);
             navigate('/home');
+            Helpers.Users.updateStatus(req.nickname, 'online');
         } else {
             toast.error('Wrong email or wrong password!');
         }
