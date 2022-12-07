@@ -59,13 +59,24 @@ const updateStatus = async(nickname: string, current_status: string): Promise<an
     }
 };
 
+const getAllUsers = async(): Promise<any> => {
+    try {
+        const res = await axios.get(`${Config.Api.url}/users/all`);
+        return (res.data);
+    } catch (e) {
+        console.error(e);
+        return (null);
+    }
+};
+
 const Users = {
     login,
     me,
     findUserByEmail,
     login_with_email,
     getUser,
-    updateStatus
+    updateStatus,
+    getAllUsers,
 };
 
 export default Users;

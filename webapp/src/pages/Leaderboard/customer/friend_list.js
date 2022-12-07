@@ -1,37 +1,16 @@
-import { useState } from 'react';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import PropTypes from 'prop-types';
-import { format } from 'date-fns';
-import {
-    Avatar,
-    Box,
-    Card,
-    Button,
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TablePagination,
-    TableRow,
-    Typography
-} from '@mui/material';
+import { Avatar, Box, Card, Button, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
 
-export const CustomerListResults = ({ customers, ...rest }) => {
-    const [limit, setLimit] = useState(10);
-    const [page, setPage] = useState(0);
+export const FriendList = ({ users }) => {
 
-    const handleLimitChange = (event) => {
-        setLimit(event.target.value);
-    };
-
-    const handlePageChange = (event, newPage) => {
-        setPage(newPage);
+    const toUserProfile = (nickname) => {
+        window.location.href = `users/${nickname}`;
     };
 
     return (
-        <Card {...rest}>
+        <Card>
             <PerfectScrollbar>
-                <Box sx={{ minWidth: 1050 }}>
+                <Box>
                     <Table>
                         <TableHead>
                             <TableRow>
@@ -52,11 +31,8 @@ export const CustomerListResults = ({ customers, ...rest }) => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {customers.slice(0, limit).map((customer) => (
-                                <TableRow
-                                    hover
-                                    key={customer.id}
-                                >
+                            {users.map((users) => (
+                                <TableRow key={users.id}>
                                     <TableCell>
                                         <Box
                                             sx={{
@@ -65,7 +41,7 @@ export const CustomerListResults = ({ customers, ...rest }) => {
                                             }}
                                         >
                                             <Avatar
-                                                src={customer.avatarUrl}
+                                                src={users.avatar}
                                                 sx={{ mr: 2 }}
                                             >
                                             </Avatar>
@@ -73,18 +49,28 @@ export const CustomerListResults = ({ customers, ...rest }) => {
                                                 color="textPrimary"
                                                 variant="body1"
                                             >
-                                                {customer.username}
+                                                {users.nickname}
                                             </Typography>
                                         </Box>
                                     </TableCell>
                                     <TableCell>
-                                        {`${customer.ratio}`}
+                                        0.75 (hc)
                                     </TableCell>
                                     <TableCell>
-                                        {format(customer.lastConnection, 'dd/MM/yyyy')}
+                                        07/12/2022 (hc)
                                     </TableCell>
                                     <TableCell>
-                                        {customer.email}
+                                        {users.email}
+                                    </TableCell>
+                                    <TableCell>
+                                        <Button
+                                            onClick={() => {toUserProfile(users.nickname);}}
+                                            size="small"
+                                            color="secondary"
+                                            variant="outlined"
+                                        >
+                                        View Profile
+                                        </Button>
                                     </TableCell>
                                     <TableCell>
                                         <Button
@@ -101,19 +87,6 @@ export const CustomerListResults = ({ customers, ...rest }) => {
                     </Table>
                 </Box>
             </PerfectScrollbar>
-            <TablePagination
-                component="div"
-                count={customers.length}
-                onPageChange={handlePageChange}
-                onRowsPerPageChange={handleLimitChange}
-                page={page}
-                rowsPerPage={limit}
-                rowsPerPageOptions={[5, 10, 25]}
-            />
         </Card>
     );
-};
-
-CustomerListResults.propTypes = {
-    customers: PropTypes.array.isRequired
 };
