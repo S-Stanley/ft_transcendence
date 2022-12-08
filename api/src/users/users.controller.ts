@@ -37,6 +37,11 @@ export class UsersController {
             });
     }
 
+    @Post('/add/:friend')
+    addFriendAction(@Param('friend') friend: string, @Body() body: { nickname: string }): Promise<void> {
+        return this.userService.addFriend(friend, body.nickname);
+    }
+
     @Post('/checkNickname')
     checkNickname(@Body() body: { nickname: string }): Promise<boolean> {
         return this.db.query(`SELECT * FROM users WHERE nickname='${body.nickname}'`)
@@ -95,7 +100,8 @@ export class UsersController {
             email: req.rows[0].email,
             nickname: req.rows[0].nickname,
             avatar: req.rows[0].avatar,
-            current_status: req.rows[0].current_status
+            current_status: req.rows[0].current_status,
+            friends: req.rows[0].friends
         });
     }
 

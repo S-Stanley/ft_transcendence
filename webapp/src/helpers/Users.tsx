@@ -75,6 +75,18 @@ const updateStatus = async(nickname: string, current_status: string): Promise<an
     }
 };
 
+const addFriend = async(friend: string, nickname: string): Promise<any> => {
+    try {
+        const res = await axios.post(`${Config.Api.url}/users/add/${friend}`, {
+            nickname: nickname
+        });
+        return (res.data);
+    } catch (e) {
+        console.error(e);
+        return (null);
+    }
+};
+
 const checkNickname = async (nickname:string): Promise<boolean | undefined> => {
     try {
         const req = await axios.post(`${Config.Api.url}/users/checkNickname`, {
@@ -109,10 +121,11 @@ const Users = {
     findUserByEmail,
     login_with_email,
     getUser,
+    updateStatus,
+    addFriend,
     changeUserData,
     checkNickname,
-    checkEmail,
-    updateStatus
+    checkEmail
 };
 
 export default Users;
