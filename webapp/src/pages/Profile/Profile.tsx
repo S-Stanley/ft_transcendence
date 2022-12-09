@@ -2,10 +2,11 @@ import './Profile.scss';
 import { Fragment, useState } from 'react';
 import Typography from '@mui/material/Typography';
 import { Avatar, Badge, Button } from '@mui/material';
-import UserStats from '../Statistics/UserStats';
 import Helpers from '../../helpers/Helpers';
 import { useNavigate } from 'react-router-dom';
 import { Box } from '@mui/system';
+import Statistics from './components/Statistics';
+import NewAppBar from '../Utils/NewAppBar';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
 const Profile = () => {
@@ -54,6 +55,7 @@ const Profile = () => {
     };
     return (
         <Fragment>
+            <NewAppBar/>
             <h1>
                 <Box
                     display='flex'
@@ -87,7 +89,7 @@ const Profile = () => {
             </h1>
             <h2>
                 <div id='statistics'>
-                    <UserStats/>
+                    <Statistics/>
                 </div>
                 <Typography id='achievements'>
                     Achievements

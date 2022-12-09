@@ -1,11 +1,13 @@
 import { Fragment, useState } from "react";
-import { Button, TextField } from "@mui/material";
+import { Box, Button, TextField } from "@mui/material";
 import Helpers from "../../helpers/Helpers";
 import { useNavigate } from "react-router-dom";
+import NewAppBar from '../Utils/NewAppBar';
 
 import './Messagerie.scss';
+import { mdTheme } from "../Utils/Dashboard";
 
-const MessageBar = () => {
+const Messaging = () => {
 
     const [userToFind, setUserToFind] = useState<string>("");
     const navigate = useNavigate();
@@ -30,34 +32,48 @@ const MessageBar = () => {
 
     return (
         <Fragment>
-            <div
-                id='div-message-messaging'
+            <NewAppBar />
+            <Box
+                component="main" position="fixed"
+                sx={{
+                    top:'100px',
+                    left:'200px',
+                    right:'200px',
+                    backgroundColor: mdTheme.palette.grey[900],
+                    flexGrow: 1,
+                    height: '100vh',
+                    overflow: 'auto',
+                }}
             >
-            </div>
-            <form
-                onSubmit={handleSubmit}
-            >
-                <TextField
-                    label="Email of user to send a message"
-                    variant="standard"
-                    type='email'
-                    value={userToFind}
-                    onChange={(e) => setUserToFind(e.target.value)}
-                    inputProps={{
-                        'id': 'input-messagerie-email'
-                    }}
-                />
-                <br />
-                <Button
-                    variant="contained"
-                    type="submit"
-                    id='submit-button-messagerie'
+                <div
+                    id='div-message-messaging'
                 >
-                    Validate
-                </Button>
-            </form>
+                </div>
+                <form
+                    onSubmit={handleSubmit}
+                >
+                    <TextField
+                        label="Email of user to send a message"
+                        variant="standard"
+                        type='email'
+                        value={userToFind}
+                        onChange={(e) => setUserToFind(e.target.value)}
+                        inputProps={{
+                            'id': 'input-messagerie-email'
+                        }}
+                    />
+                    <br />
+                    <Button
+                        variant="contained"
+                        type="submit"
+                        id='submit-button-messagerie'
+                    >
+                        Validate
+                    </Button>
+                </form>
+            </Box>
         </Fragment>
     );
 };
 
-export default MessageBar;
+export default Messaging;

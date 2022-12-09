@@ -1,18 +1,30 @@
-import './Game.scss';
 import { Fragment } from 'react';
 import Pong from './components/Pong';
-import { Button } from '@mui/material';
-import Helpers from '../../helpers/Helpers';
+import { Box, Button } from '@mui/material';
+import { mdTheme } from '../Utils/Dashboard';
+import NewAppBar from '../Utils/NewAppBar';
 
 const Game = () => {
-    const nickname = localStorage.getItem('nickname')!;
-    Helpers.Users.updateStatus(nickname, 'in-game');
     return (
         <Fragment>
-            <Button href="/play" onClick={() => Helpers.Users.updateStatus(nickname, 'online')}>
-                Exit
-            </Button>
-            <Pong/>
+            <NewAppBar/>
+            <Box
+                component="main" position="fixed"
+                sx={{
+                    top:'0px',
+                    left:'200px',
+                    right:'200px',
+                    backgroundColor: mdTheme.palette.grey[900],
+                    flexGrow: 1,
+                    height: '100vh',
+                    overflow: 'auto',
+                }}
+            >
+                <Button href="/play">
+                    Exit
+                </Button>
+                <Pong/>
+            </Box>
         </Fragment>
     );
 };

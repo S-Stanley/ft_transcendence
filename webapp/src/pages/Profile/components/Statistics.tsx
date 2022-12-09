@@ -1,16 +1,16 @@
 import { Box, Container, Grid, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { Loses } from './components/lost';
-import { MatchHistory } from './components/match-history';
-import { Ratio } from './components/ratio';
-import { Pongs } from './components/pongs';
-import { Wins } from './components/won';
-import { Default } from './components/default';
-import { Scored } from './components/scored';
-import { Taken } from './components/taken';
-import Helpers from '../../helpers/Helpers';
+import { Loses } from './lost';
+import { MatchHistory } from './match-history';
+import { Ratio } from './ratio';
+import { Pongs } from './pongs';
+import { Wins } from './won';
+import { Default } from './default';
+import { Scored } from './scored';
+import { Taken } from './taken';
+import Helpers from '../../../helpers/Helpers';
 
-const UserStats = () => {
+const Statistics = () => {
 
     const [values, setValues] = useState({
         numberPongs: '',
@@ -151,4 +151,4 @@ const UserStats = () => {
     );
 };
 
-export default UserStats;
+export default Statistics;

@@ -125,7 +125,7 @@ const Users = {
     addFriend,
     changeUserData,
     checkNickname,
-    checkEmail
+    checkEmail,
 };
 
 export default Users;
