@@ -4,19 +4,18 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import axios from 'axios';
 import './global.scss';
 
-import Leaderboard from './pages/Leaderboard';
-import Home from "./pages/Home";
-import User from "./pages/User";
-import Statistics from './pages/Statistics';
 import Login from './pages/Login/Login';
-import Messaging from './pages/messagerie';
-import Chat from './pages/chat';
 import EmailLogin from './pages/Login/EmailLogin';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Game from './pages/Pong/Game';
 import { Play } from './pages/Play';
-import UserProfile from './pages/Profile';
+import Account from './pages/User/Account';
+import Profile from './pages/Profile/Profile';
+import Messaging from './pages/messagerie/Messagerie';
+import Leaderboard from './pages/Leaderboard/Leaderboard';
+import Home from './pages/Home/Home';
+import Chat from './pages/chat/Chat';
 
 
 const root = ReactDOM.createRoot(
@@ -54,10 +53,9 @@ root.render(
             <Route path='/chat' element={<Chat/>} />
             <Route path="/play" element={<Play />} />
             <Route path="/play/pong" element={<Game />} />
-            <Route path="/user" element={<User />} />
-            <Route path='/users/:nickname' element={<UserProfile/>} />
+            <Route path="/user" element={<Account />} />
+            <Route path='/users/:nickname' element={<Profile/>} />
             <Route path="/leaderboard" element={<Leaderboard />} />
-            <Route path="/statistics" element={<Statistics />} />
             <Route path="/login/email" element={<EmailLogin />} />
         </Routes>
     </BrowserRouter>

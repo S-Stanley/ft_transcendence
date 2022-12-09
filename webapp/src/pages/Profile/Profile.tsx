@@ -2,18 +2,20 @@ import './Profile.scss';
 import { Fragment, useState } from 'react';
 import Typography from '@mui/material/Typography';
 import { Avatar, Badge, Button } from '@mui/material';
-import UserStats from '../Statistics/UserStats';
 import Helpers from '../../helpers/Helpers';
 import { useNavigate } from 'react-router-dom';
 import { Box } from '@mui/system';
-
+import Statistics from './components/Statistics';
+import NewAppBar from '../Utils/NewAppBar';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
 const Profile = () => {
     const [user, setUser] = useState({
         email: '',
         nickname: '',
         avatar: '',
-        current_status: ''
+        current_status: '',
+        friends: ['']
     });
     const userToGet = window.location.pathname.split('/')[2];
     const navigate = useNavigate();
@@ -39,31 +41,55 @@ const Profile = () => {
         }
         return color;
     };
+    const isFriend = (): boolean => {
+        try {
+            if (user.friends && user.friends.indexOf(localStorage.getItem('nickname')!) >= 0) {
+                return true;
+            }
+            return false;
+        }
+        catch (e) {
+            console.log(e);
+            return false;
+        }
+    };
     return (
         <Fragment>
+            <NewAppBar/>
             <h1>
                 <Box
                     display='flex'
                     justifyContent='center'
                     alignItems='center'
                 >
-                    <Badge color={getColorStatus()} badgeContent='' sx={{ margin:3 }} anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'right',
-                    }}>
+                    { isFriend() ?
+                        <Badge color={getColorStatus()} badgeContent='' sx={{ margin:3 }} anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'right',
+                        }}>
+                            <Avatar id='avatar-display' alt={user.nickname} src={user.avatar}/>
+                        </Badge>
+                        :
                         <Avatar id='avatar-display' alt={user.nickname} src={user.avatar}/>
-                    </Badge>
+                    }
                 </Box>
                 <Typography id='nickname'>
                     { user.nickname }
                 </Typography>
-                <Button id='edit-button' onClick={() => navigate('/user')}>
-                    Edit Profile
-                </Button>
+                { user.nickname === localStorage.getItem('nickname') ?
+                    <Button id='edit-button' onClick={() => navigate('/user')}>
+                        Edit Profile
+                    </Button>
+                    :
+                    <Button id='add-friend-button' onClick={() => Helpers.Users.addFriend(user.nickname, localStorage.getItem('nickname')!)}>
+                        Add Friend
+                        <PersonAddIcon sx={{ml: 1, mb: 0.2}}/>
+                    </Button>
+                }
             </h1>
             <h2>
                 <div id='statistics'>
-                    <UserStats/>
+                    <Statistics/>
                 </div>
                 <Typography id='achievements'>
                     Achievements

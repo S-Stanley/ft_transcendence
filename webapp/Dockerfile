@@ -1,6 +1,7 @@
 FROM node:19
 
-RUN apt install -y chromium chromium-browser
+RUN apt-get update
+RUN apt install -y chromium
 
 COPY . /app
 
