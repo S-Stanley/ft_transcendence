@@ -3,6 +3,12 @@ import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 /* By default, the field nullable is set by true. To be more explicit
 on the scope of this project, we add this field*/
 
+export enum userStatus {
+    OFFLINE = 'offline',
+    ONLINE = 'online',
+    IN_GAME = 'in-game'
+}
+
 @Entity()
 export class Users {
     @PrimaryGeneratedColumn()
@@ -57,7 +63,9 @@ export class Users {
         avatar: string;
 
     @Column({
-        default: 'offline',
+        type: "enum",
+        enum: userStatus,
+        default: userStatus.OFFLINE,
         nullable: false
     })
         current_status: string;
