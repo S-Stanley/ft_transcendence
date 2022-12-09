@@ -103,6 +103,21 @@ const checkEmail = async (email:string): Promise<boolean | undefined> => {
     }
 };
 
+const saveProfilePicture = async (avatar:string): Promise<User | null | undefined> => {
+    try {
+        const res = await axios.get(`${Config.Api.url}/users/me`);
+        const req = await axios.post(`${Config.Api.url}/users/update`, {
+            avatar: avatar,
+            id_42: res.data.id_42,
+        });
+        if (req.data.row[0])
+            return (req.data.rows[0]);
+    } catch (e) {
+        console.error(e);
+        return (null);
+    }
+};
+
 const Users = {
     login,
     me,
@@ -112,7 +127,8 @@ const Users = {
     changeUserData,
     checkNickname,
     checkEmail,
-    updateStatus
+    updateStatus,
+    saveProfilePicture,
 };
 
 export default Users;

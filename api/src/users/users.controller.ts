@@ -1,10 +1,16 @@
-import { Controller, Post, Body, Get, HttpException, Inject, Param } from '@nestjs/common';
+import { Controller, Post, Body, Get, HttpException, Inject, Param, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+// import { diskStorage } from 'multer';
 import { UserConnected } from 'src/configs/userconnected.decorator';
 import { UserDTO } from 'src/dtos/profile.dto';
 import { UserAuth } from 'src/dtos/userauth';
 import { Users } from 'src/entities/user.entity';
 import { UserService } from 'src/services/user.service';
+import { v4 as uuid } from 'uuid';
+import { Res } from  '@nestjs/common';
+// import { diskStorage, imageFileFilter } from 'multer';
 
 @Controller('users')
 @Injectable()
@@ -74,9 +80,21 @@ export class UsersController {
         return this.db.query(`SELECT * FROM users WHERE id_42=${body.id_42}`);
     }
 
+    @Post('/update_picture')
+    async updateProfilePicture(@Body() body: { avatar: string, id_42: number}): Promise<UserDTO> {
+        await this.db.query(`UPDATE users SET avatar='${body.avatar}' WHERE id_42='${body.id_42}'`);
+        return this.db.query(`SELECT * FROM users WHERE id_42=${body.id_42}`);
+    }
+
     @Post('/status')
     updateStatusAction(@Body() body: { nickname: string, current_status: string}): Promise<void> {
         return this.userService.updateStatus(body.nickname, body.current_status);
+    }
+
+    @Get('picture')
+    serveAvatar(@Res() res): Promise<any> {
+        console.log('request sent');
+        return res.sendFile('coucou.jpeg', { root: './src/uploads' });
     }
 
     @Get('/:nickname')
@@ -119,4 +137,26 @@ export class UsersController {
                 throw new HttpException('Email or password incorrect', 500);
             });
     }
+
+    @UseInterceptors(FileInterceptor('file', {
+        limits: {
+            files: 1,
+            fileSize: 5 * 10 * 10 * 10 * 10 * 10 * 10 * 10 // 50 mb in bytes
+        },
+        storage: diskStorage({
+            destination: (req, file, cb) => cb(null, './src/uploads'),
+            filename: (req, file, cb) => cb(null, `${uuid() + '.' + file.originalname.split('.').pop()}`)
+        })
+    }))
+    @Post('picture')
+    uploadFile(
+      @Body() body: {name: string},
+      @UploadedFile() file: Express.Multer.File,
+    ) {
+        console.log(file);
+        return {
+            file,
+        };
+    }
+
 }

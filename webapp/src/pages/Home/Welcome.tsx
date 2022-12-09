@@ -1,18 +1,46 @@
-import { Button, Container, Grid, Paper } from "@mui/material";
+// import { Button } from "@mui/material";
+// import { Box, Container, Grid, Paper } from "@mui/material";
+import { Avatar, Container, Grid, Paper } from "@mui/material";
 import { MatchHistory } from "./components/match-history";
 import Copyright from "../Utils/Copyright";
 import Choose from "./components/Choose";
 import Connected from "./components/Connected";
-import { ChangeEvent } from "react";
+import axios from "axios";
+import Config from "../../config/Config";
+import { useState } from "react";
+// import Helpers from "../../helpers/Helpers";
+// import { useEffect, useState } from "react";
+// import { CardMedia } from '@mui/material';
+// import Helpers from "../../helpers/Helpers";
 
 const Welcome = () => {
 
-    const handleInput = (event: ChangeEvent<HTMLInputElement>) => {
-        console.log(event.target.files);
-    };
+    const [test, setTest] = useState<string>('');
 
-    const sendPhoto = () => {
-        console.log('sent');
+    const handleSubmit = async (e:any) => {
+        e.preventDefault();
+        const file = e.target[0].files[0];
+        file.originalname = 'ouechlamiff';
+        console.log('uncoming file', file);
+        try {
+            const req = await axios.post(`${Config.Api.url}/users/picture`, {
+                file,
+            }, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                }
+            });
+            // Helpers.saveProfilePicture('http://localhost:5000/')
+            // http://localhost:5000/coucou.jpeg
+            console.log('response from post', req.data.file);
+            const path = "./../../../../api/" + req.data.file.path;
+            setTest(path);
+            console.log('string is ', path);
+            console.log(test);
+        } catch (e) {
+            console.error(e);
+            return (null);
+        }
     };
 
     return (
@@ -51,11 +79,15 @@ const Welcome = () => {
             <br></br>
             <Copyright />
             <div>
-                <input accept="image/*" type="file" onChange={event => handleInput(event)}/>
-                <Button onClick={sendPhoto}>
-                upload
-                </Button>
+                <form onSubmit={handleSubmit} encType="multipart/form-data">
+                    <label>Upload File:</label>
+                    <input type="file" name="picture" accept="image/*"/>
+                    <button type="submit">Upload</button>
+                </form>
             </div>
+            <Avatar src='http://localhost:5000/coucou.jpeg'>
+                coucou
+            </Avatar>
         </Container>
     );
 };

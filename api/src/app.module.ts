@@ -14,6 +14,9 @@ import { UserService } from './services/user.service';
 import { SocketGateway } from './socket.gateway';
 import { HistoryController } from './history/history.controller';
 import { HistoryService } from './services/history.service';
+import { MulterModule } from '@nestjs/platform-express';
+import { ServeStaticModule } from '@nestjs/serve-static/dist/serve-static.module';
+import { join } from 'path';
 
 @Module({
     imports:
@@ -33,6 +36,10 @@ import { HistoryService } from './services/history.service';
             entities: [Users, History],               // On renseigne ici les entités voulant être mappées en base de données
         }),
         TypeOrmModule.forFeature([Users, History]),     // On renseigne ici les entités possédant un repository
+        MulterModule.register({dest: './src/uploads',}),
+        ServeStaticModule.forRoot({
+            rootPath: join(__dirname, '..', 'public'),
+        }),
         ],
     controllers: [AppController, UsersController, ChatController, HistoryController],
     providers: [AppService, UserService, SocketGateway, HistoryService],
