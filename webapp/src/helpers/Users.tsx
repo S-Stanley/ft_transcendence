@@ -76,6 +76,7 @@ const updateStatus = async(nickname: string, current_status: string): Promise<an
 };
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 const addFriend = async(friend: string, nickname: string): Promise<any> => {
     try {
         const res = await axios.post(`${Config.Api.url}/users/add/${friend}`, {
@@ -86,6 +87,11 @@ const getAllUsers = async(): Promise<any> => {
     try {
         const res = await axios.get(`${Config.Api.url}/users/all`);
 >>>>>>> 1719295 (feat(webapp): search friends, go to profile page and add)
+=======
+const getAllUsers = async(): Promise<any> => {
+    try {
+        const res = await axios.get(`${Config.Api.url}/users/all`);
+>>>>>>> 1719295594b6a7bd37776834cedfaf67b1ba4ed8
         return (res.data);
     } catch (e) {
         console.error(e);
@@ -93,6 +99,7 @@ const getAllUsers = async(): Promise<any> => {
     }
 };
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 const checkNickname = async (nickname:string): Promise<boolean | undefined> => {
     try {
@@ -124,6 +131,8 @@ const checkEmail = async (email:string): Promise<boolean | undefined> => {
 
 =======
 >>>>>>> 1719295 (feat(webapp): search friends, go to profile page and add)
+=======
+>>>>>>> 1719295594b6a7bd37776834cedfaf67b1ba4ed8
 const Users = {
     login,
     me,
@@ -132,6 +141,7 @@ const Users = {
     getUser,
     updateStatus,
 <<<<<<< HEAD
+<<<<<<< HEAD
     addFriend,
     changeUserData,
     checkNickname,
@@ -139,6 +149,9 @@ const Users = {
 =======
     getAllUsers,
 >>>>>>> 1719295 (feat(webapp): search friends, go to profile page and add)
+=======
+    getAllUsers,
+>>>>>>> 1719295594b6a7bd37776834cedfaf67b1ba4ed8
 };
 
 export default Users;

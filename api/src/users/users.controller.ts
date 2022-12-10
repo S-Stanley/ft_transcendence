@@ -38,6 +38,7 @@ export class UsersController {
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     @Post('/add/:friend')
     addFriendAction(@Param('friend') friend: string, @Body() body: { nickname: string }): Promise<void> {
         return this.userService.addFriend(friend, body.nickname);
@@ -81,6 +82,8 @@ export class UsersController {
     }
 
 =======
+=======
+>>>>>>> 1719295594b6a7bd37776834cedfaf67b1ba4ed8
     @Get('all')
     getAllUsers(): Promise<UserDTO> {
         return this.db.query('SELECT * FROM users').then((result: {rows: any}) => {
@@ -92,7 +95,10 @@ export class UsersController {
             });
     }
 
+<<<<<<< HEAD
 >>>>>>> 1719295 (feat(webapp): search friends, go to profile page and add)
+=======
+>>>>>>> 1719295594b6a7bd37776834cedfaf67b1ba4ed8
     @Post('/status')
     updateStatusAction(@Body() body: { nickname: string, current_status: string}): Promise<void> {
         return this.userService.updateStatus(body.nickname, body.current_status);
