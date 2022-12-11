@@ -115,6 +115,30 @@ const checkEmail = async (email:string): Promise<boolean | undefined> => {
     }
 };
 
+const uploadPicture = async (file:any): Promise<any> => {
+    const res = await axios.post(`${Config.Api.url}/users/picture`, {
+        file,
+    }, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        }
+    });
+    return (res);
+};
+
+const saveProfilePicture = async (avatar:string, id_42:number): Promise<User | null> => {
+    try {
+        const req = await axios.post(`${Config.Api.url}/users/update_picture`, {
+            avatar: avatar,
+            id_42: id_42,
+        });
+        return (req.data);
+    } catch (e) {
+        console.error(e);
+        return (null);
+    }
+};
+
 const Users = {
     login,
     me,
@@ -126,6 +150,8 @@ const Users = {
     changeUserData,
     checkNickname,
     checkEmail,
+    uploadPicture,
+    saveProfilePicture,
 };
 
 export default Users;
