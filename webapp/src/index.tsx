@@ -16,6 +16,8 @@ import Messaging from './pages/messagerie/Messagerie';
 import Leaderboard from './pages/Leaderboard/Leaderboard';
 import Home from './pages/Home/Home';
 import Chat from './pages/chat/Chat';
+import Matchmaking from './pages/Matchmaking/Matchmaking';
+import Online from './pages/Online/Online';
 
 
 const root = ReactDOM.createRoot(
@@ -53,10 +55,12 @@ root.render(
             <Route path='/chat' element={<Chat/>} />
             <Route path="/play" element={<Play />} />
             <Route path="/play/pong" element={<Game />} />
+            <Route path="/play/online" element={<Online />} />
             <Route path="/user" element={<Account />} />
             <Route path='/users/:nickname' element={<Profile/>} />
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/login/email" element={<EmailLogin />} />
+            <Route path="/play/matchmaking" element={<Matchmaking/>}/>
         </Routes>
     </BrowserRouter>
 );

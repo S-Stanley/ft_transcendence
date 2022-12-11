@@ -10,6 +10,7 @@ import { HttpModule } from '@nestjs/axios';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Users } from './entities/user.entity';
 import { History } from './entities/history.entity';
+import { Matchmaking } from './entities/matchmaking.entity';
 import { UserService } from './services/user.service';
 import { SocketGateway } from './socket.gateway';
 import { HistoryController } from './history/history.controller';
@@ -17,6 +18,8 @@ import { HistoryService } from './services/history.service';
 import { MulterModule } from '@nestjs/platform-express';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { MatchmakingController } from './matchmaking/matchmaking.controller';
+import { MatchmakingService } from './services/matchmaking.service';
 
 @Module({
     imports:
@@ -33,7 +36,12 @@ import { join } from 'path';
             username: process.env.POSTGRES_USER,
             password: '',
             database: process.env.POSTGRES_DB,
-            entities: [Users, History],               // On renseigne ici les entités voulant être mappées en base de données
+            entities: [Users, History, Matchmaking],               // On renseigne ici les entités voulant être mappées en base de données
+        }),
+        TypeOrmModule.forFeature([Users, History, Matchmaking]),     // On renseigne ici les entités possédant un repository
+        MulterModule.register({dest: './public',}),
+        ServeStaticModule.forRoot({
+            rootPath: join(__dirname, '..', 'public'),
         }),
         TypeOrmModule.forFeature([Users, History]),     // On renseigne ici les entités possédant un repository
         MulterModule.register({dest: './public',}),
@@ -41,8 +49,8 @@ import { join } from 'path';
             rootPath: join(__dirname, '..', 'public'),
         }),
         ],
-    controllers: [AppController, UsersController, ChatController, HistoryController],
-    providers: [AppService, UserService, SocketGateway, HistoryService],
+    controllers: [AppController, UsersController, ChatController, HistoryController, MatchmakingController],
+    providers: [AppService, UserService, SocketGateway, HistoryService, MatchmakingService],
 })
 export class AppModule implements NestModule {
     configure(consumer: MiddlewareConsumer) {
