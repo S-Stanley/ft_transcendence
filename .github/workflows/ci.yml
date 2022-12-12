@@ -52,3 +52,9 @@ jobs:
           bash scripts/up-prod.sh
           cd webapp/
           yarn run test:e2e
+  test-db:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: tests
+        run: bash scripts/run-db-test.sh
