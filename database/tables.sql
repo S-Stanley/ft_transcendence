@@ -32,6 +32,12 @@ CREATE TABLE IF NOT EXISTS public.history(
     CONSTRAINT          fk_player_id FOREIGN KEY (player_id) REFERENCES public.users (id)
 );
 
+CREATE TABLE IF NOT EXISTS public.matchmaking(
+    id                  SERIAL PRIMARY KEY NOT NULL UNIQUE,
+    id_42               INT NOT NULL,
+    created_at          DATE DEFAULT NOW() NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS public.chat(
     id          UUID PRIMARY KEY DEFAULT uuid_generate_v4() NOT NULL UNIQUE
 );

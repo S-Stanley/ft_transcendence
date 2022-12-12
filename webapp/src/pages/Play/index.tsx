@@ -18,18 +18,40 @@ export const Play = () => {
                     overflow: 'auto',
                 }}
             >
-                <Button
-                    color="secondary"
-                    variant="contained"
-                    size="large"
+                <Box
                     sx={{
+                        alignItems: 'center',
+                        display: 'flex',
+                        flexDirection: 'column',
                         mt:'200px',
-                        ml:'600px',
                     }}
-                    href="/play/pong"
                 >
-                    Play Pong
-                </Button>
+                    <Button
+                        color="secondary"
+                        variant="contained"
+                        size="large"
+                        href="/play/pong"
+                    >
+                        Play Pong
+                    </Button>
+                </Box>
+                <Box
+                    sx={{
+                        alignItems: 'center',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        mt:'200px',
+                    }}
+                >
+                    <Button
+                        color="secondary"
+                        variant="contained"
+                        size="large"
+                        href="/play/matchmaking"
+                    >
+                        Matchmaking
+                    </Button>
+                </Box>
             </Box>
         </>
     );
