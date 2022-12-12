@@ -5,4 +5,6 @@ export interface UserDTO {
     avatar: string;
     current_status: string;
     friends: string[];
+    two_factor_enabled: boolean;
+    two_factor_secret: string,
 }

@@ -17,6 +17,9 @@ import { HistoryService } from './services/history.service';
 import { MulterModule } from '@nestjs/platform-express';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { TwoFactorAuthController } from './two_factor_auth/two_factor_auth.controller';
+import { TwoFactorAuthService } from './services/two_factor_auth.service';
+import { JwtModule, JwtService } from '@nestjs/jwt';
 
 @Module({
     imports:
@@ -40,9 +43,13 @@ import { join } from 'path';
         ServeStaticModule.forRoot({
             rootPath: join(__dirname, '..', 'public'),
         }),
+        JwtModule.register({
+            secret: 'secret',
+            signOptions: { expiresIn: '1d' },
+        }),
         ],
-    controllers: [AppController, UsersController, ChatController, HistoryController],
-    providers: [AppService, UserService, SocketGateway, HistoryService],
+    controllers: [AppController, UsersController, ChatController, HistoryController, TwoFactorAuthController],
+    providers: [AppService, UserService, SocketGateway, HistoryService, TwoFactorAuthService],
 })
 export class AppModule implements NestModule {
     configure(consumer: MiddlewareConsumer) {

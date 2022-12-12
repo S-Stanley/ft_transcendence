@@ -32,6 +32,21 @@ export class Users {
         nickname: string;
 
     @Column({
+        nullable: true
+    })
+        two_factor_access_token: string;
+
+    @Column({
+        nullable: true
+    })
+        two_factor_enabled: boolean;
+
+    @Column({
+        nullable: true
+    })
+        two_factor_secret: string;
+
+    @Column({
         nullable: false
     })
         access_token: string;

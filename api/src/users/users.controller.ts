@@ -45,6 +45,16 @@ export class UsersController {
         return this.userService.addFriend(friend, body.nickname);
     }
 
+    @Post('/toggle_two_factor')
+    async toggleTwoFactor(@Body() body: { twoFactor:boolean, id_42:number }): Promise<UserDTO> {
+        await this.db.query(`UPDATE users SET two_factor_enabled='${!body.twoFactor}' WHERE id_42='${body.id_42}'`);
+        const req = await this.db.query(`SELECT * FROM users WHERE id_42=${body.id_42}`);
+        if (!req || req.rows.length === 0){
+            return (null);
+        }
+        return req.rows[0];
+    }
+
     @Post('/checkNickname')
     checkNickname(@Body() body: { nickname: string }): Promise<boolean> {
         return this.db.query(`SELECT * FROM users WHERE nickname='${body.nickname}'`)
@@ -114,7 +124,9 @@ export class UsersController {
             nickname: req.rows[0].nickname,
             avatar: req.rows[0].avatar,
             current_status: req.rows[0].current_status,
-            friends: req.rows[0].friends
+            friends: req.rows[0].friends,
+            two_factor_enabled: req.rows[0].two_factor_enabled,
+            two_factor_secret: req.rows[0].two_factor_secret,
         });
     }
 
