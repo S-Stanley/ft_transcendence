@@ -1,5 +1,6 @@
 import Config from "../config/Config";
 import axios from 'axios';
+import { MessagerieInterface } from "../interfaces/messagerie";
 
 const create_or_get_discussion = async (email: string) => {
     try {
@@ -43,10 +44,21 @@ const get_message_of_discussion = async (chat_id: string) => {
     }
 };
 
+const   get_all_chat_by_user_id = async (user_id: string): Promise<MessagerieInterface[]> => {
+    try {
+        const req = await axios.get(`${Config.Api.url}/chat/all/${user_id}`);
+        return (req.data);
+    } catch (e) {
+        console.error(e);
+        return ([]);
+    }
+};
+
 const Messagerie = {
     create_or_get_discussion,
     send_message_to_discussion,
     get_message_of_discussion,
+    get_all_chat_by_user_id,
 };
 
 export default Messagerie;

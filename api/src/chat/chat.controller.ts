@@ -98,4 +98,10 @@ export class ChatController {
         );
         return (messages_with_email);
     }
+
+    @Get('/all/:user_id')
+    async getAllChatByUserId(@Param() params) {
+        const all_chats = await this.db.query('SELECT * FROM public.chat WHERE chat.id IN (SELECT DISTINCT(chat_id) FROM public.chat_member WHERE user_id=$1) LIMIT 25', [params.user_id]);
+        return (all_chats.rows);
+    }
 }

@@ -39,7 +39,11 @@ CREATE TABLE IF NOT EXISTS public.matchmaking(
 );
 
 CREATE TABLE IF NOT EXISTS public.chat(
-    id          UUID PRIMARY KEY DEFAULT uuid_generate_v4() NOT NULL UNIQUE
+    id          UUID PRIMARY KEY DEFAULT uuid_generate_v4() NOT NULL UNIQUE,
+    name        VARCHAR(200) DEFAULT NULL,
+    created_by  INTEGER DEFAULT NULL,
+
+    CONSTRAINT  fk_created_by FOREIGN KEY (created_by) REFERENCES public.users(id)
 );
 
 CREATE TABLE IF NOT EXISTS public.chat_member(

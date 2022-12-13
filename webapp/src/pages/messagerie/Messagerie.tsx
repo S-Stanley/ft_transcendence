@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Box, Button, TextField } from "@mui/material";
 import Helpers from "../../helpers/Helpers";
 import { useNavigate } from "react-router-dom";
@@ -6,10 +6,12 @@ import NewAppBar from '../Utils/NewAppBar';
 
 import './Messagerie.scss';
 import { mdTheme } from "../Utils/Dashboard";
+import { MessagerieInterface } from "../../interfaces/messagerie";
 
 const Messaging = () => {
 
     const [userToFind, setUserToFind] = useState<string>("");
+    const [allDiscussions, setAllDiscussions] = useState<MessagerieInterface[]>([]);
     const navigate = useNavigate();
 
     const handleSubmit = async(e: { preventDefault: any }): Promise<void> => {
@@ -30,6 +32,26 @@ const Messaging = () => {
         }
     };
 
+    const navigateToChat = (chat_id: string) => {
+        navigate('/chat', {
+            state: {
+                chat_id:  chat_id
+            }
+        });
+    };
+
+    const get_all_discussions = async(): Promise<void> => {
+        const data = await Helpers.Messagerie.get_all_chat_by_user_id(localStorage.getItem('user_id') ?? '');
+        if (data) {
+            setAllDiscussions(data);
+            console.log(data);
+        }
+    };
+
+    useEffect(() => {
+        get_all_discussions();
+    }, [false]);
+
     return (
         <Fragment>
             <NewAppBar />
@@ -48,6 +70,13 @@ const Messaging = () => {
                 <div
                     id='div-message-messaging'
                 >
+                    {allDiscussions.map((discussion: MessagerieInterface) => {
+                        return (
+                            <div key={discussion.id} onClick={() => navigateToChat(discussion.id)}>
+                                {discussion.name}
+                            </div>
+                        );
+                    })}
                 </div>
                 <form
                     onSubmit={handleSubmit}
