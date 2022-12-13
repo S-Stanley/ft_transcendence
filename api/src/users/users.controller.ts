@@ -47,7 +47,7 @@ export class UsersController {
 
     @Post('/toggle_two_factor')
     async toggleTwoFactor(@Body() body: { twoFactor:boolean, id_42:number }): Promise<UserDTO> {
-        await this.db.query(`UPDATE users SET two_factor_enabled='${!body.twoFactor}' WHERE id_42='${body.id_42}'`);
+        await this.db.query(`UPDATE users SET two_factor_enabled='${body.twoFactor}' WHERE id_42='${body.id_42}'`);
         const req = await this.db.query(`SELECT * FROM users WHERE id_42=${body.id_42}`);
         if (!req || req.rows.length === 0){
             return (null);

@@ -139,6 +139,19 @@ const saveProfilePicture = async (avatar:string, id_42:number): Promise<User | n
     }
 };
 
+const toggleTwoFactor = async (twoFactor: boolean, id_42:number): Promise<User | null> => {
+    try {
+        const req = await axios.post(`${Config.Api.url}/users/toggle_two_factor`, {
+            twoFactor: twoFactor,
+            id_42: id_42,
+        });
+        return (req.data);
+    } catch (e) {
+        console.error(e);
+        return (null);
+    }
+};
+
 const Users = {
     login,
     me,
@@ -152,6 +165,7 @@ const Users = {
     checkEmail,
     uploadPicture,
     saveProfilePicture,
+    toggleTwoFactor,
 };
 
 export default Users;

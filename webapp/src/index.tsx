@@ -16,6 +16,8 @@ import Messaging from './pages/messagerie/Messagerie';
 import Leaderboard from './pages/Leaderboard/Leaderboard';
 import Home from './pages/Home/Home';
 import Chat from './pages/chat/Chat';
+import TwoFactorAuth from './pages/TwoFactor/TwoFactorAuth';
+import TwoFactorSetUp from './pages/TwoFactor/TwoFactorSetUp';
 
 
 const root = ReactDOM.createRoot(
@@ -46,6 +48,8 @@ root.render(
         />
         <Routes>
             <Route path='/' element={<Login/>} />
+            <Route path='/2fa' element={<TwoFactorAuth/>} />
+            <Route path='/2fa/setup' element={<TwoFactorSetUp/>} />
             <Route path='/login' element={<EmailLogin/>} />
             <Route path='/oauth2-redirect' element={<Login/>} />
             <Route path='/home' element={<Home/>} />

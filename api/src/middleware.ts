@@ -18,12 +18,10 @@ export class LoggerMiddleware implements NestMiddleware {
         }
         let user = await this.userRepository.findOneBy({ access_token: token.split('Bearer ')[1] });
         if (user == undefined || user == null) {
-            //check if user has two factor auth
             user = await this.userRepository.findOneBy({ two_factor_access_token: token.split('Bearer ')[1] });
             if ((user == undefined || user == null) || user.two_factor_enabled === false)
                 throw new HttpException('Invalid token.', 401);
         }
-        //si date depasse -> recree un token
         console.log(user);
         req.user = user;
         next();

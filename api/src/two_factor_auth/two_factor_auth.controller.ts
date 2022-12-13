@@ -1,10 +1,12 @@
-import { Body, Controller, HttpCode, Post, Response, UnauthorizedException } from '@nestjs/common';
+import { Body, Controller, HttpCode, Inject, Injectable, Post, Response, UnauthorizedException } from '@nestjs/common';
 import { TwoFactorAuthService } from '../services/two_factor_auth.service';
 
 @Controller('2fa')
+@Injectable()
 export class TwoFactorAuthController {
     constructor(
         private readonly twoFactorAuthService: TwoFactorAuthService,
+		@Inject("PG_CONNECTION") private db: any,
     ) {}
 
     @Post('/generate')
@@ -34,4 +36,12 @@ export class TwoFactorAuthController {
         }
         return this.twoFactorAuthService.loginWith2fa(body.id_42);
     }
+
+    @Post('/add_token')
+    @HttpCode(200)
+    add_token(@Body() body: { token: string, id_42: number }) {
+        console.log('the token', body.token, 'id_42', body.id_42);
+        return this.db.query(`UPDATE users SET two_factor_access_token='${body.token}' WHERE id_42='${body.id_42}'`);
+    }
+
 }
