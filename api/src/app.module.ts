@@ -20,6 +20,9 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { MatchmakingController } from './matchmaking/matchmaking.controller';
 import { MatchmakingService } from './services/matchmaking.service';
+import { TwoFactorAuthController } from './two_factor_auth/two_factor_auth.controller';
+import { TwoFactorAuthService } from './services/two_factor_auth.service';
+import { JwtModule, JwtService } from '@nestjs/jwt';
 
 @Module({
     imports:
@@ -48,9 +51,13 @@ import { MatchmakingService } from './services/matchmaking.service';
         ServeStaticModule.forRoot({
             rootPath: join(__dirname, '..', 'public'),
         }),
+        JwtModule.register({
+            secret: 'secret',
+            signOptions: { expiresIn: '1d' },
+        }),
         ],
-    controllers: [AppController, UsersController, ChatController, HistoryController, MatchmakingController],
-    providers: [AppService, UserService, SocketGateway, HistoryService, MatchmakingService],
+    controllers: [AppController, UsersController, ChatController, HistoryController, MatchmakingController, TwoFactorAuthController],
+    providers: [AppService, UserService, SocketGateway, HistoryService, MatchmakingService, TwoFactorAuthService],
 })
 export class AppModule implements NestModule {
     configure(consumer: MiddlewareConsumer) {

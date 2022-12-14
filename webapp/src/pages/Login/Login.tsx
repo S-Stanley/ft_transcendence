@@ -20,11 +20,20 @@ function Login() {
                 window.localStorage.setItem('email', req.email);
                 window.localStorage.setItem('user_id', req.user_id);
                 window.localStorage.setItem('nickname', req.nickname);
-                toast.success('Successfully logged!', {
-                    position: "bottom-left",
-                });
-                navigate('/home');
-                Helpers.Users.updateStatus(req.nickname, 'online');
+                //check if user has two factor auth
+                const user = await Helpers.Users.me();
+                if (user?.two_factor_enabled === true)
+                {
+                    navigate('/2fa');
+                }
+                else
+                {
+                    toast.success('Successfully logged!', {
+                        position: "bottom-left",
+                    });
+                    navigate('/home');
+                    Helpers.Users.updateStatus(req.nickname, 'online');
+                }
             }
         }
     };

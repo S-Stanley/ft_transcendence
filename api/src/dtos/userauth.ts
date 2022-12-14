@@ -5,4 +5,5 @@ export interface UserAuth {
     user_id: string,
     avatar: string,
     nickname: string,
+    two_factor_enabled: boolean,
 }

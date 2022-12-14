@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import { useEffect, useState } from 'react';
 import {
     Box,
@@ -6,6 +7,11 @@ import {
     CardContent,
     CardHeader,
     Checkbox,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
     Divider,
     FormControlLabel,
     Grid,
@@ -13,6 +19,7 @@ import {
     Typography
 } from '@mui/material';
 import Helpers from '../../../helpers/Helpers';
+import { useNavigate } from 'react-router-dom';
 
 export const AccountProfileDetails = (props:any) => {
 
@@ -20,21 +27,33 @@ export const AccountProfileDetails = (props:any) => {
         email: '',
         nickname: '',
         avatar: '',
+        id_42: 0,
+        two_factor_enabled: false,
     });
 
     const [original, setOriginal] = useState({
         email: '',
         nickname: '',
         avatar: '',
+        id_42: 0,
+        two_factor_enabled: false,
     });
+
+	const navigate = useNavigate();
 
     const [error, setError] = useState<boolean>(false);
     const [message, setMessage] = useState<string>('');
+    const [check, setCheck] = useState<boolean>(false);
+    const [open, setOpen] = useState<boolean>(false);
 
     useEffect(() => {
         if (user.nickname === '') {
             Helpers.Users.me().then((res) => setUser(res!));
-            Helpers.Users.me().then((res) => setOriginal(res!));
+            Helpers.Users.me().then((res) => {
+                setOriginal(res!);
+                if (res?.two_factor_enabled === true || res?.two_factor_enabled === false)
+                    setCheck(res?.two_factor_enabled);
+            });
         }
     }, []);
 
@@ -77,91 +96,138 @@ export const AccountProfileDetails = (props:any) => {
         window.location.href = `/users/${user.nickname}`;
     };
 
-    return (
-        <form
-            autoComplete="off"
-            noValidate
-            {...props}
-        >
-            <Card>
-                <CardHeader
-                    subheader="The information can be edited"
-                    title="Profile"
-                />
-                <Divider />
-                <CardContent>
+    const toggleFactorChange = () => {
+		if (user.two_factor_enabled === false)
+			setOpen(true);
+		else
+		{
+			setCheck(!check);
+			Helpers.Users.toggleTwoFactor(false, user.id_42).then((res) => {console.log(res);});
+            localStorage.clear();
+		    navigate('/');
+		}
+	};
 
-                    <Grid
-                        container
-                        spacing={3}
-                    >
+	const confirmationToggleFactorChange = () => {
+		navigate('/2fa/setup');
+		setCheck(!check);
+	};
+
+    return (
+        <>
+            <form
+                autoComplete="off"
+                noValidate
+                {...props}
+            >
+                <Card>
+                    <CardHeader
+                        subheader="The information can be edited"
+                        title="Profile"
+                    />
+                    <Divider />
+                    <CardContent>
+
                         <Grid
-                            item
-                            md={6}
-                            xs={12}
+                            container
+                            spacing={3}
                         >
-                            <TextField
-                                fullWidth
-                                label="Nickname"
-                                name="nickname"
-                                onChange={handleChange}
-                                required
-                                value={user.nickname}
-                                variant="outlined"
-                            />
-                            {
-                                error ?
-                                    <Typography variant='body2' color='red'>
+                            <Grid
+                                item
+                                md={6}
+                                xs={12}
+                            >
+                                <TextField
+                                    fullWidth
+                                    label="Nickname"
+                                    name="nickname"
+                                    onChange={handleChange}
+                                    required
+                                    value={user.nickname}
+                                    variant="outlined"
+                                />
+                                {
+                                    error ?
+                                        <Typography variant='body2' color='red'>
                                     *{message}
-                                    </Typography>
-                                    :
-                                    <div>
-                                    </div>
-                            }
+                                        </Typography>
+                                        :
+                                        <div>
+                                        </div>
+                                }
+                            </Grid>
+                            <Grid
+                                item
+                                md={6}
+                                xs={12}
+                            >
+                                <TextField
+                                    fullWidth
+                                    label="Email Address"
+                                    name="email"
+                                    onChange={handleChange}
+                                    required
+                                    value={user.email}
+                                    variant="outlined"
+                                />
+                            </Grid>
                         </Grid>
-                        <Grid
-                            item
-                            md={6}
-                            xs={12}
-                        >
-                            <TextField
-                                fullWidth
-                                label="Email Address"
-                                name="email"
-                                onChange={handleChange}
-                                required
-                                value={user.email}
-                                variant="outlined"
+                    </CardContent>
+                    <Divider />
+                    <FormControlLabel
+                        control={(
+                            <Checkbox
+                                color="primary"
+                                checked={check}
+                                onChange={toggleFactorChange}
                             />
-                        </Grid>
-                    </Grid>
-                </CardContent>
-                <Divider />
-                <FormControlLabel
-                    control={(
-                        <Checkbox
-                            color="primary"
-                            defaultChecked
-                        />
-                    )}
-                    label="2FA Authentication"
-                />
-                <Box
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'flex-end',
-                        p: 2
-                    }}
-                >
-                    <Button
-                        color="primary"
-                        variant="contained"
-                        onClick={changeUser}
+                        )}
+                        label="2FA Authentication"
+                    />
+                    <Box
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'flex-end',
+                            p: 2
+                        }}
                     >
+                        <Button
+                            color="primary"
+                            variant="contained"
+                            onClick={changeUser}
+                        >
                         Save details
-                    </Button>
-                </Box>
-            </Card>
-        </form>
+                        </Button>
+                    </Box>
+                </Card>
+            </form>
+            {
+                open?
+                    <Dialog
+                        open={open}
+                        onClose={() => setOpen(false)}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+			  >
+                        <DialogTitle id="alert-dialog-title">
+				  {"Turn on 2FA authentication ?"}
+                        </DialogTitle>
+                        <DialogContent>
+				  <DialogContentText id="alert-dialog-description">
+					You will be redirected to the 2FA setup page
+				  </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+				  <Button onClick={() => setOpen(false)}>Disagree</Button>
+				  <Button onClick={confirmationToggleFactorChange} autoFocus>
+					Agree
+				  </Button>
+                        </DialogActions>
+			  </Dialog>
+                    :
+                    <div>
+                    </div>
+            }
+        </>
     );
 };
