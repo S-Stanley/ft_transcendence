@@ -56,7 +56,11 @@ const NewAppBar = (props:any) => {
 
     useEffect(() => {
         if (user.nickname === '') {
-            Helpers.Users.me().then((res:any) => setUser(res!));
+            Helpers.Users.me().then((res:any) => {
+                if (res === null)
+                    window.location.href = "/";
+                setUser(res!);
+            });
         }
     }, []);
 

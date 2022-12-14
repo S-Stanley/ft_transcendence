@@ -5,19 +5,22 @@ CREATE TYPE public.current_status_enum as ENUM (
 );
 
 CREATE TABLE IF NOT EXISTS public.users(
-    id                  SERIAL PRIMARY KEY NOT NULL UNIQUE,
-    id_42               INT DEFAULT NULL,
-    email               VARCHAR(255) NOT NULL UNIQUE,
-    nickname            VARCHAR(255) NOT NULL UNIQUE,
-    access_token        VARCHAR(255) DEFAULT NULL,
-    refresh_token       VARCHAR(255) DEFAULT NULL,
-    token_expires_at    DATE DEFAULT NULL,
-    pass                VARCHAR(255) NOT NULL,
-    token               UUID DEFAULT uuid_generate_v4() NOT NULL,
-    created_at          DATE DEFAULT NULL,
-    avatar              VARCHAR(255) NOT NULL,
-    current_status      public.current_status_enum DEFAULT 'offline',
-    friends             TEXT[] DEFAULT NULL
+    id                              SERIAL PRIMARY KEY NOT NULL UNIQUE,
+    id_42                           INT DEFAULT NULL,
+    email                           VARCHAR(255) NOT NULL UNIQUE,
+    nickname                        VARCHAR(255) NOT NULL UNIQUE,
+    two_factor_access_token         VARCHAR(255) DEFAULT NULL,
+    two_factor_enabled              BOOLEAN DEFAULT NULL,
+    two_factor_secret               VARCHAR(255) DEFAULT NULL,
+    access_token                    VARCHAR(255) DEFAULT NULL,
+    refresh_token                   VARCHAR(255) DEFAULT NULL,
+    token_expires_at                DATE DEFAULT NULL,
+    pass                            VARCHAR(255) NOT NULL,
+    token                           UUID DEFAULT uuid_generate_v4() NOT NULL,
+    created_at                      DATE DEFAULT NULL,
+    avatar                          VARCHAR(255) NOT NULL,
+    current_status                  public.current_status_enum DEFAULT 'offline',
+    friends                         TEXT[] DEFAULT NULL
 );
 
 CREATE TABLE IF NOT EXISTS public.history(

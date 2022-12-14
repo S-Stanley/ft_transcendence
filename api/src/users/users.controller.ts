@@ -24,6 +24,11 @@ export class UsersController {
         return this.userService.getOwnProfile(user);
     }
 
+    @Get('/error')
+    sendError(): null {
+        return null;
+    }
+
     @Get('/id')
     getUserId(@UserConnected() user: Users): UserDTO {
         return this.db.query(`SELECT * FROM users WHERE id_42='${user.id_42}'`)
@@ -43,6 +48,16 @@ export class UsersController {
     @Post('/add/:friend')
     addFriendAction(@Param('friend') friend: string, @Body() body: { nickname: string }): Promise<void> {
         return this.userService.addFriend(friend, body.nickname);
+    }
+
+    @Post('/toggle_two_factor')
+    async toggleTwoFactor(@Body() body: { twoFactor:boolean, id_42:number }): Promise<UserDTO> {
+        await this.db.query(`UPDATE users SET two_factor_enabled='${body.twoFactor}' WHERE id_42='${body.id_42}'`);
+        const req = await this.db.query(`SELECT * FROM users WHERE id_42=${body.id_42}`);
+        if (!req || req.rows.length === 0){
+            return (null);
+        }
+        return req.rows[0];
     }
 
     @Post('/checkNickname')
@@ -114,7 +129,9 @@ export class UsersController {
             nickname: req.rows[0].nickname,
             avatar: req.rows[0].avatar,
             current_status: req.rows[0].current_status,
-            friends: req.rows[0].friends
+            friends: req.rows[0].friends,
+            two_factor_enabled: req.rows[0].two_factor_enabled,
+            two_factor_secret: req.rows[0].two_factor_secret,
         });
     }
 
@@ -154,7 +171,6 @@ export class UsersController {
       @Body() body: {name: string},
       @UploadedFile() file: Express.Multer.File,
     ) {
-        console.log('file caught', file);
         return {
             file,
         };

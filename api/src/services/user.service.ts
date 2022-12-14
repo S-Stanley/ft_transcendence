@@ -29,6 +29,7 @@ export class UserService {
             user.nickname = user42.login;
             user.pass = '';
             user.avatar = user42.image.link;
+            user.two_factor_enabled = false;
         }
         user.access_token = token.data.access_token;
         user.refresh_token = token.data.refresh_token;
@@ -41,6 +42,7 @@ export class UserService {
             user_id: usr.id.toString(),
             nickname: usr.nickname,
             avatar: usr.avatar,
+            two_factor_enabled: usr.two_factor_enabled,
         });
     }
 
@@ -78,7 +80,9 @@ export class UserService {
             nickname: user.nickname,
             avatar: user.avatar,
             current_status: user.current_status,
-            friends: user.friends
+            friends: user.friends,
+            two_factor_enabled: user.two_factor_enabled,
+            two_factor_secret: user.two_factor_secret,
         };
     }
 
@@ -92,7 +96,9 @@ export class UserService {
             nickname: user.nickname,
             avatar: user.avatar,
             current_status: user.current_status,
-            friends: user.friends
+            friends: user.friends,
+            two_factor_enabled: user.two_factor_enabled,
+            two_factor_secret: user.two_factor_secret,
         };
     }
 
