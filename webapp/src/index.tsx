@@ -1,6 +1,6 @@
 import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import axios from 'axios';
 import './global.scss';
 
@@ -65,6 +65,7 @@ root.render(
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/login/email" element={<EmailLogin />} />
             <Route path="/play/matchmaking" element={<Matchmaking/>}/>
+            <Route path="*" element={<Navigate to="/home"/>} />
         </Routes>
     </BrowserRouter>
 );
