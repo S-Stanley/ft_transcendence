@@ -144,6 +144,15 @@ const saveProfilePicture = async (avatar:string, id_42:number): Promise<User | n
         return (null);
     }
 };
+const getAllUsers = async(): Promise<any> => {
+    try {
+        const res = await axios.get(`${Config.Api.url}/users/all`);
+        return (res.data);
+    } catch (e) {
+        console.error(e);
+        return (null);
+    }
+};
 
 const toggleTwoFactor = async (twoFactor: boolean, id_42:number): Promise<User | null> => {
     try {
@@ -172,6 +181,7 @@ const Users = {
     uploadPicture,
     saveProfilePicture,
     toggleTwoFactor,
+    getAllUsers,
 };
 
 export default Users;

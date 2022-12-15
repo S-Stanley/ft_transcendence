@@ -112,6 +112,17 @@ export class UsersController {
         return this.userService.updateStatus(body.nickname, body.current_status);
     }
 
+    @Get('all')
+    getAllUsers(): Promise<UserDTO> {
+        return this.db.query('SELECT * FROM users').then((result: {rows: any}) => {
+            return (result);
+        })
+            .catch((e:any) => {
+                console.error(e);
+                throw new HttpException('Problem occured when fetching all users', 500);
+            });
+    }
+
     @Get('/:nickname')
     getUserProfileAction(@Param('nickname') nickname: string) : Promise<UserDTO> {
         return this.userService.getUserProfile(nickname);

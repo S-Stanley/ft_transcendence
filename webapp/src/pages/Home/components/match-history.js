@@ -20,8 +20,12 @@ export const MatchHistory = (props) => {
     const [values, setValues] = useState([]);
 
     const getHistory = async () => {
-        const res = await Helpers.History.get_match();
-        setValues(res.data.result);
+        try{
+            const res = await Helpers.History.get_match();
+            setValues(res.data.result.reverse());
+        } catch (e) {
+            console.log(e);
+        }
     };
 
     useEffect(() => {
