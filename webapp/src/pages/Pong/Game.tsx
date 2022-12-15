@@ -11,7 +11,7 @@ const Game = () => {
             <Box
                 component="main" position="fixed"
                 sx={{
-                    top:'0px',
+                    top:'100px',
                     left:'200px',
                     right:'200px',
                     backgroundColor: mdTheme.palette.grey[900],
