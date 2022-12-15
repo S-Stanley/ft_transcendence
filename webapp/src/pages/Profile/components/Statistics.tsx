@@ -49,7 +49,7 @@ const Statistics = () => {
         calculateStats(res.data.result.reverse());
     };
 
-    useEffect(() => {getHistory();});
+    useEffect(() => {getHistory();}, []);
 
     return (
         <>
