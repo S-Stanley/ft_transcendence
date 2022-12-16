@@ -1,7 +1,7 @@
 import './Profile.scss';
 import { Fragment, useReducer, useState } from 'react';
 import Typography from '@mui/material/Typography';
-import { Avatar, Badge, Button } from '@mui/material';
+import { Avatar, Badge, Button, IconButton } from '@mui/material';
 import Helpers from '../../helpers/Helpers';
 import { useNavigate } from 'react-router-dom';
 import { Box } from '@mui/system';
@@ -10,6 +10,7 @@ import NewAppBar from '../Utils/NewAppBar';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import DoneIcon from '@mui/icons-material/Done';
 import ClearIcon from '@mui/icons-material/Clear';
+import GroupIcon from '@mui/icons-material/Group';
 
 const Profile = () => {
     const [user, setUser] = useState({
@@ -47,12 +48,6 @@ const Profile = () => {
         }
         return color;
     };
-    const friendStatusMap = new Map([
-        ['accepted', 'request-sent-button'],
-        ['to_accept', 'request-sent-button'],
-        ['pending', 'request-sent-button'],
-        ['cancelled', 'add-friend-button']
-    ]);
     const buttonTextMap = new Map([
         ['accepted', 'Friends'],
         ['to_accept', 'To accept'],
@@ -73,32 +68,48 @@ const Profile = () => {
         switch (userFriendStatus) {
         case 'accepted':
             return(
-                <Button id={friendStatusMap.get(userFriendStatus)}>
+                <Button size="small"
+                    color="inherit"
+                    variant="contained">
                     { buttonText }
-                    <PersonAddIcon sx={{ml: 1, mb: 0.2}}/>
+                    <GroupIcon sx={{ml: 1, mb: 0.2}}/>
                 </Button>);
         case 'to_accept':
             return(
-                <Button id={friendStatusMap.get(userFriendStatus)}>
-                    { buttonText }
-                    <DoneIcon sx={{ml: 1, mb: 0.3}} onClick={() => {
+                <div>
+                    <Button size="small"
+                        color="inherit"
+                        variant="contained">
+                        { buttonText }
+                    </Button>
+                    <IconButton onClick={() => {
                         Helpers.Friends.acceptFriendRequest(userToGet, localStorage.getItem('nickname')!, true);
                         forceUpdate();
-                    }}/>
-                    <ClearIcon sx={{ml: 1, mb: 0.3}} onClick={() => {
+                    }}>
+                        <DoneIcon sx={{ml: 1, mb: 0.3}}/>
+                    </IconButton>
+                    <IconButton onClick={() => {
                         Helpers.Friends.acceptFriendRequest(userToGet, localStorage.getItem('nickname')!, false);
                         forceUpdate();
-                    }}/>
-                </Button>);
+                    }}>
+                        <ClearIcon sx={{ml: 1, mb: 0.3}}/>
+                    </IconButton>
+                </div>);
         case 'pending':
             return(
-                <Button id={friendStatusMap.get(userFriendStatus)}>
+                <Button size="small"
+                    color="primary"
+                    variant="contained" disabled>
                     { buttonText }
                     <PersonAddIcon sx={{ml: 1, mb: 0.2}}/>
                 </Button>);
-        default:
+        case 'cancelled':
             return(
-                <Button id={friendStatusMap.get(userFriendStatus)} onClick={() => sendFriendRequest()}>
+                <Button
+                    size="small"
+                    color="inherit"
+                    variant="contained"
+                    onClick={() => sendFriendRequest()}>
                     Add friend
                     <PersonAddIcon sx={{ml: 1, mb: 0.2}}/>
                 </Button>);
