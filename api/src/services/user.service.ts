@@ -1,5 +1,4 @@
 import { HttpException, Inject, Injectable } from "@nestjs/common";
-import { AxiosResponse } from 'axios';
 import { HttpService } from '@nestjs/axios';
 import { InjectRepository } from "@nestjs/typeorm";
 import { Users } from "src/entities/user.entity";
@@ -7,7 +6,6 @@ import { History } from "src/entities/history.entity";
 import { Repository } from "typeorm";
 import { firstValueFrom } from "rxjs";
 import { UserDTO } from "src/dtos/profile.dto";
-import { SSOReturn } from "src/dtos/ssoreturn.dto";
 import { UserAuth } from "src/dtos/userauth";
 import { User42 } from 'src/dtos/user42.dto';
 import FormData = require('form-data');
