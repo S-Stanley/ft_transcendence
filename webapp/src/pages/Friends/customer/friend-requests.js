@@ -52,16 +52,18 @@ export const FriendRequests = ({ requests }) => {
         <Card>
             <Box>
                 <Table>
-                    <TableRow>
-                        <TableCell>
-                            <Typography
-                                color="textPrimary"
-                                variant="body1"
-                            >
-                                No requests yet...
-                            </Typography>
-                        </TableCell>
-                    </TableRow>
+                    <TableBody>
+                        <TableRow>
+                            <TableCell>
+                                <Typography
+                                    color="textPrimary"
+                                    variant="body1"
+                                >
+                                    No requests yet...
+                                </Typography>
+                            </TableCell>
+                        </TableRow>
+                    </TableBody>
                 </Table>
             </Box>
         </Card>
@@ -72,7 +74,7 @@ export const FriendRequests = ({ requests }) => {
                     <Table>
                         <TableBody>
                             {requests.map((req) => (
-                                <TableRow key={req.id}>
+                                <TableRow key={req.id ? req.id : 'def'}>
                                     <TableCell>
                                         <Box
                                             sx={{

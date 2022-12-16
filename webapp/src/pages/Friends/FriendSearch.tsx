@@ -45,7 +45,6 @@ const FriendSearch = () => {
         console.log(event.target.value);
         setSearch(event.target.value);
     };
-
     return (
         <>
             <NewAppBar/>
