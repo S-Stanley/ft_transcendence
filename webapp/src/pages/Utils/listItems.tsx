@@ -9,6 +9,7 @@ import PeopleIcon from '@mui/icons-material/People';
 import PersonIcon from '@mui/icons-material/Person';
 import SendIcon from '@mui/icons-material/Send';
 import EmailIcon from '@mui/icons-material/Email';
+import ChatIcon from '@mui/icons-material/Chat';
 
 export const mainListItems = (
     <React.Fragment>
@@ -54,6 +55,12 @@ export const secondaryListItems = (
                 <PersonIcon />
             </ListItemIcon>
             <ListItemText primary="User" />
+        </ListItemButton>
+        <ListItemButton href="/discussion">
+            <ListItemIcon>
+                <ChatIcon />
+            </ListItemIcon>
+            <ListItemText primary="Discussion" />
         </ListItemButton>
     </React.Fragment>
 );

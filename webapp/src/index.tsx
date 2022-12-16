@@ -20,6 +20,7 @@ import Online from './pages/Online/Online';
 import TwoFactorAuth from './pages/TwoFactor/TwoFactorAuth';
 import TwoFactorSetUp from './pages/TwoFactor/TwoFactorSetUp';
 import FriendSearch from './pages/Friends/FriendSearch';
+import Discussion from './pages/Discussion/Discussion';
 
 
 const root = ReactDOM.createRoot(
@@ -50,6 +51,7 @@ root.render(
         />
         <Routes>
             <Route path='/' element={<Login/>} />
+            <Route path='/discussion' element={<Discussion/>} />
             <Route path='/2fa' element={<TwoFactorAuth/>} />
             <Route path='/2fa/setup' element={<TwoFactorSetUp/>} />
             <Route path='/login' element={<EmailLogin/>} />

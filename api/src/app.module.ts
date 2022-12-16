@@ -23,6 +23,7 @@ import { MatchmakingService } from './services/matchmaking.service';
 import { TwoFactorAuthController } from './two_factor_auth/two_factor_auth.controller';
 import { TwoFactorAuthService } from './services/two_factor_auth.service';
 import { JwtModule, JwtService } from '@nestjs/jwt';
+import { DiscussionController } from './discussions/discussion.controller';
 
 @Module({
     imports:
@@ -56,7 +57,7 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
             signOptions: { expiresIn: '1d' },
         }),
         ],
-    controllers: [AppController, UsersController, ChatController, HistoryController, MatchmakingController, TwoFactorAuthController],
+    controllers: [AppController, UsersController, ChatController, HistoryController, MatchmakingController, TwoFactorAuthController, DiscussionController],
     providers: [AppService, UserService, SocketGateway, HistoryService, MatchmakingService, TwoFactorAuthService],
 })
 export class AppModule implements NestModule {

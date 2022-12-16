@@ -68,3 +68,18 @@ CREATE TABLE IF NOT EXISTS public.chat_message(
     CONSTRAINT  fk_chat_id FOREIGN KEY (chat_id) REFERENCES public.chat (id),
     CONSTRAINT  fk_send_by FOREIGN KEY (sent_by) REFERENCES public.users (id)
 );
+
+CREATE TABLE IF NOT EXISTS public.conversation(
+    id          SERIAL PRIMARY KEY NOT NULL UNIQUE,
+    one         INT NOT NULL,
+    two         INT NOT NULL,
+    created_at  TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS public.direct_message(
+    id          SERIAL PRIMARY KEY NOT NULL UNIQUE,
+    sender      INT NOT NULL,
+    receiver    INT NOT NULL,
+    content     TEXT NOT NULL,
+    created_at  TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
