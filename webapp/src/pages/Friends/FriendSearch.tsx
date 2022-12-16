@@ -5,6 +5,8 @@ import { FriendList } from './customer/friend-list';
 import { Box, Card, CardContent, TextField, Typography, } from '@mui/material';
 import { mdTheme } from '../Utils/Dashboard';
 import NewAppBar from '../Utils/NewAppBar';
+import { FriendRequests } from './customer/friend-requests';
+
 
 const FriendSearch = () => {
 
@@ -13,6 +15,11 @@ const FriendSearch = () => {
         avatar: '',
         email: '',
         id_42: 0,
+    }]);
+
+    const [friendRequests, setFriendRequests] = useState([{
+        nickname: '',
+        avatar: '',
     }]);
 
     const [user, setUser] = useState({
@@ -24,7 +31,6 @@ const FriendSearch = () => {
         id_42: 0,
     });
 
-
     const [search, setSearch] = useState<string>('');
 
     useEffect(() => {
@@ -33,8 +39,8 @@ const FriendSearch = () => {
             console.log(res.rows);
         });
         Helpers.Users.me().then((res) => setUser(res!));
+        Helpers.Friends.getReceivedFriendRequests().then((requests) => setFriendRequests(requests));
     }, []);
-
     const handleChange = (event: { target: { value: SetStateAction<string>; }; }) => {
         console.log(event.target.value);
         setSearch(event.target.value);
@@ -91,6 +97,25 @@ const FriendSearch = () => {
                         </Box>
                         <Box sx={{ mt: 3 }}>
                             <FriendList users={users.filter((value) => value.nickname.includes(search) && value.id_42 != user.id_42)} />
+                        </Box>
+                        <Box
+                            sx={{
+                                alignItems: 'center',
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                flexWrap: 'wrap',
+                                m: -1
+                            }}
+                        >
+                            <Typography
+                                sx={{ m: 1, mt: 5 }}
+                                variant="h4"
+                            >
+                                Friend Requests
+                            </Typography>
+                        </Box>
+                        <Box sx={{ mt: 3 }}>
+                            <FriendRequests requests={friendRequests} />
                         </Box>
                     </Container>
                 </Box>

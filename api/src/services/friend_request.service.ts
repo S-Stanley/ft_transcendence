@@ -41,7 +41,8 @@ export class FriendRequestService {
 
     async getReceivedFriendRequests(user: Users): Promise<any> {
         const allReceivedRequests = await this.friendRequestRepository.findBy({
-            receiver: user.id
+            receiver: user.id,
+            current_status: 'pending'
         });
         const usersProfile = [];
         let sender;
