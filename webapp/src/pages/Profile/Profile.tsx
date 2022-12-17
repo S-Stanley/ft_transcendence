@@ -6,7 +6,6 @@ import Helpers from '../../helpers/Helpers';
 import { useNavigate } from 'react-router-dom';
 import { Box } from '@mui/system';
 import Statistics from './components/Statistics';
-import NewAppBar from '../Utils/NewAppBar';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import DoneIcon from '@mui/icons-material/Done';
 import ClearIcon from '@mui/icons-material/Clear';
@@ -121,7 +120,6 @@ const Profile = () => {
     };
     return (
         <Fragment>
-            <NewAppBar/>
             <h1>
                 <Box
                     display='flex'

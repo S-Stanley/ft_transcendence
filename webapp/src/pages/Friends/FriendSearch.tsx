@@ -3,8 +3,6 @@ import { SetStateAction, useEffect, useState } from 'react';
 import Helpers from '../../helpers/Helpers';
 import { FriendList } from './customer/friend-list';
 import { Box, Card, CardContent, TextField, Typography, } from '@mui/material';
-import { mdTheme } from '../Utils/Dashboard';
-import NewAppBar from '../Utils/NewAppBar';
 import { FriendRequests } from './customer/friend-requests';
 
 
@@ -21,6 +19,8 @@ const FriendSearch = () => {
         nickname: '',
         avatar: '',
     }]);
+
+    console.log(friendRequests);
 
     const [user, setUser] = useState({
         email: '',
@@ -47,56 +47,9 @@ const FriendSearch = () => {
     };
     return (
         <>
-            <NewAppBar/>
-            <Box
-                component="main" position="fixed"
-                sx={{
-                    top:'100px',
-                    left:'300px',
-                    backgroundColor: mdTheme.palette.grey[900],
-                    flexGrow: 1,
-                    height: '100vh',
-                    overflow: 'auto',
-                }}
-            >
-                <Box sx={{ mt: 3 }}>
-                    <Container maxWidth={false}>
-                        <Box>
-                            <Box
-                                sx={{
-                                    alignItems: 'center',
-                                    display: 'flex',
-                                    justifyContent: 'space-between',
-                                    flexWrap: 'wrap',
-                                    m: -1
-                                }}
-                            >
-                                <Typography
-                                    sx={{ m: 1 }}
-                                    variant="h4"
-                                >
-                                    Search friend
-                                </Typography>
-                            </Box>
-                            <Box sx={{ mt: 3 }}>
-                                <Card>
-                                    <CardContent>
-                                        <Box sx={{ maxWidth: 500 }}>
-                                            <TextField
-                                                value={search}
-                                                onChange={handleChange}
-                                                fullWidth
-                                                placeholder="Search player"
-                                                variant="outlined"
-                                            />
-                                        </Box>
-                                    </CardContent>
-                                </Card>
-                            </Box>
-                        </Box>
-                        <Box sx={{ mt: 3 }}>
-                            <FriendList users={users.filter((value) => value.nickname.includes(search) && value.id_42 != user.id_42)} />
-                        </Box>
+            <Box sx={{ mt: 3 }}>
+                <Container maxWidth={false}>
+                    <Box>
                         <Box
                             sx={{
                                 alignItems: 'center',
@@ -107,17 +60,51 @@ const FriendSearch = () => {
                             }}
                         >
                             <Typography
-                                sx={{ m: 1, mt: 5 }}
+                                sx={{ m: 1 }}
                                 variant="h4"
                             >
-                                Friend Requests
+                                Search friend
                             </Typography>
                         </Box>
                         <Box sx={{ mt: 3 }}>
-                            <FriendRequests requests={friendRequests} />
+                            <Card>
+                                <CardContent>
+                                    <Box sx={{ maxWidth: 500 }}>
+                                        <TextField
+                                            value={search}
+                                            onChange={handleChange}
+                                            fullWidth
+                                            placeholder="Search player"
+                                            variant="outlined"
+                                        />
+                                    </Box>
+                                </CardContent>
+                            </Card>
                         </Box>
-                    </Container>
-                </Box>
+                    </Box>
+                    <Box
+                        sx={{
+                            alignItems: 'center',
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            flexWrap: 'wrap',
+                            m: -1
+                        }}
+                    >
+                        <Typography
+                            sx={{ m: 1, mt: 5 }}
+                            variant="h4"
+                        >
+                            Friend Requests
+                        </Typography>
+                    </Box>
+                    <Box sx={{ mt: 3 }}>
+                        <FriendRequests requests={friendRequests} />
+                    </Box>
+                    <Box sx={{ mt: 3 }}>
+                        <FriendList users={users.filter((value) => value.nickname.includes(search) && value.id_42 != user.id_42)} />
+                    </Box>
+                </Container>
             </Box>
         </>
     );

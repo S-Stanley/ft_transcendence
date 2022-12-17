@@ -1,11 +1,9 @@
 import { Fragment, useEffect, useState } from "react";
-import { Box, Button, TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import Helpers from "../../helpers/Helpers";
 import { useNavigate } from "react-router-dom";
-import NewAppBar from '../Utils/NewAppBar';
 
 import './Messagerie.scss';
-import { mdTheme } from "../Utils/Dashboard";
 import { MessagerieInterface } from "../../interfaces/messagerie";
 
 const Messaging = () => {
@@ -54,53 +52,39 @@ const Messaging = () => {
 
     return (
         <Fragment>
-            <NewAppBar />
-            <Box
-                component="main" position="fixed"
-                sx={{
-                    top:'100px',
-                    left:'200px',
-                    right:'200px',
-                    backgroundColor: mdTheme.palette.grey[900],
-                    flexGrow: 1,
-                    height: '100vh',
-                    overflow: 'auto',
-                }}
+            <div
+                id='div-message-messaging'
             >
-                <div
-                    id='div-message-messaging'
+                {allDiscussions.map((discussion: MessagerieInterface) => {
+                    return (
+                        <div key={discussion.id} onClick={() => navigateToChat(discussion.id)}>
+                            {discussion.name}
+                        </div>
+                    );
+                })}
+            </div>
+            <form
+                onSubmit={handleSubmit}
+            >
+                <TextField
+                    label="Email of user to send a message"
+                    variant="standard"
+                    type='email'
+                    value={userToFind}
+                    onChange={(e) => setUserToFind(e.target.value)}
+                    inputProps={{
+                        'id': 'input-messagerie-email'
+                    }}
+                />
+                <br />
+                <Button
+                    variant="contained"
+                    type="submit"
+                    id='submit-button-messagerie'
                 >
-                    {allDiscussions.map((discussion: MessagerieInterface) => {
-                        return (
-                            <div key={discussion.id} onClick={() => navigateToChat(discussion.id)}>
-                                {discussion.name}
-                            </div>
-                        );
-                    })}
-                </div>
-                <form
-                    onSubmit={handleSubmit}
-                >
-                    <TextField
-                        label="Email of user to send a message"
-                        variant="standard"
-                        type='email'
-                        value={userToFind}
-                        onChange={(e) => setUserToFind(e.target.value)}
-                        inputProps={{
-                            'id': 'input-messagerie-email'
-                        }}
-                    />
-                    <br />
-                    <Button
-                        variant="contained"
-                        type="submit"
-                        id='submit-button-messagerie'
-                    >
-                        Validate
-                    </Button>
-                </form>
-            </Box>
+                    Validate
+                </Button>
+            </form>
         </Fragment>
     );
 };

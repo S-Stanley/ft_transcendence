@@ -1,10 +1,9 @@
-import { Box, Button, Avatar } from '@mui/material';
+import { Button, Avatar } from '@mui/material';
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import Config from "../../config/Config";
 import Helpers from "../../helpers/Helpers";
-import { mdTheme } from "../Utils/Dashboard";
 
 //update status to online
 const TwoFactorSetUp = () => {
@@ -45,40 +44,25 @@ const TwoFactorSetUp = () => {
 
     return (
         <>
+            Open your Google Authenticator app and generate the qr code to save in it
             {
-                <Box
-                    component="main" position="fixed"
-                    sx={{
-                        top:'100px',
-                        left:'200px',
-                        right:'200px',
-                        backgroundColor: mdTheme.palette.grey[900],
-                        flexGrow: 1,
-                        height: '100vh',
-                        overflow: 'auto',
-                    }}
-                >
-                        Open your Google Authenticator app and generate the qr code to save in it
-                    {
-                        qr ?
-                            <>
-                                <Avatar src={qrLink} sx={{ width: 256, height: 256 }} variant="square" >
-                                </Avatar>
-                                <div>
-                                    once saved, click on authenticate login with 2FA
-                                </div>
-                                <Button onClick={authenticate}>
-                                    Log in with 2FA
-                                </Button>
-                            </>
-                            :
-                            <div></div>
-                    }
-                    <Button onClick={generateQr}>
-                            Generate the 2FA Qr code
-                    </Button>
-                </Box>
+                qr ?
+                    <>
+                        <Avatar src={qrLink} sx={{ width: 256, height: 256 }} variant="square" >
+                        </Avatar>
+                        <div>
+                            once saved, click on authenticate login with 2FA
+                        </div>
+                        <Button onClick={authenticate}>
+                            Log in with 2FA
+                        </Button>
+                    </>
+                    :
+                    <div></div>
             }
+            <Button onClick={generateQr}>
+                    Generate the 2FA Qr code
+            </Button>
         </>
     );
 };
