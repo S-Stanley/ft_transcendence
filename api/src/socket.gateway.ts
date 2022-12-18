@@ -14,6 +14,15 @@ export class SocketGateway {
         });
     }
 
+    @SubscribeMessage('discussion')
+    handleDiscussion(@MessageBody() message: { data: { content: string, target: string, sender: number } }): void {
+        this.server.emit(message.data.target + 'discussion', {
+            content: message.data?.content,
+            target: message.data?.target,
+            sender: message.data?.sender,
+        });
+    }
+
     @SubscribeMessage('matchmaking')
     handleMatch(@MessageBody() message: { data: { target: string, callback: number, nickname:string } }): void {
         this.server.emit(message.data.target, {

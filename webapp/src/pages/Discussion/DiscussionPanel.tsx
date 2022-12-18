@@ -1,10 +1,13 @@
-import { Grid, Typography, Paper, List, ListItem, ListItemIcon, Avatar, ListItemText, Divider, TextField, Fab, Box, Button } from "@mui/material";
+import { Grid, Typography, Paper, List, ListItem, ListItemIcon, Avatar, ListItemText, Divider, TextField, Fab, Box, Button, Dialog, DialogActions, DialogTitle, DialogContent } from "@mui/material";
 import SendIcon from '@mui/icons-material/Send';
 import NewAppBar from "../Utils/NewAppBar";
 import { mdTheme } from "../Utils/Dashboard";
 import { useState, useEffect } from "react";
 import Helpers from "../../helpers/Helpers";
 import { v4 as uuid } from 'uuid';
+import { io } from "socket.io-client";
+
+const socket = io('http://localhost:5000', { transports: ['websocket'] });
 
 const DiscussionPanel = () => {
 
@@ -34,25 +37,36 @@ const DiscussionPanel = () => {
 
     const [content, setContent] = useState<string>('');
 
-    // const handleSubmit = async(e: { preventDefault: any }): Promise<void> => {
-    //     e.preventDefault();
-    //     const req = await Helpers.Messagerie.send_message_to_discussion(location?.state?.chat_id ?? '', messageContent);
-    //     if (req) {
-    //         setMessageContent('');
-    //         socket.emit('message', {
-    //             data: {
-    //                 chat_id: location?.state?.chat_id,
-    //                 content: messageContent,
-    //                 nickname: localStorage.getItem('nickname')
-    //             }
-    //         });
-    //     }
-    // };
+    const [dialog, setDialog] = useState<boolean>(false);
+
+    const [usernameSearch, setUsernameSearch] = useState<string>('');
+
+    const [errorMessage, setErrorMessage] = useState<string>('');
+
+    const changeUsernameSearch = (e:any) => {
+        e.preventDefault();
+        setUsernameSearch(e.target.value);
+    };
 
     const sendMessage = (e:any) => {
         e.preventDefault();
         Helpers.Discussion.sendMessage(user.id.toString(), target.toString(), content).then((res) => {
-            console.log('message sent', res);
+            if (res === 1)
+            {
+                socket.emit('discussion', {
+                    data: {
+                        target: target.toString(),
+                        content: content,
+                        sender: user.id,
+                    }
+                });
+            }
+            const output = [...messages, {
+                sender: user.id,
+                content: content,
+                nickname: '',
+            }];
+            setMessage(output);
         });
         setContent('');
     };
@@ -64,7 +78,7 @@ const DiscussionPanel = () => {
                 setDiscussions(resz!);
                 if (resz[0] !== null)
                 {
-                    Helpers.Discussion.getMessage(resz[0]?.id.toString()).then((resp) => {
+                    Helpers.Discussion.getMessage(resz[0]?.id, res?.id).then((resp) => {
                         setMessage(resp!);
                         setTarget(resz[0]?.id);
                     });
@@ -76,7 +90,7 @@ const DiscussionPanel = () => {
     const display_conversation = (e: any) => {
         e.preventDefault();
         setTarget(e.target.value);
-        Helpers.Discussion.getMessage(e.target.value.toString()).then((res) => {
+        Helpers.Discussion.getMessage(e.target.value, user.id).then((res) => {
             setMessage(res!);
         });
     };
@@ -86,13 +100,40 @@ const DiscussionPanel = () => {
         setContent(e.target.value);
     };
 
-    // socket.on(location?.state?.chat_id, (data: { content: string, nickname: string, chat_id: string }) => {
-    //     const output = [...allMessage, {
-    //         nickname: data?.nickname,
-    //         content: data?.content
-    //     }];
-    //     setAllMessage(output);
-    // });
+    socket.on(user.id.toString() + 'discussion', (data: { content: string, target: string, sender: number }) => {
+        console.log('je recois le message');
+        const output = [...messages, {
+            sender: data?.sender,
+            content: data?.content,
+            nickname: '',
+        }];
+        setMessage(output);
+    });
+
+    const newConversation = (e:any) => {
+        e.preventDefault();
+        console.log('create conversation');
+        setDialog(true);
+    };
+
+    const createConversation = (e:any) => {
+        e.preventDefault();
+        Helpers.Discussion.createConversation(user.id, usernameSearch).then((res) => {
+            if (res === 2)
+            {
+                setErrorMessage('Create a conversation with yourself ? What a crazy idea !');
+                console.log('going here');
+            }
+            else if (res === 3)
+                setErrorMessage('A conversation already exists, you even though you like him you wont talk to him twice more with this');
+            else
+            {
+                setErrorMessage('');
+                setDialog(false);
+            }
+        });
+    };
+
 
     return (
         <>
@@ -119,6 +160,11 @@ const DiscussionPanel = () => {
                             <TextField id="outlined-basic-email" label="Search" variant="outlined" fullWidth />
                         </Grid>
                         <Divider />
+                        <Divider />
+                        <Grid item xs={12} style={{padding: '10px'}}>
+                            <Button onClick={newConversation}>Create conversation</Button>
+                        </Grid>
+                        <Divider />
                         <List>
                             {discussions.map((discussion) => (
                                 <ListItem key={uuid()}>
@@ -133,7 +179,7 @@ const DiscussionPanel = () => {
                     </Grid>
                     <Grid item xs={9}>
                         <List>
-                            {messages.map((message) => (
+                            {messages.slice(-10).map((message) => (
                                 <ListItem key={uuid()}>
                                     <Grid container>
                                         {
@@ -170,6 +216,37 @@ const DiscussionPanel = () => {
                         </Grid>
                     </Grid>
                 </Grid>
+                {
+                    dialog
+                        ?
+                        <Dialog
+                            open={dialog}
+                            onClose={() => setDialog(false)}
+                            aria-labelledby="alert-dialog-title"
+                            aria-describedby="alert-dialog-description"
+			            >
+                            <DialogTitle id="alert-dialog-title">
+				                {"Create Conversation"}
+                            </DialogTitle>
+                            <DialogActions>
+                                <TextField id="outlined-basic-email" label="Type Username" fullWidth value={usernameSearch} onChange={changeUsernameSearch}/>
+				                <Button onClick={createConversation} autoFocus>Create</Button>
+                            </DialogActions>
+                            {
+                                errorMessage === ''
+                                    ?
+                                    <div></div>
+                                    :
+                                    <DialogContent>
+                                        <Typography variant='body2' color='red'>
+                                            *{errorMessage}
+                                        </Typography>
+                                    </DialogContent>
+                            }
+			            </Dialog>
+                        :
+                        <div></div>
+                }
             </Box>
         </>
     );

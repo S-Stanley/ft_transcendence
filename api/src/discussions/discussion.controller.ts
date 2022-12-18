@@ -101,12 +101,13 @@ export class DiscussionController {
 
     @Get('/all/:user_id')
     async getAllChatByUserId(@Param() params) {
-        const all_chats = await this.db.query('select users.nickname, users.avatar, users.id from users join conversation on conversation.two=$1 where users.id=conversation.one;', [params.user_id]);
+        const all_chats = await this.db.query('select users.nickname, users.avatar, users.id from users join conversation on conversation.two=$1 where users.id=conversation.one union select users.nickname, users.avatar, users.id from users join conversation on conversation.one=$1 where users.id=conversation.two;', [params.user_id]);
         return (all_chats.rows);
     }
 
     @Get('/message/:user_id')
-    async getAllMessageByUserId(@Param() params) {
+    async getAllMessageByUserId(@Param() params: {user_id: string, me:string}) {
+        console.log('me is eheheh', params.me);
         const all_message = await this.db.query('select users.nickname, users.avatar, message.sender, message.receiver, message.content from users join message on message.sender=$1 or message.receiver=$1 where users.id=$1;', [params.user_id]);
         return (all_message.rows);
     }
@@ -114,6 +115,23 @@ export class DiscussionController {
     @Post('/message/:user_id')
     async postMessageToTarget(@Param() params, @Body() body: { target_id: string, content: string}) {
         const insert_message = await this.db.query('insert into public.message (sender, receiver, content) values($1, $2, $3)', [params.user_id, body.target_id, body.content]);
-        return (insert_message.rows);
+        console.log('the insert message is ', insert_message);
+        return (insert_message.rowCount);
+    }
+
+    @Post('/create_conversation')
+    async createConversation(@Body() body: { user_id: number, username: string}) {
+        const res = await this.db.query('select users.id from users where users.nickname=$1', [body.username]);
+        const username_id = res.rows[0].id;
+        if (username_id === body.user_id)
+            return (2);
+        const conversation_one = await this.db.query('select * from conversation where conversation.one=$1 and conversation.two=$2', [username_id, body.user_id]);
+        const conversation_two = await this.db.query('select * from conversation where conversation.one=$2 and conversation.two=$1', [username_id, body.user_id]);
+        if (conversation_one || conversation_two)
+            return (3);
+        // console.log('the username id is', username_id.rows[0].id);
+        // const insert_message = await this.db.query('insert into public.conversation (one, two) values($1, $2)', [body.user_id, body.username]);
+        // return (insert_message.rows);
+        return (null);
     }
 }
