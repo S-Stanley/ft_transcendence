@@ -1,13 +1,16 @@
 import './Profile.scss';
-import { Fragment, useState } from 'react';
+import { Fragment, useReducer, useState } from 'react';
 import Typography from '@mui/material/Typography';
-import { Avatar, Badge, Button } from '@mui/material';
+import { Avatar, Badge, Button, IconButton } from '@mui/material';
 import Helpers from '../../helpers/Helpers';
 import { useNavigate } from 'react-router-dom';
 import { Box } from '@mui/system';
 import Statistics from './components/Statistics';
 import NewAppBar from '../Utils/NewAppBar';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import DoneIcon from '@mui/icons-material/Done';
+import ClearIcon from '@mui/icons-material/Clear';
+import GroupIcon from '@mui/icons-material/Group';
 
 const Profile = () => {
     const [user, setUser] = useState({
@@ -17,6 +20,10 @@ const Profile = () => {
         current_status: '',
         friends: ['']
     });
+    const [, forceUpdate] = useReducer(x => x + 1, 0);
+    let isFriend = false;
+    const [buttonText, setButtonText] = useState('');
+    const [userFriendStatus, setUserFriendStatus] = useState('');
     const userToGet = window.location.pathname.split('/')[2];
     const navigate = useNavigate();
     if (user.nickname === '') {
@@ -41,17 +48,76 @@ const Profile = () => {
         }
         return color;
     };
-    const isFriend = (): boolean => {
-        try {
-            if (user.friends && user.friends.indexOf(localStorage.getItem('nickname')!) >= 0) {
-                return true;
-            }
-            return false;
+    const buttonTextMap = new Map([
+        ['accepted', 'Friends'],
+        ['to_accept', 'To accept'],
+        ['pending', 'Request sent'],
+        ['cancelled', 'Add friend']
+    ]);
+    const getFriendStatus = (): any => {
+        Helpers.Friends.getFriendRequestStatus(userToGet).then(res => {
+            setUserFriendStatus(res);
+            setButtonText(buttonTextMap.get(userFriendStatus)!);
+        });
+        if (userFriendStatus === 'accepted') {
+            isFriend = true;
         }
-        catch (e) {
-            console.log(e);
-            return false;
+    };
+    getFriendStatus();
+    const displayButton = (): any => {
+        switch (userFriendStatus) {
+        case 'accepted':
+            return(
+                <Button size="small"
+                    color="inherit"
+                    variant="contained">
+                    { buttonText }
+                    <GroupIcon sx={{ml: 1, mb: 0.2}}/>
+                </Button>);
+        case 'to_accept':
+            return(
+                <div>
+                    <Button size="small"
+                        color="inherit"
+                        variant="contained">
+                        { buttonText }
+                    </Button>
+                    <IconButton onClick={() => {
+                        Helpers.Friends.acceptFriendRequest(userToGet, localStorage.getItem('nickname')!, true);
+                        forceUpdate();
+                    }}>
+                        <DoneIcon sx={{ml: 1, mb: 0.3}}/>
+                    </IconButton>
+                    <IconButton onClick={() => {
+                        Helpers.Friends.acceptFriendRequest(userToGet, localStorage.getItem('nickname')!, false);
+                        forceUpdate();
+                    }}>
+                        <ClearIcon sx={{ml: 1, mb: 0.3}}/>
+                    </IconButton>
+                </div>);
+        case 'pending':
+            return(
+                <Button size="small"
+                    color="primary"
+                    variant="contained" disabled>
+                    { buttonText }
+                    <PersonAddIcon sx={{ml: 1, mb: 0.2}}/>
+                </Button>);
+        case 'cancelled':
+            return(
+                <Button
+                    size="small"
+                    color="inherit"
+                    variant="contained"
+                    onClick={() => sendFriendRequest()}>
+                    Add friend
+                    <PersonAddIcon sx={{ml: 1, mb: 0.2}}/>
+                </Button>);
         }
+    };
+    const sendFriendRequest = () => {
+        setButtonText('Request sent');
+        Helpers.Friends.sendFriendRequest(user.nickname, localStorage.getItem('nickname')!);
     };
     return (
         <Fragment>
@@ -62,7 +128,7 @@ const Profile = () => {
                     justifyContent='center'
                     alignItems='center'
                 >
-                    { isFriend() ?
+                    { isFriend ?
                         <Badge color={getColorStatus()} badgeContent='' sx={{ margin:3 }} anchorOrigin={{
                             vertical: 'bottom',
                             horizontal: 'right',
@@ -81,10 +147,7 @@ const Profile = () => {
                         Edit Profile
                     </Button>
                     :
-                    <Button id='add-friend-button' onClick={() => Helpers.Users.addFriend(user.nickname, localStorage.getItem('nickname')!)}>
-                        Add Friend
-                        <PersonAddIcon sx={{ml: 1, mb: 0.2}}/>
-                    </Button>
+                    <div>{ displayButton() }</div>
                 }
             </h1>
             <h2>

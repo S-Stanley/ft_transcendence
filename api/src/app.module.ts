@@ -23,6 +23,9 @@ import { MatchmakingService } from './services/matchmaking.service';
 import { TwoFactorAuthController } from './two_factor_auth/two_factor_auth.controller';
 import { TwoFactorAuthService } from './services/two_factor_auth.service';
 import { JwtModule, JwtService } from '@nestjs/jwt';
+import { FriendRequest } from './entities/friendrequest.entity';
+import { FriendRequestController } from './friendrequest/friendrequest.controller';
+import { FriendRequestService } from './services/friend_request.service';
 
 @Module({
     imports:
@@ -39,14 +42,14 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
             username: process.env.POSTGRES_USER,
             password: '',
             database: process.env.POSTGRES_DB,
-            entities: [Users, History, Matchmaking],               // On renseigne ici les entités voulant être mappées en base de données
+            entities: [Users, History, Matchmaking, FriendRequest],               // On renseigne ici les entités voulant être mappées en base de données
         }),
-        TypeOrmModule.forFeature([Users, History, Matchmaking]),     // On renseigne ici les entités possédant un repository
+        TypeOrmModule.forFeature([Users, History, Matchmaking, FriendRequest]),     // On renseigne ici les entités possédant un repository
         MulterModule.register({dest: './public',}),
         ServeStaticModule.forRoot({
             rootPath: join(__dirname, '..', 'public'),
         }),
-        TypeOrmModule.forFeature([Users, History]),     // On renseigne ici les entités possédant un repository
+        TypeOrmModule.forFeature([Users, History, FriendRequest]),     // On renseigne ici les entités possédant un repository
         MulterModule.register({dest: './public',}),
         ServeStaticModule.forRoot({
             rootPath: join(__dirname, '..', 'public'),
@@ -56,8 +59,8 @@ import { JwtModule, JwtService } from '@nestjs/jwt';
             signOptions: { expiresIn: '1d' },
         }),
         ],
-    controllers: [AppController, UsersController, ChatController, HistoryController, MatchmakingController, TwoFactorAuthController],
-    providers: [AppService, UserService, SocketGateway, HistoryService, MatchmakingService, TwoFactorAuthService],
+    controllers: [AppController, UsersController, ChatController, HistoryController, MatchmakingController, TwoFactorAuthController, FriendRequestController],
+    providers: [AppService, UserService, SocketGateway, HistoryService, MatchmakingService, TwoFactorAuthService, FriendRequestService],
 })
 export class AppModule implements NestModule {
     configure(consumer: MiddlewareConsumer) {
@@ -72,6 +75,12 @@ export class AppModule implements NestModule {
             }, {
                 path: '/chat*',
                 method: RequestMethod.POST
+            }, {
+                path: '/friends*',
+                method: RequestMethod.POST
+            }, {
+                path: '/friends*',
+                method: RequestMethod.GET
             }, {
                 path: '/history*',
                 method: RequestMethod.GET,

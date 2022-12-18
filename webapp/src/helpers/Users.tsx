@@ -167,6 +167,10 @@ const toggleTwoFactor = async (twoFactor: boolean, id_42:number): Promise<User |
     }
 };
 
+const getUserFromId = async(id_42: number): Promise<User | null> => {
+    return await axios.get(`${Config.Api.url}/users/userid/${id_42}`).then((res) => res.data);
+};
+
 const Users = {
     login,
     me,
@@ -182,6 +186,7 @@ const Users = {
     saveProfilePicture,
     toggleTwoFactor,
     getAllUsers,
+    getUserFromId,
 };
 
 export default Users;

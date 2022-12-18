@@ -4,6 +4,12 @@ CREATE TYPE public.current_status_enum as ENUM (
     'in-game'
 );
 
+CREATE TYPE public.friend_request_status_enum as ENUM (
+    'accepted',
+    'pending',
+    'cancelled'
+);
+
 CREATE TABLE IF NOT EXISTS public.users(
     id                              SERIAL PRIMARY KEY NOT NULL UNIQUE,
     id_42                           INT DEFAULT NULL,
@@ -67,4 +73,15 @@ CREATE TABLE IF NOT EXISTS public.chat_message(
 
     CONSTRAINT  fk_chat_id FOREIGN KEY (chat_id) REFERENCES public.chat (id),
     CONSTRAINT  fk_send_by FOREIGN KEY (sent_by) REFERENCES public.users (id)
+);
+
+CREATE TABLE IF NOT EXISTS public.friend_request(
+    id                  SERIAL PRIMARY KEY NOT NULL UNIQUE,
+    sender              INTEGER NOT NULL,
+    receiver            INTEGER NOT NULL,
+    current_status      public.friend_request_status_enum DEFAULT 'pending',
+    created_at          DATE DEFAULT NOW() NOT NULL,
+
+    CONSTRAINT          fk_sender_id FOREIGN KEY (sender) REFERENCES public.users (id),
+    CONSTRAINT          fk_receiver_id FOREIGN KEY (receiver) REFERENCES public.users (id)
 );
