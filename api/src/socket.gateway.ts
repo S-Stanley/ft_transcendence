@@ -16,7 +16,7 @@ export class SocketGateway {
 
     @SubscribeMessage('matchmaking')
     handleMatch(@MessageBody() message: { data: { target: string, callback: number, nickname:string } }): void {
-        this.server.emit(message.data.target, {
+        this.server.emit(message.data.target + 'matchmaking', {
             id_incoming: message.data?.callback,
             nickname: message.data?.nickname,
             confirmation: false,
@@ -25,17 +25,25 @@ export class SocketGateway {
 
     @SubscribeMessage('confirmation')
     handleConfirmation(@MessageBody() message: { data: { target: string, callback: number, nickname:string } }): void {
-        this.server.emit(message.data.target, {
+        this.server.emit(message.data.target + 'matchmaking', {
             id_incoming: message.data?.callback,
             nickname:message.data?.nickname,
             confirmation: true,
         });
     }
 
-    @SubscribeMessage('game')
+    @SubscribeMessage('paddle')
     updatePosition(@MessageBody() message: { data: { target: string, position:number } }): void {
-        this.server.emit(message.data.target, {
+        this.server.emit(message.data.target + 'paddle', {
             position:message.data?.position,
+        });
+    }
+
+    @SubscribeMessage('ball')
+    updateBall(@MessageBody() message: { data: { target: string, x: number, y: number } }): void {
+        this.server.emit(message.data.target + 'ball', {
+            x: message.data?.x,
+            y: message.data?.y,
         });
     }
 }

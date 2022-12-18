@@ -2,7 +2,7 @@ import { Button, Typography } from "@mui/material";
 import React from "react";
 import Helpers from "../../../helpers/Helpers";
 
-export const End = ( props: { scoreOne: number; scoreTwo: number } ) => {
+export const End = ( props: { scoreOne: number, scoreTwo: number, player: number, nickname: string, opp_nickname: string  } ) => {
 
     return (
         <React.Fragment>
@@ -13,9 +13,9 @@ export const End = ( props: { scoreOne: number; scoreTwo: number } ) => {
                 sx={{ ml:'750px', }}
             >
                 {
-                    props.scoreOne > props.scoreTwo
-                        ? `Player one won ${props.scoreOne} against ${props.scoreTwo}`
-                        : `Player two won ${props.scoreTwo} against ${props.scoreOne}`
+                    props.player === 1
+                        ? `End of game ! Final Score: ${props.nickname} ${props.scoreOne} - ${props.opp_nickname} ${props.scoreTwo}`
+                        : `End of game ! Final Score: ${props.opp_nickname} ${props.scoreOne} - ${props.nickname} ${props.scoreTwo}`
                 }
             </Typography>
             <br></br>
@@ -25,7 +25,7 @@ export const End = ( props: { scoreOne: number; scoreTwo: number } ) => {
                 variant="contained"
                 size="large"
                 sx={{ ml:'730px', }}
-                href='/play'
+                href='/home'
                 onClick={() => Helpers.Users.updateStatus(localStorage.getItem('nickname')!, 'online')}
             >
 				Menu
@@ -35,7 +35,7 @@ export const End = ( props: { scoreOne: number; scoreTwo: number } ) => {
                 variant="contained"
                 size="large"
                 sx={{ ml:'100px', }}
-                href='/play/pong'
+                href='/play/matchmaking'
             >
 				Again
             </Button>

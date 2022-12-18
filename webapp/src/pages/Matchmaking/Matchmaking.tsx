@@ -53,7 +53,7 @@ const Matchmaking = () => {
         Helpers.Matchmaking.getRequests().then((res) => console.log(res));
     };
 
-    socket.on(user.id_42.toString(), (data: { id_incoming: number, confirmation:boolean, nickname: string }) => {
+    socket.on(user.id_42.toString() + 'matchmaking', (data: { id_incoming: number, confirmation:boolean, nickname: string }) => {
         if (!data.confirmation)
         {
             Helpers.Matchmaking.matchCancel(user.id_42).then((res) => console.log(res));
@@ -68,7 +68,9 @@ const Matchmaking = () => {
                 state: {
                     my_id: user.id_42,
                     opp_id: data.id_incoming,
-                    nickname: data.nickname,
+                    opp_nickname: data.nickname,
+                    nickname: user.nickname,
+                    player: 1,
                 }
             });
         }
@@ -78,7 +80,9 @@ const Matchmaking = () => {
                 state: {
                     my_id: user.id_42,
                     opp_id: data.id_incoming,
-                    nickname: data.nickname,
+                    opp_nickname: data.nickname,
+                    nickname: user.nickname,
+                    player: 2,
                 }
             });
         }

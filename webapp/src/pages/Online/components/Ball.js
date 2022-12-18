@@ -1,5 +1,6 @@
-const INITIAL_VELOCITY = .005;
+const INITIAL_VELOCITY = .02;
 const VELOCITY_INCREASE = 0.0000001;
+let tmp = false;
 
 export default class Ball {
     constructor(ballElem) {
@@ -25,6 +26,22 @@ export default class Ball {
 
     rect() {
         return this.ballElem.getBoundingClientRect();
+    }
+
+    get_x() {
+        return this.x;
+    }
+
+    get_y() {
+        return this.y;
+    }
+
+    set_x(value) {
+        this.x = value;
+    }
+
+    set_y(value) {
+        this.y = value;
     }
 
     reset(){
@@ -59,23 +76,33 @@ export default class Ball {
         this.velocity = 0;
     }
 
-    update(delta, paddleRects){
-        this.x += this.direction.x * this.velocity * delta;
-        this.y += this.direction.y * this.velocity * delta;
+    update(delta, paddleRects, collision){
         const rect = this.rect();
-        if (rect.bottom >= window.innerHeight || rect.top <= 60) {
-            this.direction.y *= -1;
-        }
-        if (paddleRects.some(r => isCollision(r, rect))){
+        if (collision === 1) {
             this.direction.x *= -1;
+            this.y += this.direction.x * this.velocity * delta;
+            this.x += this.direction.y * this.velocity * delta;
+            tmp = false;
+        }
+        else if ((rect.bottom >= window.innerHeight || rect.top <= 60) && tmp === false) {
+            this.direction.y *= -1;
+            this.x += this.direction.x * this.velocity * delta * 10;
+            this.y += this.direction.y * this.velocity * delta * 10;
+            tmp = true;
+        }
+        else
+        {
+            this.x += this.direction.x * this.velocity * delta;
+            this.y += this.direction.y * this.velocity * delta;
+            tmp = false;
         }
         this.velocity += VELOCITY_INCREASE * delta;
     }
 }
 
-function isCollision(rect1, rect2){
-    return (rect1.left <= rect2.right && rect1.right >= rect2.left && rect1.top <= rect2.bottom && rect1.bottom >= rect2.top);
-}
+// function isCollision(rect1, rect2){
+//     return (rect1.left <= rect2.right && rect1.right >= rect2.left && rect1.top <= rect2.bottom && rect1.bottom >= rect2.top);
+// }
 
 function randomNumberBetween(min, max) {
     return Math.random() * (max-min) + min;

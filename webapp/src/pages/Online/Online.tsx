@@ -1,8 +1,6 @@
 import { Fragment, useRef, useState } from 'react';
 import Pong from './components/Pong';
-import { Box, Button, Card, CardContent } from '@mui/material';
-import { mdTheme } from '../Utils/Dashboard';
-import NewAppBar from '../Utils/NewAppBar';
+import { Box, Button, Card, CardContent, Toolbar, Typography } from '@mui/material';
 import { useLocation } from "react-router-dom";
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 import "./styles.css";
@@ -50,12 +48,12 @@ const Online = () => {
                 <h1>
                     CountDown until match
                     <br />
-                    Opponent: {location?.state?.nickname}
+                    Opponent: {location?.state?.opp_nickname}
                 </h1>
                 <div className="timer-wrapper">
                     <CountdownCircleTimer
                         isPlaying
-                        duration={5}
+                        duration={3}
                         colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
                         colorsTime={[5, 3, 2, 1]}
                         onComplete={() => setEnd(true)}
@@ -72,45 +70,39 @@ const Online = () => {
 
     return (
         <Fragment>
-            <NewAppBar/>
-            <Box
-                component="main" position="fixed"
-                sx={{
-                    top:'100px',
-                    left:'200px',
-                    right:'200px',
-                    backgroundColor: mdTheme.palette.grey[900],
-                    flexGrow: 1,
-                    height: '100vh',
-                    overflow: 'auto',
-                }}
-            >
-                <>
                 	{
                     	end?
-                            <>
-                                <Button href="/play">
+                    <>
+                        <Button href="/">
                                     Exit
-                                </Button>
-                                <Pong my_id={location?.state?.my_id} opp_id={location?.state?.opp_id} nickname={location?.state?.nickname}/>
-                            </>
-                            :
-                            <Card>
-                                <CardContent>
-                                    <Box
-                                        sx={{
-                                            alignItems: 'center',
-                                            display: 'flex',
-                                            flexDirection: 'column'
-                                        }}
+                        </Button>
+                        <Pong my_id={location?.state?.my_id} opp_id={location?.state?.opp_id} nickname={location?.state?.nickname} player={location?.state?.player} opp_nickname={location?.state?.opp_nickname}/>
+                    </>
+                    :
+                    <Card>
+                        <CardContent>
+                            <Box
+                                sx={{
+                                    alignItems: 'center',
+                                    display: 'flex',
+                                    flexDirection: 'column'
+                                }}
+                            >
+                                <CountDown/>
+                                <Toolbar>
+                                    <Typography
+                                        color="inherit" style={{ borderRight: "0.1em solid black", padding: "0.5em" }}
                                     >
-                                        <CountDown/>
-                                    </Box>
-                                </CardContent>
-                            </Card>
-                    }
-                </>
-            </Box>
+                                                Left : { location?.state?.player === 1 ? location?.state?.nickname : location?.state?.opp_nickname }
+                                    </Typography>
+                                    <Typography color="inherit" style={{ padding: "0.5em" }}>
+                                            Right : { location?.state?.player === 1 ? location?.state?.opp_nickname : location?.state?.nickname }
+                                    </Typography>
+                                </Toolbar>
+                            </Box>
+                        </CardContent>
+                    </Card>
+            }
         </Fragment>
     );
 };
