@@ -1,4 +1,4 @@
-import { Controller, Param, Get } from '@nestjs/common';
+import { Controller, Param, Get, Post, Body } from '@nestjs/common';
 import { Injectable, Inject } from '@nestjs/common';
 // import { Controller, Post, Body, HttpException, Param, Get } from '@nestjs/common';
 // import { isValidUUIDV4 } from 'is-valid-uuid-v4';
@@ -109,5 +109,11 @@ export class DiscussionController {
     async getAllMessageByUserId(@Param() params) {
         const all_message = await this.db.query('select users.nickname, users.avatar, message.sender, message.receiver, message.content from users join message on message.sender=$1 or message.receiver=$1 where users.id=$1;', [params.user_id]);
         return (all_message.rows);
+    }
+
+    @Post('/message/:user_id')
+    async postMessageToTarget(@Param() params, @Body() body: { target_id: string, content: string}) {
+        const insert_message = await this.db.query('insert into public.message (sender, receiver, content) values($1, $2, $3)', [params.user_id, body.target_id, body.content]);
+        return (insert_message.rows);
     }
 }

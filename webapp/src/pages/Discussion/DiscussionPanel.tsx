@@ -30,30 +30,69 @@ const DiscussionPanel = () => {
         sender: 0,
     }]);
 
+    const [target, setTarget] = useState<number>(0);
+
+    const [content, setContent] = useState<string>('');
+
+    // const handleSubmit = async(e: { preventDefault: any }): Promise<void> => {
+    //     e.preventDefault();
+    //     const req = await Helpers.Messagerie.send_message_to_discussion(location?.state?.chat_id ?? '', messageContent);
+    //     if (req) {
+    //         setMessageContent('');
+    //         socket.emit('message', {
+    //             data: {
+    //                 chat_id: location?.state?.chat_id,
+    //                 content: messageContent,
+    //                 nickname: localStorage.getItem('nickname')
+    //             }
+    //         });
+    //     }
+    // };
+
+    const sendMessage = (e:any) => {
+        e.preventDefault();
+        Helpers.Discussion.sendMessage(user.id.toString(), target.toString(), content).then((res) => {
+            console.log('message sent', res);
+        });
+        setContent('');
+    };
+
     useEffect(() => {
         Helpers.Users.me().then((res) => {
             setUser(res!);
             Helpers.Discussion.getConversations(res?.id.toString()).then((resz) => {
                 setDiscussions(resz!);
-                console.log('conversation fetch', resz);
                 if (resz[0] !== null)
                 {
-                    console.log('the id passed in argument is', resz[0].id);
                     Helpers.Discussion.getMessage(resz[0]?.id.toString()).then((resp) => {
                         setMessage(resp!);
-                        console.log('message fetch', resp);
+                        setTarget(resz[0]?.id);
                     });
                 }
             });
-            console.log('me fetch', res);
         });
     }, []);
 
     const display_conversation = (e: any) => {
+        e.preventDefault();
+        setTarget(e.target.value);
         Helpers.Discussion.getMessage(e.target.value.toString()).then((res) => {
             setMessage(res!);
         });
     };
+
+    const handleChange = (e:any) => {
+        e.preventDefault();
+        setContent(e.target.value);
+    };
+
+    // socket.on(location?.state?.chat_id, (data: { content: string, nickname: string, chat_id: string }) => {
+    //     const output = [...allMessage, {
+    //         nickname: data?.nickname,
+    //         content: data?.content
+    //     }];
+    //     setAllMessage(output);
+    // });
 
     return (
         <>
@@ -123,10 +162,10 @@ const DiscussionPanel = () => {
                         <Divider />
                         <Grid container style={{padding: '20px'}}>
                             <Grid item xs={11}>
-                                <TextField id="outlined-basic-email" label="Type Something" fullWidth />
+                                <TextField id="outlined-basic-email" label="Type Something" fullWidth value={content} onChange={handleChange}/>
                             </Grid>
                             <Grid xs={1}>
-                                <Fab color="primary" aria-label="add"><SendIcon /></Fab>
+                                <Fab color="primary" aria-label="add" onClick={sendMessage}><SendIcon /></Fab>
                             </Grid>
                         </Grid>
                     </Grid>

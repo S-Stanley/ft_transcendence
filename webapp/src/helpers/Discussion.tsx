@@ -21,9 +21,23 @@ const   getMessage = async (user_id: string | undefined): Promise<any> => {
     }
 };
 
+const sendMessage = async (user_id: string, target_id: string, content: string): Promise<any> => {
+    try {
+        const req = await axios.post(`${Config.Api.url}/discussion/message/${user_id}`, {
+            target_id: target_id,
+            content: content,
+        });
+        return (req.data);
+    } catch (e) {
+        console.error(e);
+        return (null);
+    }
+};
+
 const Discussion = {
     getConversations,
     getMessage,
+    sendMessage,
 };
 
 export default Discussion;
