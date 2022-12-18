@@ -87,7 +87,36 @@ export class ChatController {
 
     @Get('/all/:user_id')
     async getAllChatByUserId(@Param() params) {
-        const all_chats = await this.db.query('SELECT * FROM public.chat WHERE chat.id IN (SELECT DISTINCT(chat_id) FROM public.chat_member WHERE user_id=$1) LIMIT 25', [params.user_id]);
+        const all_chats = await this.db.query(
+            `
+            SELECT
+                chat.id,
+                chat.name,
+                chat.type,
+                chat_member.id AS chat_member_id,
+                users.nickname
+            FROM
+                public.chat
+            JOIN
+                public.chat_member
+            ON
+                chat.id = chat_member.chat_id
+            JOIN
+                public.users
+            ON
+                chat_member.user_id = users.id
+            WHERE
+                CASE
+                    WHEN chat.type = 'private' THEN
+                        chat_member.user_id != $1
+                    WHEN chat.type = 'public' THEN
+                        chat_member.user_id = $1
+                END
+            LIMIT
+                25;
+            `,
+            [params.user_id]
+        );
         return (all_chats.rows);
     }
 }

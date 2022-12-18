@@ -10,6 +10,11 @@ CREATE TYPE public.friend_request_status_enum as ENUM (
     'cancelled'
 );
 
+CREATE TYPE public.chat_type as ENUM (
+    'public',
+    'private'
+);
+
 CREATE TABLE IF NOT EXISTS public.users(
     id                              SERIAL PRIMARY KEY NOT NULL UNIQUE,
     id_42                           INT DEFAULT NULL,
@@ -50,6 +55,7 @@ CREATE TABLE IF NOT EXISTS public.matchmaking(
 CREATE TABLE IF NOT EXISTS public.chat(
     id          UUID PRIMARY KEY DEFAULT uuid_generate_v4() NOT NULL UNIQUE,
     name        VARCHAR(200) DEFAULT NULL,
+    type        public.chat_type DEFAULT 'private' NOT NULL,
     created_by  INTEGER DEFAULT NULL,
 
     CONSTRAINT  fk_created_by FOREIGN KEY (created_by) REFERENCES public.users(id)

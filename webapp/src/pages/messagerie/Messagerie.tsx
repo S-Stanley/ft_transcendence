@@ -58,7 +58,7 @@ const Messaging = () => {
                 {allDiscussions.map((discussion: MessagerieInterface) => {
                     return (
                         <div key={discussion.id} onClick={() => navigateToChat(discussion.id)}>
-                            {discussion.name}
+                            { discussion.type === 'public' ? discussion.name : discussion.nickname}
                         </div>
                     );
                 })}
