@@ -3,7 +3,7 @@ import { TextField, Button, Box } from "@mui/material";
 import Helpers from "../../helpers/Helpers";
 import { io } from 'socket.io-client';
 import './Chat.scss';
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import NewAppBar from '../Utils/NewAppBar';
 import { mdTheme } from "../Utils/Dashboard";
 
@@ -14,6 +14,7 @@ const Chat = () => {
     const [messageContent, setMessageContent] = useState<string>('');
     const [allMessage, setAllMessage] = useState<{content: string, nickname: string}[]>([]);
     const location = useLocation();
+    const navigate = useNavigate();
 
     const handleSubmit = async(e: { preventDefault: any }): Promise<void> => {
         e.preventDefault();
@@ -69,7 +70,7 @@ const Chat = () => {
                     {allMessage.map((msg: { content: string, nickname: string }, index) => {
                         return (
                             <div key={index} id={`message-content-${index}`}>
-                                { msg.nickname }: { msg.content }
+                                <u id='nickname-user-chat' onClick={() => navigate(`/users/${msg.nickname}`)}>{ msg.nickname }</u>: { msg.content }
                             </div>
                         );
                     })}
