@@ -99,9 +99,15 @@ export class DiscussionController {
     //     return (messages_with_email);
     // }
 
-    @Get('/all/:id_42')
+    @Get('/all/:user_id')
     async getAllChatByUserId(@Param() params) {
-        const all_chats = await this.db.query('SELECT * FROM public.conversation WHERE one=$1 OR two=$1', [params.id_42]);
+        const all_chats = await this.db.query('select users.nickname, users.avatar, users.id from users join conversation on conversation.two=$1 where users.id=conversation.one;', [params.user_id]);
         return (all_chats.rows);
+    }
+
+    @Get('/message/:user_id')
+    async getAllMessageByUserId(@Param() params) {
+        const all_message = await this.db.query('select users.nickname, users.avatar, message.sender, message.receiver, message.content from users join message on message.sender=$1 or message.receiver=$1 where users.id=$1;', [params.user_id]);
+        return (all_message.rows);
     }
 }

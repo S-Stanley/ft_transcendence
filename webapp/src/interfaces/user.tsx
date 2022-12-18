@@ -1,4 +1,5 @@
 export interface User {
+    id: number,
     id_42: number,
     email: string,
     two_factor_enabled: boolean,

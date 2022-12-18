@@ -15,5 +15,6 @@ TRUNCATE TABLE public.chat_member;
 \i fixtures/users-fixtures.sql
 \i fixtures/messagerie-fixtures.sql
 \i fixtures/discussion-fixtures.sql
+\i fixtures/message-fixtures.sql
 
 \i functions/login.sql

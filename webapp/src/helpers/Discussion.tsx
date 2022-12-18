@@ -1,10 +1,19 @@
 import Config from "../config/Config";
 import axios from 'axios';
-import { DiscussionInterface } from '../interfaces/discussion';
 
-const   getConversations = async (id_42: string | undefined): Promise<DiscussionInterface[]> => {
+const   getConversations = async (user_id: string | undefined): Promise<any> => {
     try {
-        const req = await axios.get(`${Config.Api.url}/discussion/all/${id_42}`);
+        const req = await axios.get(`${Config.Api.url}/discussion/all/${user_id}`);
+        return (req.data);
+    } catch (e) {
+        console.error(e);
+        return ([]);
+    }
+};
+
+const   getMessage = async (user_id: string | undefined): Promise<any> => {
+    try {
+        const req = await axios.get(`${Config.Api.url}/discussion/message/${user_id}`);
         return (req.data);
     } catch (e) {
         console.error(e);
@@ -14,6 +23,7 @@ const   getConversations = async (id_42: string | undefined): Promise<Discussion
 
 const Discussion = {
     getConversations,
+    getMessage,
 };
 
 export default Discussion;

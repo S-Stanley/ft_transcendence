@@ -1,4 +1,4 @@
-import { Box, Card, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
+import { Avatar, Box, Card, Table, TableBody, TableCell, TableHead, TableRow, Typography } from "@mui/material";
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import NewAppBar from "../Utils/NewAppBar";
 import { mdTheme } from "../Utils/Dashboard";
@@ -16,23 +16,22 @@ const Discussion = () => {
         current_status: '',
         friends: [''],
         id_42: 0,
+        id: 0,
     });
 
+    // eslint-disable-next-line no-unused-vars
     const [discussions, setDiscussions] = useState([{
-        one: 0,
-        two: 0,
+        nickname: '',
+        avatar: '',
     }]);
 
     useEffect(() => {
-        // let id_42 = 0;
         Helpers.Users.me().then((res) => {
             setUser(res!);
-            Helpers.Discussion.getConversations(res?.id_42.toString()).then((res) => {
+            Helpers.Discussion.getConversations(res?.id.toString()).then((res) => {
                 setDiscussions(res!);
                 console.log(res);
             });
-            // if (res?.id_42 !== undefined)
-            // id_42 = res?.id_42;
             console.log('me fetch', res);
         });
     }, []);
@@ -67,7 +66,7 @@ const Discussion = () => {
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {discussions.map((discussions) => (
+                                    {discussions.map((discussion) => (
                                         <TableRow key={uuid()}>
                                             <TableCell>
                                                 <Box
@@ -76,17 +75,16 @@ const Discussion = () => {
                                                         display: 'flex'
                                                     }}
                                                 >
-                                                    {/* <Avatar
+                                                    <Avatar
                                                         src={discussion.avatar}
                                                         sx={{ mr: 2 }}
                                                     >
-                                                    </Avatar> */}
+                                                    </Avatar>
                                                     <Typography
                                                         color="textPrimary"
                                                         variant="body1"
                                                     >
-                                                        coucou c le name
-                                                        {discussions.one}
+                                                        {discussion.nickname}
                                                     </Typography>
                                                 </Box>
                                             </TableCell>

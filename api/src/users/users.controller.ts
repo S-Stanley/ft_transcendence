@@ -135,6 +135,7 @@ export class UsersController {
             return (null);
         }
         return ({
+            id: req.rows[0].id,
             id_42: req.rows[0].id_42,
             email: req.rows[0].email,
             nickname: req.rows[0].nickname,

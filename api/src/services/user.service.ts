@@ -75,6 +75,7 @@ export class UserService {
 
     getOwnProfile(user: Users): UserDTO {
         return {
+            id: user.id,
             id_42: user.id_42,
             email: user.email,
             nickname: user.nickname,
@@ -91,6 +92,7 @@ export class UserService {
             nickname: nickname
         });
         return {
+            id: user.id,
             id_42: user.id_42,
             email: user.email,
             nickname: user.nickname,

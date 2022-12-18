@@ -75,3 +75,11 @@ CREATE TABLE IF NOT EXISTS public.conversation(
     two         INT NOT NULL,
     created_at  TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
+
+CREATE TABLE IF NOT EXISTS public.message(
+    id          SERIAL PRIMARY KEY NOT NULL UNIQUE,
+    sender      INT NOT NULL,
+    receiver    INT NOT NULL,
+    content     TEXT NOT NULL,
+    created_at  TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
