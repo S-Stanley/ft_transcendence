@@ -12,3 +12,4 @@ TRUNCATE TABLE public.chat_member;
 \i fixtures/messagerie-fixtures.sql
 
 \i functions/login.sql
+\i functions/create_or_get_chat_id.sql

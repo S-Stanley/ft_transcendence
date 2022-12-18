@@ -44,26 +44,12 @@ export class ChatController {
         if (!from || !email) {
             throw new HttpException('One of the user do not exist', 500);
         }
-        const find_chat = await this.db.query(
-            'SELECT * FROM public.chat WHERE $1 IN  (SELECT user_id FROM chat JOIN chat_member ON chat.id = chat_id) AND $2 IN (SELECT user_id FROM chat JOIN chat_member ON chat.id = chat_id);',
+        const chat_id = await this.db.query(
+            'SELECT * FROM public.create_or_get_chat_id($1, $2);',
             [email, from]
         );
-        if (find_chat.rows.length !== 0) {
-            return ({
-                chat_id: find_chat.rows[0].id
-            });
-        }
-        const create_chart = await this.db.query('INSERT INTO chat DEFAULT VALUES RETURNING id');
-        await this.db.query(
-            'INSERT INTO chat_member (chat_id, user_id) VALUES($1, $2)',
-            [create_chart.rows[0].id, email]
-        );
-        await this.db.query(
-            'INSERT INTO chat_member (chat_id, user_id) VALUES($1, $2)',
-            [create_chart.rows[0].id, from]
-        );
         return ({
-            chat_id: create_chart.rows[0].id
+            chat_id: chat_id.rows[0].create_or_get_chat_id
         });
     }
 
