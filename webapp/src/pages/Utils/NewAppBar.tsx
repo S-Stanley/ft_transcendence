@@ -27,7 +27,6 @@ import Messaging from '../messagerie/Messagerie';
 import Home from '../Home/Home';
 import Chat from '../chat/Chat';
 import Matchmaking from '../Matchmaking/Matchmaking';
-import Online from '../Online/Online';
 import TwoFactorAuth from '../TwoFactor/TwoFactorAuth';
 import TwoFactorSetUp from '../TwoFactor/TwoFactorSetUp';
 import FriendSearch from '../Friends/FriendSearch';
@@ -36,6 +35,7 @@ import Badge from '@mui/material/Badge';
 import Helpers from '../../helpers/Helpers';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { Avatar } from '@mui/material';
+import Bonus from '../Bonus/Bonus';
 
 
 
@@ -110,7 +110,7 @@ export default function PersistentDrawerLeft() {
     };
 
     const is_public_page = [
-        '/', '/login/email', '/oauth2-redirect', '/2fa', '/login/email/', '/oauth2-redirect/', '/2fa/', '/play/pong', '/play/plong/'].includes(window.location.pathname);
+        '/', '/login/email', '/oauth2-redirect', '/2fa', '/login/email/', '/oauth2-redirect/', '/2fa/', '/play/pong', '/play/plong/', '/play/bonus'].includes(window.location.pathname);
 
     useEffect(() => {
         if (!is_public_page) {
@@ -231,7 +231,7 @@ export default function PersistentDrawerLeft() {
                     <Route path='/chat' element={<Chat/>} />
                     <Route path="/play" element={<Play />} />
                     <Route path="/play/pong" element={<Game />} />
-                    <Route path="/play/online" element={<Online />} />
+                    <Route path="/play/bonus" element={<Bonus />} />
                     <Route path="/user" element={<Account />} />
                     <Route path='/users/:nickname' element={<Profile/>} />
                     <Route path="/friends" element={<FriendSearch />} />
@@ -256,7 +256,7 @@ export default function PersistentDrawerLeft() {
                         <Route path='/chat' element={<Chat/>} />
                         <Route path="/play" element={<Play />} />
                         <Route path="/play/pong" element={<Game />} />
-                        <Route path="/play/online" element={<Online />} />
+                        <Route path="/play/bonus" element={<Bonus />} />
                         <Route path="/user" element={<Account />} />
                         <Route path='/users/:nickname' element={<Profile/>} />
                         <Route path="/friends" element={<FriendSearch />} />

@@ -39,11 +39,23 @@ export class SocketGateway {
         });
     }
 
+    @SubscribeMessage('score')
+    updateScore(@MessageBody() message: { data: { target: string, player: number, computer: number } }): void {
+        this.server.emit(message.data.target + 'score', {
+            player:message.data?.player,
+            computer:message.data?.computer,
+        });
+    }
+
     @SubscribeMessage('ball')
-    updateBall(@MessageBody() message: { data: { target: string, x: number, y: number } }): void {
+    updateBall(@MessageBody() message: { data: { target: string, x: number, y: number, p_x: number, p_y: number, p_l: string, p_r: string } }): void {
         this.server.emit(message.data.target + 'ball', {
             x: message.data?.x,
             y: message.data?.y,
+            p_x: message.data?.p_x,
+            p_y: message.data?.p_y,
+            p_l: message.data?.p_l,
+            p_r: message.data?.p_r,
         });
     }
 }
