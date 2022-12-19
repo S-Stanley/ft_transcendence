@@ -63,7 +63,7 @@ export default class Ball {
         this.x += this.direction.x * this.velocity * delta;
         this.y += this.direction.y * this.velocity * delta;
         const rect = this.rect();
-        if (rect.bottom >= window.innerHeight || rect.top <= 60) {
+        if (rect.bottom >= window.innerHeight || rect.top <= 0) {
             this.direction.y *= -1;
         }
         if (paddleRects.some(r => isCollision(r, rect))){

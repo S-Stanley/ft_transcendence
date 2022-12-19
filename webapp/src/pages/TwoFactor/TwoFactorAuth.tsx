@@ -1,10 +1,9 @@
-import { Box, Button, Avatar, TextField, Typography } from '@mui/material';
+import { Button, Avatar, TextField, Typography } from '@mui/material';
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import Config from "../../config/Config";
 import Helpers from "../../helpers/Helpers";
-import { mdTheme } from "../Utils/Dashboard";
 
 //update status to online
 const TwoFactorAuth = () => {
@@ -75,18 +74,7 @@ const TwoFactorAuth = () => {
             {
                 user.two_factor_secret === null
                     ?
-                    <Box
-                        component="main" position="fixed"
-                        sx={{
-                            top:'100px',
-                            left:'200px',
-                            right:'200px',
-                            backgroundColor: mdTheme.palette.grey[900],
-                            flexGrow: 1,
-                            height: '100vh',
-                            overflow: 'auto',
-                        }}
-                    >
+                    <div>
                         First connection, welcome !
                         {
                             qr ?
@@ -100,20 +88,9 @@ const TwoFactorAuth = () => {
                         <Button onClick={generateQr}>
                             Generate the 2FA Qr code
                         </Button>
-                    </Box>
+                    </div>
                     :
-                    <Box
-                        component="main" position="fixed"
-                        sx={{
-                            top:'100px',
-                            left:'200px',
-                            right:'200px',
-                            backgroundColor: mdTheme.palette.grey[900],
-                            flexGrow: 1,
-                            height: '100vh',
-                            overflow: 'auto',
-                        }}
-                    >
+                    <div>
                         Enter the Google Authenticator code
                         <form onSubmit={checkCode}>
                             <TextField
@@ -143,7 +120,7 @@ const TwoFactorAuth = () => {
                         <Button onClick={regenerate}>
                             Regenerate Qr Code
                         </Button>
-                    </Box>
+                    </div>
             }
         </>
     );

@@ -4,7 +4,6 @@ import './Pong.scss';
 
 import Ball from './Ball.js';
 import Paddle from './Paddle.js';
-import React from "react";
 import { End } from "./End";
 
 import Helpers from '../../../helpers/Helpers';

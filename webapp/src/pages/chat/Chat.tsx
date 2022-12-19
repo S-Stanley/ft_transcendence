@@ -1,11 +1,9 @@
 import { Fragment, useEffect, useState } from "react";
-import { TextField, Button, Box } from "@mui/material";
+import { TextField, Button } from "@mui/material";
 import Helpers from "../../helpers/Helpers";
 import { io } from 'socket.io-client';
 import './Chat.scss';
 import { useLocation, useNavigate } from "react-router-dom";
-import NewAppBar from '../Utils/NewAppBar';
-import { mdTheme } from "../Utils/Dashboard";
 
 const socket = io('http://localhost:5000', { transports: ['websocket'] });
 
@@ -52,52 +50,39 @@ const Chat = () => {
 
     return (
         <Fragment>
-            <NewAppBar/>
-            <Box
-                component="main" position="fixed"
-                sx={{
-                    top:'100px',
-                    left:'300px',
-                    backgroundColor: mdTheme.palette.grey[900],
-                    flexGrow: 1,
-                    height: '100vh',
-                    overflow: 'auto',
-                }}
+            <div
+                id='div-message-chat'
             >
-                <div
-                    id='div-message-chat'
+                {allMessage.map((msg: { content: string, nickname: string }, index) => {
+                    return (
+                        <div key={index} id={`message-content-${index}`}>
+                            <u id='nickname-user-chat' onClick={() => navigate(`/users/${msg.nickname}`)}>{ msg.nickname }</u>: { msg.content }
+                        </div>
+                    );
+                })}
+            </div>
+            <form
+                onSubmit={handleSubmit}
+            >
+                <TextField
+                    label="Your message"
+                    variant="standard"
+                    type='text'
+                    value={messageContent}
+                    onChange={(e) => setMessageContent(e.target.value)}
+                    inputProps={{
+                        'id': 'input-private-chat'
+                    }}
+                />
+                <br />
+                <Button
+                    variant="contained"
+                    type="submit"
+                    id='submit-button-chat'
                 >
-                    {allMessage.map((msg: { content: string, nickname: string }, index) => {
-                        return (
-                            <div key={index} id={`message-content-${index}`}>
-                                <u id='nickname-user-chat' onClick={() => navigate(`/users/${msg.nickname}`)}>{ msg.nickname }</u>: { msg.content }
-                            </div>
-                        );
-                    })}
-                </div>
-                <form
-                    onSubmit={handleSubmit}
-                >
-                    <TextField
-                        label="Your message"
-                        variant="standard"
-                        type='text'
-                        value={messageContent}
-                        onChange={(e) => setMessageContent(e.target.value)}
-                        inputProps={{
-                            'id': 'input-private-chat'
-                        }}
-                    />
-                    <br />
-                    <Button
-                        variant="contained"
-                        type="submit"
-                        id='submit-button-chat'
-                    >
-                        Validate
-                    </Button>
-                </form>
-            </Box>
+                    Validate
+                </Button>
+            </form>
         </Fragment>
     );
 };
