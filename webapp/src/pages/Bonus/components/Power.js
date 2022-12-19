@@ -1,31 +1,30 @@
-const INITIAL_VELOCITY = .02;
-const VELOCITY_INCREASE = 0.0000001;
+const INITIAL_VELOCITY = .025;
 let tmp = false;
 
-export default class Ball {
-    constructor(ballElem) {
-        this.ballElem = ballElem;
+export default class Power {
+    constructor(powerElem) {
+        this.powerElem = powerElem;
         this.reset();
     }
 
     get x(){
-        return parseFloat(getComputedStyle(this.ballElem).getPropertyValue("--x"));
+        return parseFloat(getComputedStyle(this.powerElem).getPropertyValue("--x"));
     }
 
     set x(value){
-        this.ballElem.style.setProperty("--x", value);
+        this.powerElem.style.setProperty("--x", value);
     }
 
     get y(){
-        return parseFloat(getComputedStyle(this.ballElem).getPropertyValue("--y"));
+        return parseFloat(getComputedStyle(this.powerElem).getPropertyValue("--y"));
     }
 
     set y(value){
-        this.ballElem.style.setProperty("--y", value);
+        this.powerElem.style.setProperty("--y", value);
     }
 
     rect() {
-        return this.ballElem.getBoundingClientRect();
+        return this.powerElem.getBoundingClientRect();
     }
 
     get_x() {
@@ -76,18 +75,18 @@ export default class Ball {
         this.velocity = 0;
     }
 
-    update(delta, paddleRects, collision){
+    update(delta, collision){
         const rect = this.rect();
         if (collision === 1) {
             this.direction.x *= -1;
-            this.y += this.direction.x * this.velocity * delta;
-            this.x += this.direction.y * this.velocity * delta;
+            this.x += this.direction.x * this.velocity * delta;
+            this.y += this.direction.y * this.velocity * delta;
             tmp = false;
         }
         else if ((rect.bottom >= window.innerHeight || rect.top <= 60) && tmp === false) {
             this.direction.y *= -1;
-            this.x += this.direction.x * this.velocity * delta * 10;
-            this.y += this.direction.y * this.velocity * delta * 10;
+            this.x += this.direction.x * this.velocity * delta;
+            this.y += this.direction.y * this.velocity * delta;
             tmp = true;
         }
         else
@@ -96,13 +95,8 @@ export default class Ball {
             this.y += this.direction.y * this.velocity * delta;
             tmp = false;
         }
-        this.velocity += VELOCITY_INCREASE * delta;
     }
 }
-
-// function isCollision(rect1, rect2){
-//     return (rect1.left <= rect2.right && rect1.right >= rect2.left && rect1.top <= rect2.bottom && rect1.bottom >= rect2.top);
-// }
 
 function randomNumberBetween(min, max) {
     return Math.random() * (max-min) + min;

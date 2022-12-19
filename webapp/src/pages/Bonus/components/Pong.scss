@@ -38,7 +38,7 @@ body {
     --y: 50;
 
     position: absolute;
-    background-color: var(--foreground-color);
+    background-color: deepskyblue;
     left: calc(var(--x) * 1vw);
     top: calc(var(--y) * 1vh);
     transform: translateY(-50%, -50%);
@@ -47,11 +47,42 @@ body {
     border-radius: 50%;
 }
 
+.power {
+    --x: 50;
+    --y: 50;
+
+    position: absolute;
+    left: calc(var(--x) * 1vw);
+    top: calc(var(--y) * 1vh);
+    width: 0;
+    height: 0;
+    border-left: 1vh solid transparent;
+    border-right: 1vh solid transparent;
+    border-bottom: 2vh solid var(--foreground-color);
+
+}
+
 .score {
     display: flex;
     justify-content: center;
     font-weight: bold;
     font-size: 7vh;
+    color: var(--foreground-color);
+}
+
+.powerleft {
+    display: flex;
+    justify-content: left;
+    font-weight: bold;
+    font-size: 2vh;
+    color: var(--foreground-color);
+}
+
+.powerright {
+    display: flex;
+    justify-content: right;
+    font-weight: bold;
+    font-size: 2vh;
     color: var(--foreground-color);
 }
 

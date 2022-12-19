@@ -1,7 +1,5 @@
 import { Box, Button, CircularProgress, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { mdTheme } from "../Utils/Dashboard";
-import NewAppBar from "../Utils/NewAppBar";
 import CancelIcon from '@mui/icons-material/Cancel';
 import Helpers from "../../helpers/Helpers";
 import { io } from 'socket.io-client';
@@ -64,7 +62,7 @@ const Matchmaking = () => {
                     nickname: user.nickname,
                 }
             });
-            navigate('/play/online', {
+            navigate('/play/bonus', {
                 state: {
                     my_id: user.id_42,
                     opp_id: data.id_incoming,
@@ -76,7 +74,7 @@ const Matchmaking = () => {
         }
         else
         {
-            navigate('/play/online', {
+            navigate('/play/bonus', {
                 state: {
                     my_id: user.id_42,
                     opp_id: data.id_incoming,
@@ -90,63 +88,50 @@ const Matchmaking = () => {
 
     return (
         <>
-            <NewAppBar/>
-            <Box
-                component="main" position="fixed"
+
+            <Typography component="h1" variant="h3" color="secondary"
                 sx={{
-                    top:'100px',
-                    left:'200px',
-                    right:'200px',
-                    backgroundColor: mdTheme.palette.grey[900],
-                    flexGrow: 1,
-                    height: '100vh',
-                    overflow: 'auto',
+                    alignItems: 'center',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    mb: '200px',
                 }}
             >
-                <Typography component="h1" variant="h3" color="secondary"
-                    sx={{
-                        alignItems: 'center',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        mb: '200px',
-                    }}
-                >
                     This is the matchmaking friend
-                </Typography>
-                {
-                    waiting ?
-                        <Box
-                            sx={{
-                                alignItems: 'center',
-                                display: 'flex',
-                                flexDirection: 'column',
-                            }}
-                        >
-                            <CircularProgress color="secondary" sx={{mb: '50px'}} />
-                            <Typography component="h2" variant="h6" color="primary" gutterBottom>
+            </Typography>
+            {
+                waiting ?
+                    <Box
+                        sx={{
+                            alignItems: 'center',
+                            display: 'flex',
+                            flexDirection: 'column',
+                        }}
+                    >
+                        <CircularProgress color="secondary" sx={{mb: '50px'}} />
+                        <Typography component="h2" variant="h6" color="primary" gutterBottom>
                                 Waiting for opponent ...
-                            </Typography>
-                            <Button onClick={match_cancel} color='error'>
-                                <CancelIcon />
-                            </Button>
-                        </Box>
-                        :
-                        <Box
-                            sx={{
-                                alignItems: 'center',
-                                display: 'flex',
-                                flexDirection: 'column',
-                            }}
-                        >
-                            <Button onClick={match_request} color="primary" variant="contained" sx={{mt:'90px'}} >
+                        </Typography>
+                        <Button onClick={match_cancel} color='error'>
+                            <CancelIcon />
+                        </Button>
+                    </Box>
+                    :
+                    <Box
+                        sx={{
+                            alignItems: 'center',
+                            display: 'flex',
+                            flexDirection: 'column',
+                        }}
+                    >
+                        <Button onClick={match_request} color="primary" variant="contained" sx={{mt:'90px'}} >
                                 Find opponent
-                            </Button>
-                        </Box>
-                }
-                <Button onClick={showDemands}>
+                        </Button>
+                    </Box>
+            }
+            <Button onClick={showDemands}>
                     See demands
-                </Button>
-            </Box>
+            </Button>
         </>
     );
 };

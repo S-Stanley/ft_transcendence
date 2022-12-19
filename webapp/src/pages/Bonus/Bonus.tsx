@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 import "./styles.css";
 
-const Online = () => {
+const Bonus = () => {
 
     const Time = (props: { remainingTime: any }) => {
         const currentTime = useRef(props.remainingTime);
@@ -73,7 +73,7 @@ const Online = () => {
                 	{
                     	end?
                     <>
-                        <Button href="/">
+                        <Button href="/play/matchmaking">
                                     Exit
                         </Button>
                         <Pong my_id={location?.state?.my_id} opp_id={location?.state?.opp_id} nickname={location?.state?.nickname} player={location?.state?.player} opp_nickname={location?.state?.opp_nickname}/>
@@ -106,4 +106,4 @@ const Online = () => {
         </Fragment>
     );
 };
-export default Online;
+export default Bonus;
