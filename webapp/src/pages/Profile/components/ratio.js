@@ -1,5 +1,5 @@
 import { Avatar, Box, Card, CardContent, Grid, LinearProgress, Typography } from '@mui/material';
-import MilitaryTechIcon from '@mui/icons-material/MilitaryTech';
+import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
 
 export const Ratio = (props) => (
     <Card
@@ -36,7 +36,7 @@ export const Ratio = (props) => (
                             width: 56
                         }}
                     >
-                        <MilitaryTechIcon />
+                        <WorkspacePremiumIcon />
                     </Avatar>
                 </Grid>
             </Grid>

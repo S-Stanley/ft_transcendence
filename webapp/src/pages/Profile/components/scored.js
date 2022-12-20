@@ -21,7 +21,7 @@ export const Scored = (props) => (
                         color="textPrimary"
                         variant="h4"
                     >
-                        {props.goalscored}
+                        {props.goalsscored}
                     </Typography>
                 </Grid>
                 <Grid item>

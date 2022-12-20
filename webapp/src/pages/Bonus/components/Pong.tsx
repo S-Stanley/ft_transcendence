@@ -213,7 +213,7 @@ const Pong = (props: {my_id: number, opp_id: number, nickname: string, player:nu
             }
             computerScoreElem.textContent = parseInt(computerScoreElem.textContent) + 1;
         }
-        if (parseInt(computerScoreElem.textContent) > 10 || parseInt(playerScoreElem.textContent) > 10)
+        if (parseInt(computerScoreElem.textContent) === 1 || parseInt(playerScoreElem.textContent) === 1)
         {
             await Helpers.History.add_match(parseInt(playerScoreElem.textContent), playerPongs, parseInt(computerScoreElem.textContent), props.opp_nickname);
             stop = true;

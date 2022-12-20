@@ -149,14 +149,10 @@ const Profile = () => {
                 }
             </h1>
             <h2>
-                <div id='statistics'>
+`                <div id='statistics'>
                     <Statistics/>
                 </div>
-                <Typography id='achievements'>
-                    Achievements
-                </Typography>
-                <div style={{ borderTop: '1px solid black', marginLeft: '22%', marginRight: '35%' }}/>
-            </h2>
+            </h2>`
         </Fragment>
     );
 };
