@@ -89,31 +89,45 @@ export class ChatController {
     async getAllChatByUserId(@Param() params) {
         const all_chats = await this.db.query(
             `
-            SELECT
-                chat.id,
-                chat.name,
-                chat.type,
-                chat_member.id AS chat_member_id,
-                users.nickname
-            FROM
-                public.chat
-            JOIN
-                public.chat_member
-            ON
-                chat.id = chat_member.chat_id
-            JOIN
-                public.users
-            ON
-                chat_member.user_id = users.id
-            WHERE
+                SELECT
+                    chat.id AS id,
+                    chat.name,
+                    chat.type,
+                    chat_member.id AS chat_member_id,
+                    users.nickname,
+                    users.avatar AS picture
+                FROM
+                    chat_member
+                JOIN
+                    public.users
+                ON
+                    chat_member.user_id = users.id
+                JOIN
+                    public.chat
+                ON
+                    chat.id = chat_member.chat_id
+                WHERE
+                    chat_id = ANY(
+                        SELECT
+                            DISTINCT(chat.id)
+                        FROM
+                            chat
+                        JOIN
+                            chat_member
+                        ON
+                            chat_id = chat.id
+                        WHERE
+                            chat_member.user_id = $1
+                    )
+                AND
                 CASE
                     WHEN chat.type = 'private' THEN
                         chat_member.user_id != $1
                     WHEN chat.type = 'public' THEN
                         chat_member.user_id = $1
                 END
-            LIMIT
-                25;
+                LIMIT
+                    25;
             `,
             [params.user_id]
         );
