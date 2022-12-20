@@ -4,4 +4,5 @@ export interface MessagerieInterface {
     type: string,
     nickname: string,
     created_by: string,
+    picture: string,
 };

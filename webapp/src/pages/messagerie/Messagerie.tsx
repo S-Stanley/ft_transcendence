@@ -1,7 +1,8 @@
 import { Fragment, useEffect, useState } from "react";
-import { Button, TextField } from "@mui/material";
+import { Button, TextField, Typography } from "@mui/material";
 import Helpers from "../../helpers/Helpers";
 import { useNavigate } from "react-router-dom";
+import { ListItem, List, ListItemText, Avatar, ListItemAvatar } from '@mui/material';
 
 import './Messagerie.scss';
 import { MessagerieInterface } from "../../interfaces/messagerie";
@@ -55,13 +56,33 @@ const Messaging = () => {
             <div
                 id='div-message-messaging'
             >
-                {allDiscussions.map((discussion: MessagerieInterface) => {
-                    return (
-                        <div key={discussion.id} onClick={() => navigateToChat(discussion.id)}>
-                            { discussion.type === 'public' ? discussion.name : discussion.nickname}
-                        </div>
-                    );
-                })}
+                <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+                    {allDiscussions.map((discussion: MessagerieInterface) => {
+                        return (
+                            <ListItem alignItems="flex-start" key={discussion.id} onClick={() => navigateToChat(discussion.id)}>
+                                <ListItemAvatar>
+                                    <Avatar alt="Remy Sharp" src={discussion.type === 'public' ? undefined : discussion?.picture} />
+                                </ListItemAvatar>
+                                <ListItemText
+                                    secondary={
+                                        <Fragment>
+                                            <Typography
+                                                sx={{ display: 'inline' }}
+                                                component="span"
+                                                variant="body2"
+                                                color="text.primary"
+                                            >
+                                                { discussion.type === 'public' ? discussion.name : discussion.nickname }
+                                            </Typography>
+                                        </Fragment>
+                                    }
+                                />
+                                <div key={discussion.id} onClick={() => navigateToChat(discussion.id)}>
+                                </div>
+                            </ListItem>
+                        );
+                    })}
+                </List>
             </div>
             <form
                 onSubmit={handleSubmit}

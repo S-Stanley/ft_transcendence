@@ -94,7 +94,8 @@ export class ChatController {
                     chat.name,
                     chat.type,
                     chat_member.id AS chat_member_id,
-                    users.nickname
+                    users.nickname,
+                    users.avatar AS picture
                 FROM
                     chat_member
                 JOIN
