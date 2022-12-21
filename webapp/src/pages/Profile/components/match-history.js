@@ -1,15 +1,5 @@
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import {
-    Box,
-    Button,
-    Card,
-    CardHeader,
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableRow,
-} from '@mui/material';
+import { Box, Button, Card, CardHeader, Table, TableBody, TableCell, TableHead, TableRow, } from '@mui/material';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { SeverityPill } from './severity-pill';
 import { useEffect, useState } from 'react';
