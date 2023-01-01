@@ -26,7 +26,8 @@ export class LoggerMiddleware implements NestMiddleware {
         //si date depasse -> recree un token
         console.log(user);
         req.user = user;
-        this.db.query('SET LOCAL ROLE default_users');
+        this.db.query("SET LOCAL ROLE default_users;");
+        this.db.query("SELECT set_config('app.current_user_id'::TEXT, $1::TEXT, false);", [user.id]);
         next();
     }
 }
