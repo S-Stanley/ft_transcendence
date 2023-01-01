@@ -13,3 +13,5 @@ TRUNCATE TABLE public.chat_member;
 
 \i functions/login.sql
 \i functions/create_or_get_chat_id.sql
+
+\i roles.sql

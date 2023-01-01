@@ -1,4 +1,4 @@
-import { Injectable, NestMiddleware, HttpException } from '@nestjs/common';
+import { Injectable, NestMiddleware, HttpException, Inject } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Response, NextFunction } from 'express';
 import { Repository } from 'typeorm';
@@ -6,7 +6,7 @@ import { Users } from './entities/user.entity';
 
 @Injectable()
 export class LoggerMiddleware implements NestMiddleware {
-    constructor(@InjectRepository(Users) private userRepository: Repository<Users>) {}
+    constructor(@InjectRepository(Users) private userRepository: Repository<Users>, @Inject("PG_CONNECTION") private db: any) {}
 
     async use(req /*Request*/, res: Response, next: NextFunction) {
         const token = req.headers?.authorization;
@@ -26,6 +26,7 @@ export class LoggerMiddleware implements NestMiddleware {
         //si date depasse -> recree un token
         console.log(user);
         req.user = user;
+        this.db.query('SET LOCAL ROLE default_users');
         next();
     }
 }
