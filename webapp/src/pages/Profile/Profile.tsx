@@ -5,7 +5,7 @@ import { Avatar, Badge, Button, IconButton } from '@mui/material';
 import Helpers from '../../helpers/Helpers';
 import { useNavigate } from 'react-router-dom';
 import { Box } from '@mui/system';
-import Statistics from './components/Statistics';
+import UserInfos from './components/UserInfos';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import DoneIcon from '@mui/icons-material/Done';
 import ClearIcon from '@mui/icons-material/Clear';
@@ -149,14 +149,10 @@ const Profile = () => {
                 }
             </h1>
             <h2>
-                <div id='statistics'>
-                    <Statistics/>
+`                <div id='statistics'>
+                    <UserInfos/>
                 </div>
-                <Typography id='achievements'>
-                    Achievements
-                </Typography>
-                <div style={{ borderTop: '1px solid black', marginLeft: '22%', marginRight: '35%' }}/>
-            </h2>
+            </h2>`
         </Fragment>
     );
 };

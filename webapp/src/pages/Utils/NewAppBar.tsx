@@ -110,7 +110,7 @@ export default function PersistentDrawerLeft() {
     };
 
     const is_public_page = [
-        '/', '/login/email', '/oauth2-redirect', '/2fa', '/login/email/', '/oauth2-redirect/', '/2fa/', '/play/pong', '/play/plong/', '/play/bonus'].includes(window.location.pathname);
+        '/', '/login/email', '/oauth2-redirect', '/2fa', '/login/email/', '/oauth2-redirect/', '/2fa/', '/play/pong', '/play/plong/', '/play/bonus', '/login'].includes(window.location.pathname);
 
     useEffect(() => {
         if (!is_public_page) {

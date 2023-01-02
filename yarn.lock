@@ -4395,7 +4395,7 @@ anymatch@^3.0.3, anymatch@~3.1.2:
     normalize-path "^3.0.0"
     picomatch "^2.0.4"
 
-"api@file:/Users/nicolassartral/Desktop/and_another_one/ft_transcendence/api":
+"api@file:/Users/nicolassartral/Movies/ft_transcendence/api":
   version "0.0.1"
   resolved "file:api"
   dependencies:
@@ -14966,7 +14966,7 @@ web-vitals@^2.1.4:
   resolved "https://registry.npmjs.org/web-vitals/-/web-vitals-2.1.4.tgz"
   integrity sha512-sVWcwhU5mX6crfI5Vd2dC4qchyTqxV8URinzt25XqVh+bHEPGH4C3NPrNionCP7Obx59wrYEbNlw4Z8sjALzZg==
 
-"webapp@file:/Users/nicolassartral/Desktop/and_another_one/ft_transcendence/webapp":
+"webapp@file:/Users/nicolassartral/Movies/ft_transcendence/webapp":
   version "0.1.0"
   resolved "file:webapp"
   dependencies:
