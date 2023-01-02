@@ -13,16 +13,7 @@ const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
 );
 
-axios.interceptors.request.use((config) => {
-    if (window.localStorage.getItem('token')) {
-        if (config.headers) {
-            config.headers.Authorization = 'Bearer ' + window.localStorage.getItem('token');
-        }
-    }
-    return config;
-}, (error) => {
-    return Promise.reject(error);
-});
+axios.defaults.headers.common['Authorization'] = 'Bearer ' + window.localStorage.getItem('token');
 
 root.render(
     <BrowserRouter>

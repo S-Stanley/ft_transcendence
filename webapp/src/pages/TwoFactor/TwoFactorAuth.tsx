@@ -53,6 +53,7 @@ const TwoFactorAuth = () => {
                 token: req.data.access_token,
             });
             window.localStorage.setItem('token', req.data.access_token);
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + req?.data?.token;
             navigate('/home');
         } catch (e) {
             console.error(e);
