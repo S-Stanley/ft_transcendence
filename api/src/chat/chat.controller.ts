@@ -1,4 +1,4 @@
-import { Controller, Post, Body, HttpException, Param, Get } from '@nestjs/common';
+import { Controller, Post, Body, HttpException, Param, Get, Put } from '@nestjs/common';
 import { Injectable, Inject } from '@nestjs/common';
 import { isValidUUIDV4 } from 'is-valid-uuid-v4';
 import { Users } from 'src/entities/user.entity';
@@ -132,5 +132,21 @@ export class ChatController {
             [params.user_id]
         );
         return (all_chats.rows);
+    }
+
+    @Put()
+    async createNewPublicChat(@Body() body){
+        if (!body?.chat_name || !body?.user_id)
+            throw new HttpException('Missing body parameters', 500);
+        try {
+            const publicChatCreated = await this.db.query(
+                'SELECT public.create_new_chat($1, $2);',
+                [body.chat_name, body.user_id]
+            );
+            return (publicChatCreated.rows[0].create_new_chat);
+        } catch (e) {
+            console.error(e);
+            return (null);
+        }
     }
 }

@@ -54,11 +54,28 @@ const   get_all_chat_by_user_id = async (user_id: string): Promise<MessagerieInt
     }
 };
 
+const   create_new_public_chat = async (
+    chat_name: string,
+    user_id: string
+): Promise<MessagerieInterface | null> => {
+    try {
+        const req = await axios.put(`${Config.Api.url}/chat/`, {
+            chat_name: chat_name,
+            user_id: user_id,
+        });
+        return (req.data);
+    } catch (e) {
+        console.error(e);
+        return (null);
+    }
+};
+
 const Messagerie = {
     create_or_get_discussion,
     send_message_to_discussion,
     get_message_of_discussion,
     get_all_chat_by_user_id,
+    create_new_public_chat,
 };
 
 export default Messagerie;

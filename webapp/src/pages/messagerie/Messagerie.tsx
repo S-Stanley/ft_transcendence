@@ -13,8 +13,7 @@ const Messaging = () => {
     const [allDiscussions, setAllDiscussions] = useState<MessagerieInterface[]>([]);
     const navigate = useNavigate();
 
-    const handleSubmit = async(e: { preventDefault: any }): Promise<void> => {
-        e.preventDefault();
+    const handleSubmit = async(): Promise<void> => {
         if (userToFind === localStorage.getItem('email')) {
             alert('Error, you cannot send an message to yourself');
             return ;
@@ -26,6 +25,21 @@ const Messaging = () => {
             navigate('/chat', {
                 state: {
                     chat_id:  chat?.chat_id
+                }
+            });
+        }
+    };
+
+    const createNewChat = async(): Promise<void> => {
+        const req = await Helpers.Messagerie.create_new_public_chat(
+            userToFind,
+            localStorage.getItem('user_id') ?? '',
+        );
+        if (req) {
+            setUserToFind('');
+            navigate('/chat', {
+                state: {
+                    chat_id: req
                 }
             });
         }
@@ -84,9 +98,7 @@ const Messaging = () => {
                     })}
                 </List>
             </div>
-            <form
-                onSubmit={handleSubmit}
-            >
+            <div id='div-input-messagerie-email'>
                 <TextField
                     label="Email of user to send a message"
                     variant="standard"
@@ -97,15 +109,28 @@ const Messaging = () => {
                         'id': 'input-messagerie-email'
                     }}
                 />
-                <br />
+            </div>
+            <br />
+            <div id='button-group-new-chat'>
                 <Button
                     variant="contained"
                     type="submit"
                     id='submit-button-messagerie'
+                    onClick={handleSubmit}
                 >
                     Validate
                 </Button>
-            </form>
+                <br/>
+                <Button
+                    variant="contained"
+                    type="submit"
+                    id='submit-button-new-chat'
+                    color='secondary'
+                    onClick={createNewChat}
+                >
+                    Create new chat
+                </Button>
+            </div>
         </Fragment>
     );
 };
