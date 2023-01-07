@@ -10,19 +10,19 @@ import { toast } from "react-toastify";
 
 const Messaging = () => {
 
-    const [userToFind, setUserToFind] = useState<string>("");
+    const [destinationChatName, setDestinationChatName] = useState<string>("");
     const [allDiscussions, setAllDiscussions] = useState<MessagerieInterface[]>([]);
     const navigate = useNavigate();
 
     const handleSubmit = async(): Promise<void> => {
-        if (userToFind === localStorage.getItem('email')) {
+        if (destinationChatName === localStorage.getItem('email')) {
             alert('Error, you cannot send an message to yourself');
             return ;
         }
-        const req = await Helpers.Users.findUserByEmail(userToFind);
-        const chat = await Helpers.Messagerie.create_or_get_discussion(userToFind);
+        const req = await Helpers.Users.findUserByEmail(destinationChatName);
+        const chat = await Helpers.Messagerie.create_or_get_discussion(destinationChatName);
         if (req && chat) {
-            setUserToFind('');
+            setDestinationChatName('');
             navigate('/chat', {
                 state: {
                     chat_id:  chat?.chat_id
@@ -32,16 +32,16 @@ const Messaging = () => {
     };
 
     const createNewChat = async(): Promise<void> => {
-        if (!userToFind) {
+        if (!destinationChatName) {
             toast.error('You cannot create a chat with an empty name');
             return ;
         }
         const req = await Helpers.Messagerie.create_new_public_chat(
-            userToFind,
+            destinationChatName,
             localStorage.getItem('user_id') ?? '',
         );
         if (req) {
-            setUserToFind('');
+            setDestinationChatName('');
             navigate('/chat', {
                 state: {
                     chat_id: req
@@ -108,8 +108,8 @@ const Messaging = () => {
                     label="Email of user to send a message"
                     variant="standard"
                     type='email'
-                    value={userToFind}
-                    onChange={(e) => setUserToFind(e.target.value)}
+                    value={destinationChatName}
+                    onChange={(e) => setDestinationChatName(e.target.value)}
                     inputProps={{
                         'id': 'input-messagerie-email'
                     }}
