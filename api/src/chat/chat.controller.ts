@@ -89,43 +89,73 @@ export class ChatController {
     async getAllChatByUserId(@Param() params) {
         const all_chats = await this.db.query(
             `
-                SELECT
-                    chat.id AS id,
-                    chat.name,
-                    chat.type,
-                    chat_member.id AS chat_member_id,
-                    users.nickname,
-                    users.avatar AS picture
-                FROM
-                    chat_member
-                JOIN
-                    public.users
-                ON
-                    chat_member.user_id = users.id
-                JOIN
-                    public.chat
-                ON
-                    chat.id = chat_member.chat_id
-                WHERE
-                    chat_id = ANY(
-                        SELECT
-                            DISTINCT(chat.id)
-                        FROM
-                            chat
-                        JOIN
-                            chat_member
-                        ON
-                            chat_id = chat.id
-                        WHERE
-                            chat_member.user_id = $1
-                    )
-                AND
-                CASE
-                    WHEN chat.type = 'private' THEN
+                WITH all_privates_chats AS (
+                    SELECT
+                        chat.id AS chat_id,
+                        chat.name,
+                        chat.type,
+                        chat_member.user_id
+                    FROM
+                        public.chat
+                    JOIN
+                        public.chat_member
+                    ON
+                        chat.id = chat_member.chat_id
+                    WHERE
+                        type = 'private'
+                    AND
+                        user_id = $1
+                ),
+                user_of_private_chat AS (
+                    SELECT
+                        all_privates_chats.chat_id,
+                        all_privates_chats.name,
+                        all_privates_chats.type,
+                        all_privates_chats.user_id,
+                        users.nickname,
+                        users.avatar
+                    FROM
+                        public.chat_member
+                    JOIN
+                        all_privates_chats
+                    ON
+                        all_privates_chats.chat_id = chat_member.chat_id
+                    JOIN
+                        public.users
+                    ON
+                        chat_member.user_id = users.id
+                    WHERE
                         chat_member.user_id != $1
-                    WHEN chat.type = 'public' THEN
-                        chat_member.user_id = $1
-                END
+                ),
+                all_publics_chats AS (
+                    SELECT
+                        id AS chat_id,
+                        name,
+                        type
+                    FROM
+                        public.chat
+                    WHERE
+                        type = 'public'
+                )
+                SELECT
+                    chat_id AS id,
+                    name,
+                    type,
+                    user_id,
+                    nickname,
+                    avatar AS picture
+                FROM
+                    user_of_private_chat
+                UNION
+                SELECT
+                    chat_id AS id,
+                    name,
+                    type,
+                    NULL AS user_id,
+                    NULL AS nickname,
+                    NULL AS picture
+                FROM
+                    all_publics_chats
                 LIMIT
                     25;
             `,
