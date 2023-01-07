@@ -6,6 +6,7 @@ import { ListItem, List, ListItemText, Avatar, ListItemAvatar } from '@mui/mater
 
 import './Messagerie.scss';
 import { MessagerieInterface } from "../../interfaces/messagerie";
+import { toast } from "react-toastify";
 
 const Messaging = () => {
 
@@ -31,6 +32,10 @@ const Messaging = () => {
     };
 
     const createNewChat = async(): Promise<void> => {
+        if (!userToFind) {
+            toast.error('You cannot create a chat with an empty name');
+            return ;
+        }
         const req = await Helpers.Messagerie.create_new_public_chat(
             userToFind,
             localStorage.getItem('user_id') ?? '',
