@@ -9,51 +9,56 @@ import PeopleIcon from '@mui/icons-material/People';
 import PersonIcon from '@mui/icons-material/Person';
 import SendIcon from '@mui/icons-material/Send';
 import EmailIcon from '@mui/icons-material/Email';
+import { useNavigate } from 'react-router-dom';
+import Divider from '@mui/material/Divider';
 
-export const mainListItems = (
-    <React.Fragment>
-        <ListItemButton href="/home">
-            <ListItemIcon>
-                <DashboardIcon />
-            </ListItemIcon>
-            <ListItemText primary="Home" />
-        </ListItemButton>
-        <ListItemButton href="/play">
-            <ListItemIcon>
-                <NetworkPingIcon />
-            </ListItemIcon>
-            <ListItemText primary="Play" />
-        </ListItemButton>
-    </React.Fragment>
-);
+const MainListItems = () => {
 
-export const secondaryListItems = (
-    <React.Fragment>
-        <ListSubheader component="div" inset>
-        </ListSubheader>
-        <ListItemButton href="/messagerie">
-            <ListItemIcon>
-                <EmailIcon />
-            </ListItemIcon>
-            <ListItemText primary="Messaging" id='messagerie-menu' />
-        </ListItemButton>
-        <ListItemButton href="/chat">
-            <ListItemIcon>
-                <SendIcon />
-            </ListItemIcon>
-            <ListItemText primary="Chat" />
-        </ListItemButton>
-        <ListItemButton  href="/friends">
-            <ListItemIcon>
-                <PeopleIcon />
-            </ListItemIcon>
-            <ListItemText primary="Friends" />
-        </ListItemButton>
-        <ListItemButton href="/user">
-            <ListItemIcon>
-                <PersonIcon />
-            </ListItemIcon>
-            <ListItemText primary="User" />
-        </ListItemButton>
-    </React.Fragment>
-);
+    const navigate = useNavigate();
+
+    return (
+        <React.Fragment>
+            <ListItemButton onClick={() => navigate('/home')}>
+                <ListItemIcon>
+                    <DashboardIcon />
+                </ListItemIcon>
+                <ListItemText primary="Home" />
+            </ListItemButton>
+            <ListItemButton onClick={() => navigate('/play')}>
+                <ListItemIcon>
+                    <NetworkPingIcon />
+                </ListItemIcon>
+                <ListItemText primary="Play" />
+            </ListItemButton>
+            <Divider sx={{ my: 1 }} />
+            <ListSubheader component="div" inset>
+            </ListSubheader>
+            <ListItemButton onClick={() => navigate('/messagerie')}>
+                <ListItemIcon>
+                    <EmailIcon />
+                </ListItemIcon>
+                <ListItemText primary="Messaging" id='messagerie-menu' />
+            </ListItemButton>
+            <ListItemButton onClick={() => navigate('/chat')}>
+                <ListItemIcon>
+                    <SendIcon />
+                </ListItemIcon>
+                <ListItemText primary="Chat" />
+            </ListItemButton>
+            <ListItemButton  onClick={() => navigate('/friends')}>
+                <ListItemIcon>
+                    <PeopleIcon />
+                </ListItemIcon>
+                <ListItemText primary="Friends" />
+            </ListItemButton>
+            <ListItemButton onClick={() => navigate('/user')}>
+                <ListItemIcon>
+                    <PersonIcon />
+                </ListItemIcon>
+                <ListItemText primary="User" />
+            </ListItemButton>
+        </React.Fragment>
+    );
+};
+
+export default MainListItems;
