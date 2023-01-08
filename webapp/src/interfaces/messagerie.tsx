@@ -5,4 +5,6 @@ export interface MessagerieInterface {
     nickname: string,
     created_by: string,
     picture: string,
+    password?: boolean,
+    member: boolean,
 };

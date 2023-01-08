@@ -1,4 +1,4 @@
-import { Controller, Post, Body, HttpException, Param, Get, Put } from '@nestjs/common';
+import { Controller, Post, Body, HttpException, Param, Get, Put, Patch } from '@nestjs/common';
 import { Injectable, Inject } from '@nestjs/common';
 import { isValidUUIDV4 } from 'is-valid-uuid-v4';
 import { Users } from 'src/entities/user.entity';
@@ -131,7 +131,21 @@ export class ChatController {
                     SELECT
                         id AS chat_id,
                         name,
-                        type
+                        type,
+                        password,
+                        (CASE
+                            WHEN (
+                                SELECT
+                                    id
+                                FROM
+                                    public.chat_member
+                                WHERE
+                                    chat_member.chat_id = chat.id
+                                AND
+                                    chat_member.user_id = $1
+                            ) IS NULL THEN false
+                            ELSE true
+                        END) AS member
                     FROM
                         public.chat
                     WHERE
@@ -141,16 +155,23 @@ export class ChatController {
                     chat_id AS id,
                     name,
                     type,
+                    NULL AS password,
+                    NULL AS member,
                     user_id,
                     nickname,
                     avatar AS picture
                 FROM
                     user_of_private_chat
-                UNION
+                UNION ALL
                 SELECT
                     chat_id AS id,
                     name,
                     type,
+                    CASE
+                        WHEN password IS NULL THEN NULL
+                        ELSE true
+                    END CASE,
+                    member,
                     NULL AS user_id,
                     NULL AS nickname,
                     NULL AS picture
@@ -177,6 +198,100 @@ export class ChatController {
         } catch (e) {
             console.error(e);
             return (null);
+        }
+    }
+
+    @Patch('/password')
+    async updatePasswordChat(@Body() body){
+        const checkUserOwnerOfChat = await this.db.query(
+            `
+                SELECT
+                    user_id
+                FROM
+                    public.chat_admin
+                WHERE
+                    chat_id = $1
+                AND
+                    user_id = $2
+            `,
+            [body?.chat_id, body?.user_id]
+        );
+        if (!checkUserOwnerOfChat.rows[0]) {
+            throw new HttpException('Wrong permissions', 500);
+        }
+
+        if (body?.password === '') {
+            const updatePasswordChat = await this.db.query(
+                `
+                    UPDATE
+                        public.chat
+                    SET
+                        password = NULL
+                    WHERE
+                        id = $1
+                `,
+                [body?.chat_id]
+            );
+            if (updatePasswordChat?.rowCount === 0) {
+                throw new HttpException('Did not update', 500);
+            }
+        } else {
+            const updatePasswordChat = await this.db.query(
+                `
+                    UPDATE
+                        public.chat
+                    SET
+                        password = crypt($1, gen_salt('bf',11))
+                    WHERE
+                        id = $2
+                `,
+                [body?.password, body?.chat_id]
+            );
+            if (updatePasswordChat?.rowCount === 0) {
+                throw new HttpException('Did not update', 500);
+            }
+        }
+        return (true);
+    }
+
+    @Get('/admin/:chat_id/:user_id')
+    async IsUserAdmin(@Param() params){
+        try {
+            const isUserAdm = await this.db.query(
+                `
+                    SELECT
+                        *
+                    FROM
+                        public.chat_admin
+                    WHERE
+                        chat_id = $1
+                    AND
+                        user_id = $2
+                `,
+                [params?.chat_id, params?.user_id]
+            );
+            console.log(isUserAdm);
+            if (!isUserAdm.rows[0]) {
+                return (false);
+            }
+            return (true);
+        } catch (e) {
+            console.error(e);
+            return (false);
+        }
+    }
+
+    @Post('/join')
+    async joinChat(@Body() body){
+        try {
+            const join_chat = await this.db.query(
+                'SELECT * FROM public.join_public_chat($1::UUID, $2::INT, $3::VARCHAR)',
+                [body?.chat_id, body?.user_id, body?.password]
+            );
+            return (join_chat.rows[0].join_public_chat);
+        } catch (e) {
+            console.error(e);
+            return (false);
         }
     }
 }

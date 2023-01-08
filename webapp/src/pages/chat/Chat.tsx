@@ -11,6 +11,7 @@ const Chat = () => {
 
     const [messageContent, setMessageContent] = useState<string>('');
     const [allMessage, setAllMessage] = useState<{content: string, nickname: string}[]>([]);
+    const [isAdmin, setIsAdmin] = useState<boolean>(false);
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -36,6 +37,16 @@ const Chat = () => {
         }
     };
 
+    const isUserAdmin = async(): Promise<void> => {
+        const req = await Helpers.Messagerie.is_user_admin(
+            location?.state?.chat_id,
+            localStorage.getItem('user_id') ?? ''
+        );
+        if (req) {
+            setIsAdmin(true);
+        }
+    };
+
     socket.on(location?.state?.chat_id, (data: { content: string, nickname: string, chat_id: string }) => {
         const output = [...allMessage, {
             nickname: data?.nickname,
@@ -46,10 +57,14 @@ const Chat = () => {
 
     useEffect(() => {
         getAllMessages();
+        isUserAdmin();
     }, [false]);
 
     return (
         <Fragment>
+            { isAdmin &&
+                <Button onClick={() => navigate(`/chat/${location?.state?.chat_id}/settings`)}>Settings</Button>
+            }
             <div
                 id='div-message-chat'
             >
