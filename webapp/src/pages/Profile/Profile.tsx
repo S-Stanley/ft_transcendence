@@ -1,5 +1,5 @@
 import './Profile.scss';
-import { Fragment, useReducer, useState } from 'react';
+import { Fragment, useMemo, useReducer, useState } from 'react';
 import Typography from '@mui/material/Typography';
 import { Avatar, Badge, Button, IconButton } from '@mui/material';
 import Helpers from '../../helpers/Helpers';
@@ -25,21 +25,13 @@ const Profile = () => {
     const [userFriendStatus, setUserFriendStatus] = useState('');
     const userToGet = window.location.pathname.split('/')[2];
     const navigate = useNavigate();
-    if (user.nickname === '') {
-        Helpers.Users.getUser(userToGet).then((res) => setUser(res!));
-        if (user.nickname === '') {
-            return (
-                <Fragment>
-                    User not found
-                </Fragment>
-            );
-        }
-    }
+
     const statusMap = new Map([
         ['online', 'success'],
         ['offline', 'error'],
         ['in-game', 'primary']
     ]);
+
     const getColorStatus = (): any => {
         const color = statusMap.get(user.current_status);
         if (!color) {
@@ -47,12 +39,14 @@ const Profile = () => {
         }
         return color;
     };
+
     const buttonTextMap = new Map([
         ['accepted', 'Friends'],
         ['to_accept', 'To accept'],
         ['pending', 'Request sent'],
         ['cancelled', 'Add friend']
     ]);
+
     const getFriendStatus = (): any => {
         Helpers.Friends.getFriendRequestStatus(userToGet).then(res => {
             setUserFriendStatus(res);
@@ -62,8 +56,8 @@ const Profile = () => {
             isFriend = true;
         }
     };
-    getFriendStatus();
-    const displayButton = (): any => {
+
+    const DisplayButton = (): any => {
         switch (userFriendStatus) {
         case 'accepted':
             return(
@@ -114,10 +108,21 @@ const Profile = () => {
                 </Button>);
         }
     };
+
     const sendFriendRequest = () => {
         setButtonText('Request sent');
         Helpers.Friends.sendFriendRequest(user.nickname, localStorage.getItem('nickname')!);
     };
+
+    useMemo(() => {
+        getFriendStatus();
+        Helpers.Users.getUser(userToGet).then((res) => setUser(res!));
+    }, [false]);
+
+    if (!user?.nickname) {
+        return (null);
+    }
+
     return (
         <Fragment>
             <h1>
@@ -131,21 +136,23 @@ const Profile = () => {
                             vertical: 'bottom',
                             horizontal: 'right',
                         }}>
-                            <Avatar id='avatar-display' alt={user.nickname} src={user.avatar}/>
+                            <Avatar id='avatar-display' alt={user?.nickname} src={user?.avatar}/>
                         </Badge>
                         :
-                        <Avatar id='avatar-display' alt={user.nickname} src={user.avatar}/>
+                        <Avatar id='avatar-display' alt={user?.nickname} src={user?.avatar}/>
                     }
                 </Box>
                 <Typography id='nickname'>
-                    { user.nickname }
+                    { user?.nickname }
                 </Typography>
-                { user.nickname === localStorage.getItem('nickname') ?
+                { user?.nickname === localStorage.getItem('nickname') ?
                     <Button id='edit-button' onClick={() => navigate('/user')}>
                         Edit Profile
                     </Button>
                     :
-                    <div>{ displayButton() }</div>
+                    <div>
+                        <DisplayButton/>
+                    </div>
                 }
             </h1>
             <h2>

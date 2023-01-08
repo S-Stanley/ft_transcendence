@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { styled, useTheme } from '@mui/material/styles';;
 import Drawer from '@mui/material/Drawer';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
@@ -13,7 +14,7 @@ import { Button } from '@mui/material';
 import { Routes, Route } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, Fragment } from 'react';
-import { mainListItems, secondaryListItems } from '../Utils/listItems';
+import MainListItems from '../Utils/listItems';
 import { Box } from '@mui/material';
 
 import Login from '../Login/Login';
@@ -106,7 +107,7 @@ export default function PersistentDrawerLeft() {
 
     const disconnectUser = () => {
         localStorage.clear();
-        window.location.href = '/';
+        navigate('/');
     };
 
     const is_public_page = [
@@ -116,14 +117,14 @@ export default function PersistentDrawerLeft() {
         if (!is_public_page) {
             if (user.nickname === '') {
                 Helpers.Users.me().then((res:any) => {
-                    if (res === null)
+                    if (!res)
                         navigate('/');
-                    setUser(res!);
-                    console.log('here');
+                    else
+                        setUser(res);
                 });
             }
         }
-    }, [window.location.href]);
+    }, [window.location.pathname]);
 
 
     return (
@@ -155,7 +156,7 @@ export default function PersistentDrawerLeft() {
                                 noWrap
                                 sx={{ flexGrow: 1 }}
                             >
-                                <Button onClick={() => window.location.href = (`/home`)}>
+                                <Button onClick={() => navigate(`/home`)}>
                                     <Typography
                                         component="h1"
                                         variant="h6"
@@ -167,25 +168,29 @@ export default function PersistentDrawerLeft() {
                                     </Typography>
                                 </Button>
                             </Typography>
-                            <IconButton onClick={() => window.location.href = (`/users/${user?.nickname}`)}>
-                                <Avatar alt={user?.nickname} src={user?.avatar} sx={{height: '40px', width: '40px' }}></Avatar>
-                            </IconButton>
-                            <Typography
-                                variant="h6"
-                                component="div"
-                                sx={{ flexGrow: 0, display: { xs: 'none', sm: 'block' } }}
-                            >
-                                { user?.nickname === '' ? 'invité' :
-                                    <Button id="button-nickname" onClick={() => window.location.href = (`/users/${user?.nickname}`)}>
-                                        { user?.nickname }
-                                    </Button>
-                                }
-                            </Typography>
-                            <IconButton color="inherit">
-                                <Badge color="secondary">
-                                    <ExitToAppIcon onClick={disconnectUser}/>
-                                </Badge>
-                            </IconButton>
+                            { user?.nickname &&
+                                <Fragment>
+                                    <IconButton onClick={() => navigate(`/users/${user?.nickname}`)}>
+                                        <Avatar alt={user?.nickname} src={user?.avatar} sx={{height: '40px', width: '40px' }}></Avatar>
+                                    </IconButton>
+                                    <Typography
+                                        variant="h6"
+                                        component="div"
+                                        sx={{ flexGrow: 0, display: { xs: 'none', sm: 'block' } }}
+                                    >
+                                        { user?.nickname === '' ? 'invité' :
+                                            <Button id="button-nickname" onClick={() => navigate(`/users/${user?.nickname}`)}>
+                                                { user?.nickname }
+                                            </Button>
+                                        }
+                                    </Typography>
+                                    <IconButton color="inherit">
+                                        <Badge color="secondary">
+                                            <ExitToAppIcon onClick={disconnectUser}/>
+                                        </Badge>
+                                    </IconButton>
+                                </Fragment>
+                            }
                         </Toolbar>
                     </AppBar>
                     <Drawer
@@ -208,9 +213,7 @@ export default function PersistentDrawerLeft() {
                         </DrawerHeader>
                         <Divider />
                         <List component="nav">
-                            {mainListItems}
-                            <Divider sx={{ my: 1 }} />
-                            {secondaryListItems}
+                            <MainListItems/>
                         </List>
                     </Drawer>
                 </Fragment>
