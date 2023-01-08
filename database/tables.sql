@@ -65,6 +65,7 @@ CREATE TABLE IF NOT EXISTS public.chat_member(
     id          UUID PRIMARY KEY DEFAULT uuid_generate_v4() NOT NULL UNIQUE,
     chat_id     UUID NOT NULL,
     user_id     INTEGER NOT NULL,
+    created_at  TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
 
     CONSTRAINT  fk_chat_id FOREIGN KEY (chat_id) REFERENCES public.chat (id),
     CONSTRAINT  fk_user_id FOREIGN KEY (user_id) REFERENCES public.users (id)

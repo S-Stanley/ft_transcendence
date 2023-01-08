@@ -7,6 +7,7 @@ const login = async(code: string): Promise<User | null> => {
         const res = await axios.post(`${Config.Api.url}/users/auth`, {
             code: code
         });
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + res?.data?.token;
         return (res.data);
     } catch (e) {
         console.error(e);
@@ -45,6 +46,7 @@ const login_with_email = async(email: string, password: string): Promise<User | 
             email: email,
             password: password
         });
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + req?.data?.token;
         return (req.data);
     } catch (e) {
         console.error(e);
