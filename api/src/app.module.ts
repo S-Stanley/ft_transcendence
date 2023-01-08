@@ -22,7 +22,7 @@ import { MatchmakingController } from './matchmaking/matchmaking.controller';
 import { MatchmakingService } from './services/matchmaking.service';
 import { TwoFactorAuthController } from './two_factor_auth/two_factor_auth.controller';
 import { TwoFactorAuthService } from './services/two_factor_auth.service';
-import { JwtModule, JwtService } from '@nestjs/jwt';
+import { JwtModule } from '@nestjs/jwt';
 import { FriendRequest } from './entities/friendrequest.entity';
 import { FriendRequestController } from './friendrequest/friendrequest.controller';
 import { FriendRequestService } from './services/friend_request.service';

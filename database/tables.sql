@@ -92,3 +92,12 @@ CREATE TABLE IF NOT EXISTS public.friend_request(
     CONSTRAINT          fk_sender_id FOREIGN KEY (sender) REFERENCES public.users (id),
     CONSTRAINT          fk_receiver_id FOREIGN KEY (receiver) REFERENCES public.users (id)
 );
+
+CREATE TABLE IF NOT EXISTS public.chat_admin(
+    id          UUID PRIMARY KEY DEFAULT uuid_generate_v4() NOT NULL UNIQUE,
+    chat_id     UUID NOT NULL,
+    user_id     INTEGER NOT NULL,
+
+    CONSTRAINT  fk_chat_id FOREIGN KEY (chat_id) REFERENCES public.chat (id),
+    CONSTRAINT  fk_user_id FOREIGN KEY (user_id) REFERENCES public.users (id)
+);

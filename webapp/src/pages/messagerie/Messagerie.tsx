@@ -6,26 +6,45 @@ import { ListItem, List, ListItemText, Avatar, ListItemAvatar } from '@mui/mater
 
 import './Messagerie.scss';
 import { MessagerieInterface } from "../../interfaces/messagerie";
+import { toast } from "react-toastify";
 
 const Messaging = () => {
 
-    const [userToFind, setUserToFind] = useState<string>("");
+    const [destinationChatName, setDestinationChatName] = useState<string>("");
     const [allDiscussions, setAllDiscussions] = useState<MessagerieInterface[]>([]);
     const navigate = useNavigate();
 
-    const handleSubmit = async(e: { preventDefault: any }): Promise<void> => {
-        e.preventDefault();
-        if (userToFind === localStorage.getItem('email')) {
+    const handleSubmit = async(): Promise<void> => {
+        if (destinationChatName === localStorage.getItem('email')) {
             alert('Error, you cannot send an message to yourself');
             return ;
         }
-        const req = await Helpers.Users.findUserByEmail(userToFind);
-        const chat = await Helpers.Messagerie.create_or_get_discussion(userToFind);
+        const req = await Helpers.Users.findUserByEmail(destinationChatName);
+        const chat = await Helpers.Messagerie.create_or_get_discussion(destinationChatName);
         if (req && chat) {
-            setUserToFind('');
+            setDestinationChatName('');
             navigate('/chat', {
                 state: {
                     chat_id:  chat?.chat_id
+                }
+            });
+        }
+    };
+
+    const createNewChat = async(): Promise<void> => {
+        if (!destinationChatName) {
+            toast.error('You cannot create a chat with an empty name');
+            return ;
+        }
+        const req = await Helpers.Messagerie.create_new_public_chat(
+            destinationChatName,
+            localStorage.getItem('user_id') ?? '',
+        );
+        if (req) {
+            setDestinationChatName('');
+            navigate('/chat', {
+                state: {
+                    chat_id: req
                 }
             });
         }
@@ -84,28 +103,39 @@ const Messaging = () => {
                     })}
                 </List>
             </div>
-            <form
-                onSubmit={handleSubmit}
-            >
+            <div id='div-input-messagerie-email'>
                 <TextField
                     label="Email of user to send a message"
                     variant="standard"
                     type='email'
-                    value={userToFind}
-                    onChange={(e) => setUserToFind(e.target.value)}
+                    value={destinationChatName}
+                    onChange={(e) => setDestinationChatName(e.target.value)}
                     inputProps={{
                         'id': 'input-messagerie-email'
                     }}
                 />
-                <br />
+            </div>
+            <br />
+            <div id='button-group-new-chat'>
                 <Button
                     variant="contained"
                     type="submit"
                     id='submit-button-messagerie'
+                    onClick={handleSubmit}
                 >
                     Validate
                 </Button>
-            </form>
+                <br/>
+                <Button
+                    variant="contained"
+                    type="submit"
+                    id='submit-button-new-chat'
+                    color='secondary'
+                    onClick={createNewChat}
+                >
+                    Create new chat
+                </Button>
+            </div>
         </Fragment>
     );
 };
