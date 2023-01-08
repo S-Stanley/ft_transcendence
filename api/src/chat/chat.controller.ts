@@ -294,4 +294,66 @@ export class ChatController {
             return (false);
         }
     }
+
+    @Get('/members/:chat_id')
+    async getAllMembers(@Param() params) {
+        try {
+            const all_members = await this.db.query(
+                `
+                    SELECT
+                        users.id,
+                        users.nickname,
+                        users.email,
+                        (CASE
+                            WHEN user_id = ANY(
+                                SELECT
+                                    user_id
+                                FROM
+                                    public.chat_admin
+                                WHERE
+                                    chat_id = $1
+                            ) THEN true
+                            ELSE false
+                        END) AS admin
+                    FROM
+                        public.chat_member
+                    JOIN
+                        public.users
+                    ON
+                        users.id = chat_member.user_id
+                    WHERE
+                        chat_member.chat_id = $1;
+                `,
+                [params?.chat_id]
+            );
+            return (all_members.rows);
+        } catch (e) {
+            console.error(e);
+            return (false);
+        }
+    }
+
+    @Post('/admin')
+    async updateChatAdmin(@Body() body){
+        try {
+            const updated_list = await this.db.query(
+                `
+                    SELECT * FROM public.update_chat_admin(
+                        $1,
+                        $2,
+                        $3,
+                        $4
+                    );
+                `,
+                [body?.list_to_delete, body?.list_to_add, body?.chat_id, body?.user_id]
+            );
+            if (!updated_list?.rows[0]?.update_chat_admin) {
+                throw new HttpException('Wront permissions', 500);
+            }
+            return (true);
+        } catch (e) {
+            console.error(e);
+            throw new HttpException('Wront permissions', 500);
+        }
+    }
 }
