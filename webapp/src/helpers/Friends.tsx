@@ -34,11 +34,16 @@ const acceptFriendRequest = async(otherUser: string, nickname: string, accept: b
     }
 };
 
+const getSentRequests = async(): Promise<any> => {
+    return await axios.get(`${Config.Api.url}/friends/requests/sent`).then((res) => res.data);
+};
+
 const Friends = {
     sendFriendRequest,
     getReceivedFriendRequests,
     getFriendRequestStatus,
     acceptFriendRequest,
+    getSentRequests,
 };
 
 export default Friends;
