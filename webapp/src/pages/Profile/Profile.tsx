@@ -113,9 +113,8 @@ const Profile = () => {
         setButtonText('Request sent');
         Helpers.Friends.sendFriendRequest(user.nickname, localStorage.getItem('nickname')!);
     };
-
+    getFriendStatus();
     useMemo(() => {
-        getFriendStatus();
         Helpers.Users.getUser(userToGet).then((res) => setUser(res!));
     }, [false]);
 

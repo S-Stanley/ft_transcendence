@@ -40,17 +40,14 @@ const FriendSearch = () => {
     useEffect(() => {
         Helpers.Users.getAllUsers().then((res) => {
             setUsers(res.rows);
-            // console.log(res.rows);
         });
         Helpers.Users.me().then((res) => setUser(res!));
         Helpers.Friends.getReceivedFriendRequests().then((requests) => setFriendRequests(requests));
         Helpers.Friends.getSentRequests().then((requests) => setRequestsSent(requests));
     }, []);
     const handleChange = (event: { target: { value: SetStateAction<string>; }; }) => {
-        // console.log(event.target.value);
         setSearch(event.target.value);
     };
-    console.log(requestsSent);
     return (
         <>
             <Box sx={{ mt: 3 }}>

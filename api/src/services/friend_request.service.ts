@@ -108,7 +108,6 @@ export class FriendRequestService {
             sender: user.id,
             current_status: 'pending'
         });
-        console.log(user.id);
         const usersProfile = [];
         let receiver;
         const receiverIds = requestsSent.map(req => req.receiver);
