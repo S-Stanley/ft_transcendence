@@ -19,6 +19,7 @@ TRUNCATE TABLE public.chat_member;
 \i functions/create_or_get_chat_id.sql
 \i functions/current_user.sql
 \i functions/get_all_user_related_chat_ids.sql
+\i functions/join_public_chat.sql
 
 \i roles.sql
 \i rls.sql

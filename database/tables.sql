@@ -56,6 +56,7 @@ CREATE TABLE IF NOT EXISTS public.chat(
     id          UUID PRIMARY KEY DEFAULT uuid_generate_v4() NOT NULL UNIQUE,
     name        VARCHAR(200) DEFAULT NULL,
     type        public.chat_type DEFAULT 'private' NOT NULL,
+    password    VARCHAR(255),
     created_by  INTEGER DEFAULT NULL,
 
     CONSTRAINT  fk_created_by FOREIGN KEY (created_by) REFERENCES public.users(id)
