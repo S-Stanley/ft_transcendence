@@ -24,3 +24,4 @@ TRUNCATE TABLE public.chat_member;
 \i roles.sql
 \i rls.sql
 \i functions/create_new_chat.sql
+\i functions/update_chat_admin.sql
