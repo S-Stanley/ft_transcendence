@@ -13,6 +13,12 @@ VALUES(
     '7e87fdf9-cfd2-4ded-b5f4-988d26daf2db',
     1
 );
+INSERT INTO
+    public.chat_admin (chat_id, user_id)
+VALUES (
+    '7e87fdf9-cfd2-4ded-b5f4-988d26daf2db',
+    1
+);
 
 
 -- Create private chat

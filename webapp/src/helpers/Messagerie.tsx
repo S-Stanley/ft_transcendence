@@ -1,6 +1,7 @@
 import Config from "../config/Config";
 import axios from 'axios';
 import { MessagerieInterface } from "../interfaces/messagerie";
+import { toast } from "react-toastify";
 
 const create_or_get_discussion = async (email: string) => {
     try {
@@ -70,12 +71,82 @@ const   create_new_public_chat = async (
     }
 };
 
+const   update_password_chat = async(chat_id: string, password: string, user_id: string) => {
+    try {
+        const req = await axios.patch(`${Config.Api.url}/chat/password`, {
+            chat_id: chat_id,
+            password: password,
+            user_id: user_id
+        });
+        return (req.data);
+    } catch (e) {
+        console.error(e);
+        toast.error('There was an error, you may not have enought permissions');
+        return (null);
+    }
+};
+
+const   is_user_admin = async (chat_id: string, user_id: string) => {
+    try {
+        const req = await axios.get(`${Config.Api.url}/chat/admin/${chat_id}/${user_id}`);
+        return (req.data);
+    } catch (e) {
+        console.error(e);
+        return (null);
+    }
+};
+
+const   join_chat = async (chat_id: string, password: string, user_id: string) => {
+    try {
+        const req = await axios.post(`${Config.Api.url}/chat/join`, {
+            chat_id: chat_id,
+            password: password,
+            user_id: user_id,
+        });
+        return (req.data);
+    } catch (e) {
+        console.error(e);
+        return (null);
+    }
+};
+
+const   get_all_members_and_admin = async (chat_id: string) => {
+    try {
+        const req = await axios.get(`${Config.Api.url}/chat/members/${chat_id}`);
+        return (req.data);
+    } catch (e) {
+        console.error(e);
+        return (null);
+    }
+};
+
+const   update_admin_list = async (chat_id: string, list_to_add: number[], list_to_delete: number[]) => {
+    try {
+        const req = await axios.post(`${Config.Api.url}/chat/admin`, {
+            chat_id: chat_id,
+            list_to_add: list_to_add,
+            list_to_delete: list_to_delete,
+            user_id: localStorage.getItem('user_id') ?? '',
+        });
+        return (req.data);
+    } catch (e) {
+        console.error(e);
+        toast.error('There was an error, please try again later');
+        return (null);
+    }
+};
+
 const Messagerie = {
     create_or_get_discussion,
     send_message_to_discussion,
     get_message_of_discussion,
     get_all_chat_by_user_id,
     create_new_public_chat,
+    update_password_chat,
+    is_user_admin,
+    join_chat,
+    get_all_members_and_admin,
+    update_admin_list,
 };
 
 export default Messagerie;

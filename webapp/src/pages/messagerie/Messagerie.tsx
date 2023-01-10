@@ -78,21 +78,46 @@ const Messaging = () => {
                 <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
                     {allDiscussions.map((discussion: MessagerieInterface) => {
                         return (
-                            <ListItem alignItems="flex-start" key={discussion.id} onClick={() => navigateToChat(discussion.id)}>
+                            <ListItem
+                                alignItems="flex-start"
+                                key={discussion.id}
+                                onClick={async() => {
+                                    if (discussion?.member) {
+                                        navigateToChat(discussion.id);
+                                    } else {
+                                        let pass = '';
+                                        if (discussion.password) {
+                                            pass = prompt('Please, enter the password requested') ?? '';
+                                        }
+                                        if (await Helpers.Messagerie.join_chat(
+                                            discussion.id,
+                                            pass,
+                                            localStorage.getItem('user_id') ?? ''
+                                        )) {
+                                            navigateToChat(discussion.id);
+                                        } else {
+                                            toast.error('Wrong password');
+                                        }
+                                    }
+                                }}
+                            >
                                 <ListItemAvatar>
                                     <Avatar alt="Remy Sharp" src={discussion.type === 'public' ? undefined : discussion?.picture} />
                                 </ListItemAvatar>
                                 <ListItemText
+                                    primary={ discussion.type === 'public' ? discussion.name : discussion.nickname }
                                     secondary={
                                         <Fragment>
-                                            <Typography
-                                                sx={{ display: 'inline' }}
-                                                component="span"
-                                                variant="body2"
-                                                color="text.primary"
-                                            >
-                                                { discussion.type === 'public' ? discussion.name : discussion.nickname }
-                                            </Typography>
+                                            {discussion?.type === 'public' &&
+                                                <Typography
+                                                    sx={{ display: 'inline' }}
+                                                    component="span"
+                                                    variant="body2"
+                                                    color="text.primary"
+                                                >
+                                                    { discussion?.member ? 'member' : 'not-member' } { discussion?.password && ' - need password' }
+                                                </Typography>
+                                            }
                                         </Fragment>
                                     }
                                 />

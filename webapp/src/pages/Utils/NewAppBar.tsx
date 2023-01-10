@@ -37,6 +37,7 @@ import Helpers from '../../helpers/Helpers';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { Avatar } from '@mui/material';
 import Bonus from '../Bonus/Bonus';
+import Settings from '../chat/Settings';
 
 
 
@@ -257,6 +258,7 @@ export default function PersistentDrawerLeft() {
                         <Route path='/home' element={<Home/>} />
                         <Route path='/messagerie' element={<Messaging/>} />
                         <Route path='/chat' element={<Chat/>} />
+                        <Route path='/chat/:chat_id/settings' element={<Settings/>} />
                         <Route path="/play" element={<Play />} />
                         <Route path="/play/pong" element={<Game />} />
                         <Route path="/play/bonus" element={<Bonus />} />
