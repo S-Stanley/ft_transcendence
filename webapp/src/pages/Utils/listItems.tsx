@@ -7,7 +7,6 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import NetworkPingIcon from '@mui/icons-material/NetworkPing';
 import PeopleIcon from '@mui/icons-material/People';
 import PersonIcon from '@mui/icons-material/Person';
-import SendIcon from '@mui/icons-material/Send';
 import EmailIcon from '@mui/icons-material/Email';
 import { useNavigate } from 'react-router-dom';
 import Divider from '@mui/material/Divider';
@@ -38,12 +37,6 @@ const MainListItems = () => {
                     <EmailIcon />
                 </ListItemIcon>
                 <ListItemText primary="Messaging" id='messagerie-menu' />
-            </ListItemButton>
-            <ListItemButton onClick={() => navigate('/chat')}>
-                <ListItemIcon>
-                    <SendIcon />
-                </ListItemIcon>
-                <ListItemText primary="Chat" />
             </ListItemButton>
             <ListItemButton  onClick={() => navigate('/friends')}>
                 <ListItemIcon>

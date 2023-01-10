@@ -10,6 +10,7 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import DoneIcon from '@mui/icons-material/Done';
 import ClearIcon from '@mui/icons-material/Clear';
 import GroupIcon from '@mui/icons-material/Group';
+import { toast } from 'react-toastify';
 
 const Profile = () => {
     const [user, setUser] = useState({
@@ -17,13 +18,15 @@ const Profile = () => {
         nickname: '',
         avatar: '',
         current_status: '',
-        friends: ['']
+        friends: [''],
+        id: '',
     });
     const [, forceUpdate] = useReducer(x => x + 1, 0);
     let isFriend = false;
     const [buttonText, setButtonText] = useState('');
     const [userFriendStatus, setUserFriendStatus] = useState('');
     const userToGet = window.location.pathname.split('/')[2];
+    const [isBlocked, setIsBlocked] = useState(false);
     const navigate = useNavigate();
 
     const statusMap = new Map([
@@ -114,8 +117,33 @@ const Profile = () => {
         Helpers.Friends.sendFriendRequest(user.nickname, localStorage.getItem('nickname')!);
     };
     getFriendStatus();
+
+    const blockUser = async() => {
+        const req = await Helpers.Users.blockUser(
+            localStorage.getItem('user_id') ?? '',
+            user?.id
+        );
+        if (req) {
+            toast.success(`${user?.nickname} successfully blocked`);
+            setIsBlocked(!isBlocked);
+        }
+    };
+
+    const is_user_blocked= async(user_id_profile: string = ''): Promise<void>  => {
+        const req = await Helpers.Friends.is_user_blocked(
+            localStorage.getItem('user_id') ?? '',
+            user_id_profile,
+        );
+        if (req){
+            setIsBlocked(true);
+        }
+    };
+
     useMemo(() => {
-        Helpers.Users.getUser(userToGet).then((res) => setUser(res!));
+        Helpers.Users.getUser(userToGet).then((res) => {
+            setUser(res!);
+            is_user_blocked(res?.id);
+        });
     }, [false]);
 
     if (!user?.nickname) {
@@ -149,8 +177,22 @@ const Profile = () => {
                         Edit Profile
                     </Button>
                     :
-                    <div>
+                    <div
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'space-around'
+                        }}
+                    >
                         <DisplayButton/>
+                        <Button
+                            size="small"
+                            color="inherit"
+                            variant="contained"
+                            onClick={blockUser}
+                        >
+                            { isBlocked ? 'Unblock user' : 'Block user' }
+                            <PersonAddIcon sx={{ml: 1, mb: 0.2}}/>
+                        </Button>
                     </div>
                 }
             </h1>
