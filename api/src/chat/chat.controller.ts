@@ -61,6 +61,31 @@ export class ChatController {
         if (!isValidUUIDV4(body.chat_id)) {
             throw new HttpException('Wrong format for params, expecting UUID', 500);
         }
+        const check_blocked = await this.db.query(
+            `
+                SELECT
+                    *
+                FROM
+                    public.blocked_users
+                WHERE
+                    user_id = $1
+                AND
+                    blocked_user_id = ANY(
+                        SELECT
+                            user_id
+                        FROM
+                            public.chat_member
+                        WHERE
+                            chat_id = $2
+                        AND
+                            user_id != $1
+                    );
+            `,
+            [body?.sender_id, body?.chat_id]
+        );
+        if (check_blocked?.rows.length > 0) {
+            throw new HttpException('cannot send msg because user is blocked', 500);
+        }
         await this.db.query(
             'INSERT INTO chat_message (chat_id, sent_by, content) VALUES($1, $2, $3)',
             [body.chat_id, body.sender_id, body.content]
@@ -91,7 +116,7 @@ export class ChatController {
             `
                 WITH all_privates_chats AS (
                     SELECT
-                        chat.id AS chat_id,
+                        DISTINCT(chat.id) AS chat_id,
                         chat.name,
                         chat.type,
                         chat_member.user_id
