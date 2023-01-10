@@ -8,6 +8,11 @@ import { FriendRequestService } from "src/services/friend_request.service";
 export class FriendRequestController {
     constructor(private userService: FriendRequestService) {}
 
+    @Get('/requests/sent')
+    getSentRequestsAction(@UserConnected() user: Users): Promise<any> {
+        return this.userService.getSentRequests(user);
+    }
+
     @Get('/requests/:user')
     getFriendshipStatusAction(@Param('user') otherUser: string, @UserConnected() user: Users): Promise<any> {
         return this.userService.getFriendshipStatus(otherUser, user);
