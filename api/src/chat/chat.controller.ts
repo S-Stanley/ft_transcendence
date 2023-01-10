@@ -123,8 +123,8 @@ export class ChatController {
                 throw new HttpException('cannot send msg because user is blocked', 500);
             }
         }
-        const message_created = await this.db.query(
-            'INSERT INTO chat_message (chat_id, sent_by, content) VALUES($1, $2, $3) RETURNING id',
+        await this.db.query(
+            'INSERT INTO chat_message (chat_id, sent_by, content) VALUES($1, $2, $3)',
             [body.chat_id, body.sender_id, body.content]
         );
         return (message_created?.rows[0]?.id);
