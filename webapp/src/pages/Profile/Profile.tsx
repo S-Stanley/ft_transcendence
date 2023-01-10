@@ -10,6 +10,7 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import DoneIcon from '@mui/icons-material/Done';
 import ClearIcon from '@mui/icons-material/Clear';
 import GroupIcon from '@mui/icons-material/Group';
+import { toast } from 'react-toastify';
 
 const Profile = () => {
     const [user, setUser] = useState({
@@ -17,7 +18,8 @@ const Profile = () => {
         nickname: '',
         avatar: '',
         current_status: '',
-        friends: ['']
+        friends: [''],
+        id: '',
     });
     const [, forceUpdate] = useReducer(x => x + 1, 0);
     let isFriend = false;
@@ -114,6 +116,16 @@ const Profile = () => {
         Helpers.Friends.sendFriendRequest(user.nickname, localStorage.getItem('nickname')!);
     };
 
+    const blockUser = async() => {
+        const req = await Helpers.Users.blockUser(
+            localStorage.getItem('user_id') ?? '',
+            user?.id
+        );
+        if (req) {
+            toast.success(`${user?.nickname} successfully blocked`);
+        }
+    };
+
     useMemo(() => {
         getFriendStatus();
         Helpers.Users.getUser(userToGet).then((res) => setUser(res!));
@@ -150,8 +162,22 @@ const Profile = () => {
                         Edit Profile
                     </Button>
                     :
-                    <div>
+                    <div
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'space-around'
+                        }}
+                    >
                         <DisplayButton/>
+                        <Button
+                            size="small"
+                            color="inherit"
+                            variant="contained"
+                            onClick={blockUser}
+                        >
+                            Block user
+                            <PersonAddIcon sx={{ml: 1, mb: 0.2}}/>
+                        </Button>
                     </div>
                 }
             </h1>
