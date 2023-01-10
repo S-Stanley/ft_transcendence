@@ -1,5 +1,6 @@
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { Avatar, Box, Card, Button, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
+import Helpers from '../../../helpers/Helpers';
 
 export const FriendList = ({ users }) => {
 
@@ -74,6 +75,7 @@ export const FriendList = ({ users }) => {
                                     </TableCell>
                                     <TableCell>
                                         <Button
+                                            onClick={() => {Helpers.Friends.sendFriendRequest(users.nickname, localStorage.getItem('nickname'));}}
                                             size="small"
                                             color="primary"
                                             variant="outlined"
