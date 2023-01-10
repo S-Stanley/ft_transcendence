@@ -23,7 +23,7 @@ const Messaging = () => {
         const chat = await Helpers.Messagerie.create_or_get_discussion(destinationChatName);
         if (req && chat) {
             setDestinationChatName('');
-            navigate('/chat', {
+            navigate(`/chat/${chat?.chat_id}`, {
                 state: {
                     chat_id:  chat?.chat_id
                 }
@@ -42,7 +42,7 @@ const Messaging = () => {
         );
         if (req) {
             setDestinationChatName('');
-            navigate('/chat', {
+            navigate(`/chat/${req}`, {
                 state: {
                     chat_id: req
                 }
@@ -51,7 +51,7 @@ const Messaging = () => {
     };
 
     const navigateToChat = (chat_id: string) => {
-        navigate('/chat', {
+        navigate(`/chat/${chat_id}`, {
             state: {
                 chat_id:  chat_id
             }
@@ -82,21 +82,25 @@ const Messaging = () => {
                                 alignItems="flex-start"
                                 key={discussion.id}
                                 onClick={async() => {
-                                    if (discussion?.member) {
+                                    if (discussion.type === 'private') {
                                         navigateToChat(discussion.id);
                                     } else {
-                                        let pass = '';
-                                        if (discussion.password) {
-                                            pass = prompt('Please, enter the password requested') ?? '';
-                                        }
-                                        if (await Helpers.Messagerie.join_chat(
-                                            discussion.id,
-                                            pass,
-                                            localStorage.getItem('user_id') ?? ''
-                                        )) {
+                                        if (discussion?.member) {
                                             navigateToChat(discussion.id);
                                         } else {
-                                            toast.error('Wrong password');
+                                            let pass = '';
+                                            if (discussion.password) {
+                                                pass = prompt('Please, enter the password requested') ?? '';
+                                            }
+                                            if (await Helpers.Messagerie.join_chat(
+                                                discussion.id,
+                                                pass,
+                                                localStorage.getItem('user_id') ?? ''
+                                            )) {
+                                                navigateToChat(discussion.id);
+                                            } else {
+                                                toast.error('Wrong password');
+                                            }
                                         }
                                     }
                                 }}

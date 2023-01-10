@@ -135,6 +135,7 @@ export class UsersController {
             return (null);
         }
         return ({
+            id: req.rows[0].id,
             id_42: req.rows[0].id_42,
             email: req.rows[0].email,
             nickname: req.rows[0].nickname,
@@ -177,6 +178,7 @@ export class UsersController {
             filename: (req, file, cb) => cb(null, `${uuid() + '.' + file.originalname.split('.').pop()}`)
         })
     }))
+
     @Post('picture')
     uploadFile(
       @Body() body: {name: string},
@@ -185,5 +187,56 @@ export class UsersController {
         return {
             file,
         };
+    }
+
+    @Post('/blocked')
+    async blockUserById(@Body() body) {
+        try {
+            const is_user_already_blocked = await this.db.query(
+                `
+                    SELECT
+                        id
+                    FROM
+                        public.blocked_users
+                    WHERE
+                        user_id = $1
+                    AND
+                        blocked_user_id = $2;
+                `,
+                [body?.user_id, body?.blocked_user_id]
+            );
+            if (is_user_already_blocked?.rows?.length > 0) {
+                await this.db.query(
+                    `
+                        DELETE FROM
+                            public.blocked_users
+                        WHERE
+                            user_id = $1
+                        AND
+                            blocked_user_id = $2;
+                    `,
+                    [body?.user_id, body?.blocked_user_id]
+                );
+            } else {
+                await this.db.query(
+                    `
+                        INSERT INTO
+                            blocked_users (
+                                user_id,
+                                blocked_user_id
+                            )
+                        VALUES (
+                            $1,
+                            $2
+                        );
+                    `,
+                    [body?.user_id, body?.blocked_user_id]
+                );
+            }
+            return (true);
+        } catch (e) {
+            console.error(e);
+            throw new HttpException('There was an error from our side, please try again later', 500);
+        }
     }
 }

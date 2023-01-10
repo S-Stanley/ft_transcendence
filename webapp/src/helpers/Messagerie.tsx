@@ -29,6 +29,7 @@ const send_message_to_discussion = async (chat_id: string, content: string) => {
         return (req.data);
     } catch (e) {
         console.error(e);
+        toast.error('Error, cannot send msg because you are blocked');
     }
 };
 
