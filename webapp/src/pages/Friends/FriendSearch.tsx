@@ -82,7 +82,7 @@ const FriendSearch = () => {
                             }}
                         >
                             <Typography
-                                sx={{ m: 1 }}
+                                sx={{ m: 1, mt: 5 }}
                                 variant="h4"
                             >
                                 Search friend
