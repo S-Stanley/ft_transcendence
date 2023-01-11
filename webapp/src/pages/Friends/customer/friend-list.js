@@ -1,12 +1,11 @@
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { Avatar, Box, Card, Button, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
 import Helpers from '../../../helpers/Helpers';
+import { useNavigate } from 'react-router-dom';
 
 export const FriendList = ({ users }) => {
 
-    const toUserProfile = (nickname) => {
-        window.location.href = `users/${nickname}`;
-    };
+    const navigate = useNavigate();
 
     return (
         <Card>
@@ -65,7 +64,7 @@ export const FriendList = ({ users }) => {
                                     </TableCell>
                                     <TableCell>
                                         <Button
-                                            onClick={() => {toUserProfile(users.nickname);}}
+                                            onClick={() => navigate(`/users/${users.nickname}`)}
                                             size="small"
                                             color="secondary"
                                             variant="outlined"
