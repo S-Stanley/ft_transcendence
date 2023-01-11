@@ -44,7 +44,7 @@ const FriendSearch = () => {
         Helpers.Users.me().then((res) => setUser(res!));
         Helpers.Friends.getReceivedFriendRequests().then((requests) => setFriendRequests(requests));
         Helpers.Friends.getSentRequests().then((requests) => setRequestsSent(requests));
-    }, []);
+    }, [friendRequests]);
     const handleChange = (event: { target: { value: SetStateAction<string>; }; }) => {
         setSearch(event.target.value);
     };
