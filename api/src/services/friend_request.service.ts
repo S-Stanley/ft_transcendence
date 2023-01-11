@@ -102,4 +102,24 @@ export class FriendRequestService {
         }
         await this.friendRequestRepository.save(request);
     }
+
+    async getSentRequests(user: Users): Promise<any> {
+        const requestsSent = await this.friendRequestRepository.findBy({
+            sender: user.id,
+            current_status: 'pending'
+        });
+        const usersProfile = [];
+        let receiver;
+        const receiverIds = requestsSent.map(req => req.receiver);
+        for (let i = 0; i < receiverIds.length; i++) {
+            receiver = await this.userRepository.findOneBy({
+                id: receiverIds[i]
+            });
+            usersProfile.push({
+                nickname: receiver.nickname,
+                avatar: receiver.avatar
+            });
+        }
+        return usersProfile;
+    }
 }

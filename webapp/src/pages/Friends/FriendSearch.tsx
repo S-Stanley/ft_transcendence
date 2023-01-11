@@ -4,6 +4,7 @@ import Helpers from '../../helpers/Helpers';
 import { FriendList } from './customer/friend-list';
 import { Box, Card, CardContent, TextField, Typography, } from '@mui/material';
 import { FriendRequests } from './customer/friend-requests';
+import { FriendRequestsSent } from './customer/friend-requests-sent';
 
 
 const FriendSearch = () => {
@@ -20,7 +21,10 @@ const FriendSearch = () => {
         avatar: '',
     }]);
 
-    console.log(friendRequests);
+    const [requestsSent, setRequestsSent] = useState([{
+        nickname: '',
+        avatar: '',
+    }]);
 
     const [user, setUser] = useState({
         email: '',
@@ -36,19 +40,37 @@ const FriendSearch = () => {
     useEffect(() => {
         Helpers.Users.getAllUsers().then((res) => {
             setUsers(res.rows);
-            console.log(res.rows);
         });
         Helpers.Users.me().then((res) => setUser(res!));
         Helpers.Friends.getReceivedFriendRequests().then((requests) => setFriendRequests(requests));
+        Helpers.Friends.getSentRequests().then((requests) => setRequestsSent(requests));
     }, [friendRequests]);
     const handleChange = (event: { target: { value: SetStateAction<string>; }; }) => {
-        console.log(event.target.value);
         setSearch(event.target.value);
     };
     return (
         <>
             <Box sx={{ mt: 3 }}>
                 <Container maxWidth={false}>
+                    <Box
+                        sx={{
+                            alignItems: 'center',
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            flexWrap: 'wrap',
+                            m: -1
+                        }}
+                    >
+                        <Typography
+                            sx={{ m: 1 }}
+                            variant="h4"
+                        >
+                                Friend Requests Sent
+                        </Typography>
+                    </Box>
+                    <Box sx={{ mt: 3 }}>
+                        <FriendRequestsSent requests={requestsSent}/>
+                    </Box>
                     <Box>
                         <Box
                             sx={{
@@ -60,7 +82,7 @@ const FriendSearch = () => {
                             }}
                         >
                             <Typography
-                                sx={{ m: 1 }}
+                                sx={{ m: 1, mt: 5 }}
                                 variant="h4"
                             >
                                 Search friend
