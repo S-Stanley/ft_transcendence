@@ -2,10 +2,50 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import { Avatar, Box, Card, Button, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
 import Helpers from '../../../helpers/Helpers';
 import { useNavigate } from 'react-router-dom';
+import { useState} from 'react';
 
 export const FriendList = ({ users }) => {
 
     const navigate = useNavigate();
+
+    const [friendStatus, setFriendStatus] = useState('');
+
+    const friendButton = (friendUser) => {
+        switch (friendStatus) {
+        case 'accepted':
+            return (
+                <Box>
+                    <Button sx={{ ml: 2 }}
+                        size="small"
+                        variant="contained" disabled>
+                        Friends
+                    </Button>
+                </Box>);
+        case 'pending':
+            return(
+                <Box>
+                    <Button sx={{ ml: 2 }}
+                        size="small"
+                        variant="contained" disabled>
+                        Request sent
+                    </Button>
+                </Box>);
+        default:
+            return (
+                <Box>
+                    <Button
+                        onClick={() => {
+                            Helpers.Friends.sendFriendRequest(friendUser, localStorage.getItem('nickname'));
+                            setFriendStatus('pending');
+                        }}
+                        size="small"
+                        color="primary"
+                        variant="outlined">
+                        Add Friend
+                    </Button>
+                </Box>);
+        }
+    };
 
     return (
         <Card>
@@ -72,15 +112,8 @@ export const FriendList = ({ users }) => {
                                         View Profile
                                         </Button>
                                     </TableCell>
-                                    <TableCell>
-                                        <Button
-                                            onClick={() => {Helpers.Friends.sendFriendRequest(users.nickname, localStorage.getItem('nickname'));}}
-                                            size="small"
-                                            color="primary"
-                                            variant="outlined"
-                                        >
-                                        Add Friend
-                                        </Button>
+                                    <TableCell key={users.id}>
+                                        {friendButton(users.nickname)}
                                     </TableCell>
                                 </TableRow>
                             ))}
