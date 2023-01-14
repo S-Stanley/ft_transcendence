@@ -13,8 +13,8 @@ describe('Chat and private messagerie', () => {
         cy.get('#messagerie-menu').click();
         cy.get('#input-messagerie-email').type('staff@transcendence.fr');
         cy.get('#submit-button-messagerie').click();
-        cy.get('#root > div.MuiBox-root.css-k008qs > main > div.MuiBox-root.css-k1fpyg > div > div > div > div.MuiBox-root.css-1w6tfbs > div > div > div').type('hello world');
-        cy.get('#root > div.MuiBox-root.css-k008qs > main > div.MuiBox-root.css-k1fpyg > div > div > div > div.MuiBox-root.css-1w6tfbs > div > button').click();
-        cy.get('#cu-msg-1 > div.MuiBox-root.css-80j563 > div > p').should('contain', 'hello world');
+        cy.get('#answer-chat-input').type('hello world');
+        cy.get('#button-answer-chat-submit').click();
+        cy.get('#msg-chat-0 > div.content-message-right').should('contain', 'hello world');
     });
 });

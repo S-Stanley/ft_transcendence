@@ -39,7 +39,6 @@ const Chat = () => {
         if (req) {
             setAllMessages(req);
         }
-        prompt_user();
     };
 
     const isUserAdmin = async(): Promise<void> => {

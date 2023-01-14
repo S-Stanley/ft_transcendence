@@ -144,6 +144,18 @@ const   get_chat_info = async (chat_id: string) => {
     } catch (e) {
         console.error(e);
         toast.error('There was an error from our side, please try again later');
+    }
+};
+
+const   leave_public_chat = async (chat_id: string, user_id: string) => {
+    try {
+        const req = await axios.post(`${Config.Api.url}/chat/public/leave`, {
+            chat_id: chat_id,
+            user_id: user_id,
+        });
+        return (req.data);
+    } catch (e) {
+        console.error(e);
         return (null);
     }
 };
@@ -160,6 +172,7 @@ const Messagerie = {
     get_all_members_and_admin,
     update_admin_list,
     get_chat_info,
+    leave_public_chat,
 };
 
 export default Messagerie;

@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useState } from "react";
-import { Button, TextField, Typography } from "@mui/material";
+import { Button, IconButton, Menu, MenuItem, TextField, Typography } from "@mui/material";
 import Helpers from "../../helpers/Helpers";
 import { useNavigate } from "react-router-dom";
 import { ListItem, List, ListItemText, Avatar, ListItemAvatar } from '@mui/material';
@@ -7,11 +7,15 @@ import { ListItem, List, ListItemText, Avatar, ListItemAvatar } from '@mui/mater
 import './Messagerie.scss';
 import { MessagerieInterface } from "../../interfaces/messagerie";
 import { toast } from "react-toastify";
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 const Messaging = () => {
 
     const [destinationChatName, setDestinationChatName] = useState<string>("");
     const [allDiscussions, setAllDiscussions] = useState<MessagerieInterface[]>([]);
+    const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
+    const [discussionSelected, setDiscussionSelected] = useState<MessagerieInterface>();
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const navigate = useNavigate();
 
     const handleSubmit = async(): Promise<void> => {
@@ -62,7 +66,6 @@ const Messaging = () => {
         const data = await Helpers.Messagerie.get_all_chat_by_user_id(localStorage.getItem('user_id') ?? '');
         if (data) {
             setAllDiscussions(data);
-            console.log(data);
         }
     };
 
@@ -72,44 +75,83 @@ const Messaging = () => {
 
     return (
         <Fragment>
+            <Menu
+                anchorEl={anchorEl}
+                open={settingsOpen}
+                onClose={() => {
+                    setSettingsOpen(false);
+                }}
+            >
+                <MenuItem
+                    onClick={async() => {
+                        if (discussionSelected?.type === 'private') {
+                            toast.error('You cannot leave a private chat');
+                        } else {
+                            const req = await Helpers.Messagerie.leave_public_chat(
+                                discussionSelected?.id ?? '',
+                                localStorage.getItem('user_id') ?? ''
+                            );
+                            if (req) {
+                                toast.success('Succefully left the chat');
+                            } else {
+                                toast.error('You cannot left the chat if you are the only one admin');
+                            }
+                        }
+                        get_all_discussions();
+                    }}
+                >
+                    Leave
+                </MenuItem>
+            </Menu>
             <div
                 id='div-message-messaging'
             >
-                <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+                <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
                     {allDiscussions.map((discussion: MessagerieInterface) => {
                         return (
                             <ListItem
                                 alignItems="flex-start"
                                 key={discussion.id}
-                                onClick={async() => {
-                                    if (discussion.type === 'private') {
-                                        navigateToChat(discussion.id);
-                                    } else {
-                                        if (discussion?.member) {
-                                            navigateToChat(discussion.id);
-                                        } else {
-                                            let pass = '';
-                                            if (discussion.password) {
-                                                pass = prompt('Please, enter the password requested') ?? '';
-                                            }
-                                            if (await Helpers.Messagerie.join_chat(
-                                                discussion.id,
-                                                pass,
-                                                localStorage.getItem('user_id') ?? ''
-                                            )) {
-                                                navigateToChat(discussion.id);
-                                            } else {
-                                                toast.error('Wrong password');
-                                            }
-                                        }
-                                    }
-                                }}
+                                secondaryAction={
+                                    <IconButton
+                                        onClick={(event) => {
+                                            setDiscussionSelected(discussion);
+                                            setAnchorEl(event.currentTarget);
+                                            setSettingsOpen(!settingsOpen);
+                                        }}
+                                    >
+                                        <MoreVertIcon/>
+                                    </IconButton>
+                                }
                             >
                                 <ListItemAvatar>
                                     <Avatar alt="Remy Sharp" src={discussion.type === 'public' ? undefined : discussion?.picture} />
                                 </ListItemAvatar>
                                 <ListItemText
                                     primary={ discussion.type === 'public' ? discussion.name : discussion.nickname }
+                                    onClick={async() => {
+                                        if (discussion.type === 'private') {
+                                            navigateToChat(discussion.id);
+                                        } else {
+                                            if (discussion?.member) {
+                                                navigateToChat(discussion.id);
+                                            } else {
+                                                let pass = '';
+                                                if (discussion.password) {
+                                                    pass = prompt('Please, enter the password requested') ?? '';
+                                                }
+                                                if (await Helpers.Messagerie.join_chat(
+                                                    discussion.id,
+                                                    pass,
+                                                    localStorage.getItem('user_id') ?? ''
+                                                )) {
+                                                    navigateToChat(discussion.id);
+                                                } else {
+                                                    toast.error('Wrong password');
+                                                }
+                                            }
+                                        }
+                                    }}
                                     secondary={
                                         <Fragment>
                                             {discussion?.type === 'public' &&
@@ -125,8 +167,6 @@ const Messaging = () => {
                                         </Fragment>
                                     }
                                 />
-                                <div key={discussion.id} onClick={() => navigateToChat(discussion.id)}>
-                                </div>
                             </ListItem>
                         );
                     })}

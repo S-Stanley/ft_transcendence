@@ -123,8 +123,8 @@ export class ChatController {
                 throw new HttpException('cannot send msg because user is blocked', 500);
             }
         }
-        await this.db.query(
-            'INSERT INTO chat_message (chat_id, sent_by, content) VALUES($1, $2, $3)',
+        const message_created = await this.db.query(
+            'INSERT INTO chat_message (chat_id, sent_by, content) VALUES($1, $2, $3) RETURNING id',
             [body.chat_id, body.sender_id, body.content]
         );
         return (message_created?.rows[0]?.id);
@@ -457,6 +457,52 @@ export class ChatController {
         } catch (e) {
             console.error(e);
             throw new HttpException('Error from our side', 500);
+        }
+    }
+
+    @Post('/public/leave')
+    async leavePublicChat(@Body() body) {
+        try {
+            const is_admin = await this.db.query(
+                `
+                    SELECT
+                        user_id
+                    FROM
+                        public.chat_admin
+                    WHERE
+                        chat_id = $1;
+                `,
+                [body?.chat_id]
+            );
+            if (is_admin.rows.length === 1 && parseInt(is_admin.rows[0].user_id, 10) === parseInt(body?.user_id, 10)) {
+                throw new HttpException('You cannot leave the chat if you are the only admin', 500);
+            }
+            await this.db.query(
+                `
+                DELETE FROM
+                    public.chat_admin
+                WHERE
+                    user_id = $1
+                AND
+                    chat_id = $2;
+                `,
+                [body?.user_id, body?.chat_id]
+            );
+            await this.db.query(
+                `
+                DELETE FROM
+                    public.chat_member
+                WHERE
+                    user_id = $1
+                AND
+                    chat_id = $2;
+                `,
+                [body?.user_id, body?.chat_id]
+            );
+            return (true);
+        } catch (e) {
+            console.error(e);
+            throw new HttpException('There was an error from our side, please try again later', 500);
         }
     }
 }
