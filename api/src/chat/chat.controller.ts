@@ -123,17 +123,17 @@ export class ChatController {
                 throw new HttpException('cannot send msg because user is blocked', 500);
             }
         }
-        await this.db.query(
-            'INSERT INTO chat_message (chat_id, sent_by, content) VALUES($1, $2, $3)',
+        const message_created = await this.db.query(
+            'INSERT INTO chat_message (chat_id, sent_by, content) VALUES($1, $2, $3) RETURNING id',
             [body.chat_id, body.sender_id, body.content]
         );
-        return (true);
+        return (message_created?.rows[0]?.id);
     }
 
     @Get('/:chat_id')
     async getMessagesByChatId(@Param() params) {
         const get_messages = await this.db.query(
-            'SELECT * FROM public.chat_message WHERE chat_id=$1 ORDER BY created_at ASC LIMIT 10',
+            'SELECT * FROM public.chat_message WHERE chat_id=$1 ORDER BY created_at ASC LIMIT 25',
             [params.chat_id]
         );
         const messages_with_email = await Promise.all(
@@ -141,6 +141,7 @@ export class ChatController {
                 const usr = await this.findUserById(msg?.sent_by);
                 msg['email'] = usr?.email;
                 msg['nickname'] = usr?.nickname;
+                msg['avatar'] = usr?.avatar;
                 return (msg);
             })
         );
@@ -415,6 +416,47 @@ export class ChatController {
         } catch (e) {
             console.error(e);
             throw new HttpException('Wront permissions', 500);
+        }
+    }
+
+    @Get('/info/:chat_id')
+    async getInfoChat(@Param() params) {
+        try {
+            const req = await this.db.query(
+                `
+                    SELECT
+                        *
+                    FROM
+                        public.chat
+                    WHERE
+                        id = $1;
+                `,
+                [params?.chat_id]
+            );
+            if (req.rows.length === 0)
+                throw new HttpException('Chat not found', 500);
+            const members = await this.db.query(
+                `
+                    SELECT
+                        *
+                    FROM
+                        public.chat_member
+                    JOIN
+                        public.users
+                    ON
+                        users.id = chat_member.user_id
+                    WHERE
+                        chat_id = $1;
+                `,
+                [req.rows[0].id]
+            );
+            return ({
+                chat: req.rows[0],
+                members: members.rows,
+            });
+        } catch (e) {
+            console.error(e);
+            throw new HttpException('Error from our side', 500);
         }
     }
 }

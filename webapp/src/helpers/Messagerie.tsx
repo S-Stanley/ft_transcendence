@@ -137,6 +137,17 @@ const   update_admin_list = async (chat_id: string, list_to_add: number[], list_
     }
 };
 
+const   get_chat_info = async (chat_id: string) => {
+    try {
+        const req = await axios.get(`${Config.Api.url}/chat/info/${chat_id}`);
+        return (req.data);
+    } catch (e) {
+        console.error(e);
+        toast.error('There was an error from our side, please try again later');
+        return (null);
+    }
+};
+
 const Messagerie = {
     create_or_get_discussion,
     send_message_to_discussion,
@@ -148,6 +159,7 @@ const Messagerie = {
     join_chat,
     get_all_members_and_admin,
     update_admin_list,
+    get_chat_info,
 };
 
 export default Messagerie;

@@ -13,8 +13,8 @@ describe('Chat and private messagerie', () => {
         cy.get('#messagerie-menu').click();
         cy.get('#input-messagerie-email').type('staff@transcendence.fr');
         cy.get('#submit-button-messagerie').click();
-        cy.get('#input-private-chat').type('hello world');
-        cy.get('#submit-button-chat').click();
-        cy.get('#message-content-0').should('contain', 'demo: hello world');
+        cy.get('#answer-chat-input').type('hello world');
+        cy.get('#button-answer-chat-submit').click();
+        cy.get('#msg-chat-0').should('contain', 'hello world');
     });
 });
