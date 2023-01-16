@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Injectable, Param, Post } from "@nestjs/common";
+import { Body, Controller, Get, Injectable, Param, Post, Inject, HttpException } from "@nestjs/common";
 import { UserConnected } from "src/configs/userconnected.decorator";
 import { Users } from "src/entities/user.entity";
 import { FriendRequestService } from "src/services/friend_request.service";
@@ -6,7 +6,7 @@ import { FriendRequestService } from "src/services/friend_request.service";
 @Controller('friends')
 @Injectable()
 export class FriendRequestController {
-    constructor(private userService: FriendRequestService) {}
+    constructor(private userService: FriendRequestService, @Inject("PG_CONNECTION") private db: any) {}
 
     @Get('/requests/sent')
     getSentRequestsAction(@UserConnected() user: Users): Promise<any> {
@@ -31,5 +31,30 @@ export class FriendRequestController {
     @Post('/requests/:user/accept')
     acceptDeclineFriendRequestAction(@Param('user') otherUser: string, @Body() body: { nickname: string, accept: boolean }): Promise<void> {
         return this.userService.acceptDeclineFriendRequest(otherUser, body.nickname, body.accept);
+    }
+
+    @Get('/blocked/:user_id/:user_id_friend')
+    async isUserBlocked(@Param() params){
+        try {
+            const is_blocked = await this.db.query(
+                `
+                    SELECT
+                        *
+                    FROM
+                        public.blocked_users
+                    WHERE
+                        user_id = $1
+                    AND
+                        blocked_user_id = $2;
+                `,
+                [params?.user_id, params?.user_id_friend]
+            );
+            if (is_blocked?.rows?.length == 0)
+                return (false);
+            return (true);
+        } catch (e) {
+            console.error(e);
+            throw new HttpException('There was an error from our side, please try again later', 500);
+        }
     }
 }

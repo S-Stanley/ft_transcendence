@@ -1,4 +1,4 @@
-CREATE OR REPLACE FUNCTION create_or_get_chat_id(
+CREATE OR REPLACE FUNCTION public.create_or_get_chat_id(
     id_user_from INT,
     id_user_dest INT
 ) RETURNS UUID AS $$
@@ -29,7 +29,9 @@ BEGIN
                 chat_member
             WHERE
                 user_id = id_user_dest
-        );
+        )
+    AND
+        type = 'private';
 
 
     IF search_existing_chat.id IS NOT NULL THEN

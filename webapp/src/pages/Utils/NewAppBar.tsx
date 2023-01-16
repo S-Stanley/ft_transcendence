@@ -241,7 +241,7 @@ export default function PersistentDrawerLeft() {
                     <Route path='/2fa/setup' element={<TwoFactorSetUp/>} />
                     <Route path='/home' element={<Home/>} />
                     <Route path='/messagerie' element={<Messaging/>} />
-                    <Route path='/chat' element={<Chat/>} />
+                    <Route path='/chat/:chat_id' element={<Chat/>} />
                     <Route path="/play" element={<Play />} />
                     <Route path="/play/pong" element={<Game />} />
                     <Route path="/play/bonus" element={<Bonus />} />
@@ -266,7 +266,7 @@ export default function PersistentDrawerLeft() {
                         <Route path='/2fa/setup' element={<TwoFactorSetUp/>} />
                         <Route path='/home' element={<Home/>} />
                         <Route path='/messagerie' element={<Messaging/>} />
-                        <Route path='/chat' element={<Chat/>} />
+                        <Route path='/chat/:chat_id' element={<Chat/>} />
                         <Route path='/chat/:chat_id/settings' element={<Settings/>} />
                         <Route path="/play" element={<Play />} />
                         <Route path="/play/pong" element={<Game />} />

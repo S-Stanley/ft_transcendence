@@ -1,6 +1,7 @@
 import Config from "../config/Config";
 import axios from 'axios';
 import { User } from "../interfaces/user";
+import { toast } from "react-toastify";
 
 const login = async(code: string): Promise<User | null> => {
     try {
@@ -173,6 +174,20 @@ const getUserFromId = async(id_42: number): Promise<User | null> => {
     return await axios.get(`${Config.Api.url}/users/userid/${id_42}`).then((res) => res.data);
 };
 
+const blockUser = async (user_id: string, blocked_user_id: string) => {
+    try {
+        const req = await axios.post(`${Config.Api.url}/users/blocked`, {
+            user_id: user_id,
+            blocked_user_id: blocked_user_id,
+        });
+        return (req.data);
+    } catch (e) {
+        console.error(e);
+        toast.error('Error, please try again later');
+        return (null);
+    }
+};
+
 const Users = {
     login,
     me,
@@ -189,6 +204,7 @@ const Users = {
     toggleTwoFactor,
     getAllUsers,
     getUserFromId,
+    blockUser,
 };
 
 export default Users;

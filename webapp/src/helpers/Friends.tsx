@@ -1,4 +1,5 @@
 import axios from "axios";
+import { toast } from "react-toastify";
 import Config from "../config/Config";
 
 const sendFriendRequest = async(friend: string, nickname: string): Promise<any> => {
@@ -38,12 +39,23 @@ const getSentRequests = async(): Promise<any> => {
     return await axios.get(`${Config.Api.url}/friends/requests/sent`).then((res) => res.data);
 };
 
+const is_user_blocked = async(user_id: string, user_id_profile: string) => {
+    try {
+        const req = await axios.get(`${Config.Api.url}/friends/blocked/${user_id}/${user_id_profile}`);
+        return (req.data);
+    } catch (e) {
+        console.error(e);
+        toast.error('There was an error from ou side, please try again later');
+    }
+};
+
 const Friends = {
     sendFriendRequest,
     getReceivedFriendRequests,
     getFriendRequestStatus,
     acceptFriendRequest,
     getSentRequests,
+    is_user_blocked,
 };
 
 export default Friends;
