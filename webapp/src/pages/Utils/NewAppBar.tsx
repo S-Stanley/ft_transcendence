@@ -107,12 +107,17 @@ export default function PersistentDrawerLeft() {
     });
 
     const disconnectUser = () => {
+        Helpers.Users.updateStatus(localStorage.getItem('nickname')!, 'offline');
         localStorage.clear();
         navigate('/');
     };
 
     const is_public_page = [
         '/', '/login/email', '/oauth2-redirect', '/2fa', '/login/email/', '/oauth2-redirect/', '/2fa/', '/play/pong', '/play/plong/', '/play/bonus', '/login'].includes(window.location.pathname);
+
+    const handleCloseTab = () => {
+        Helpers.Users.updateStatus(localStorage.getItem('nickname')!, 'offline');
+    };
 
     useEffect(() => {
         if (!is_public_page) {
@@ -125,6 +130,10 @@ export default function PersistentDrawerLeft() {
                 });
             }
         }
+        window.addEventListener('unload', handleCloseTab);
+        return () => {
+            window.removeEventListener('unload', handleCloseTab);
+        };
     }, [window.location.pathname]);
 
 
