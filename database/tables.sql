@@ -30,8 +30,7 @@ CREATE TABLE IF NOT EXISTS public.users(
     token                           UUID DEFAULT uuid_generate_v4() NOT NULL,
     created_at                      DATE DEFAULT NULL,
     avatar                          VARCHAR(255) NOT NULL,
-    current_status                  public.current_status_enum DEFAULT 'offline',
-    friends                         TEXT[] DEFAULT NULL
+    current_status                  public.current_status_enum DEFAULT 'offline'
 );
 
 CREATE TABLE IF NOT EXISTS public.history(

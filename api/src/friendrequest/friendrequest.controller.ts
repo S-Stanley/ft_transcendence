@@ -6,31 +6,31 @@ import { FriendRequestService } from "src/services/friend_request.service";
 @Controller('friends')
 @Injectable()
 export class FriendRequestController {
-    constructor(private userService: FriendRequestService, @Inject("PG_CONNECTION") private db: any) {}
+    constructor(private friendRequestService: FriendRequestService, @Inject("PG_CONNECTION") private db: any) {}
 
     @Get('/requests/sent')
     getSentRequestsAction(@UserConnected() user: Users): Promise<any> {
-        return this.userService.getSentRequests(user);
+        return this.friendRequestService.getSentRequests(user);
     }
 
     @Get('/requests/:user')
     getFriendshipStatusAction(@Param('user') otherUser: string, @UserConnected() user: Users): Promise<any> {
-        return this.userService.getFriendshipStatus(otherUser, user);
+        return this.friendRequestService.getFriendshipStatus(otherUser, user);
     }
 
     @Post('/sendrequest/:friend')
     sendFriendRequestAction(@Param('friend') friend: string, @Body() body: { nickname: string }): Promise<void> {
-        return this.userService.sendFriendRequest(friend, body.nickname);
+        return this.friendRequestService.sendFriendRequest(friend, body.nickname);
     }
 
     @Get('/requests')
     getReceivedFriendRequestsAction(@UserConnected() user: Users): Promise<any> {
-        return this.userService.getReceivedFriendRequests(user);
+        return this.friendRequestService.getReceivedFriendRequests(user);
     }
 
     @Post('/requests/:user/accept')
     acceptDeclineFriendRequestAction(@Param('user') otherUser: string, @Body() body: { nickname: string, accept: boolean }): Promise<void> {
-        return this.userService.acceptDeclineFriendRequest(otherUser, body.nickname, body.accept);
+        return this.friendRequestService.acceptDeclineFriendRequest(otherUser, body.nickname, body.accept);
     }
 
     @Get('/blocked/:user_id/:user_id_friend')
