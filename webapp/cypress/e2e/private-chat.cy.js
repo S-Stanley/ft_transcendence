@@ -15,6 +15,6 @@ describe('Chat and private messagerie', () => {
         cy.get('#submit-button-messagerie').click();
         cy.get('#answer-chat-input').type('hello world');
         cy.get('#button-answer-chat-submit').click();
-        cy.get('#msg-chat-0').should('contain', 'hello world');
+        cy.get('#msg-chat-0 > div.content-message-right').should('contain', 'hello world');
     });
 });

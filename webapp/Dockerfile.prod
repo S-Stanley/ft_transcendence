@@ -7,8 +7,8 @@ COPY . /app
 
 WORKDIR /app
 
-RUN npm i
+RUN yarn install
 
-RUN npm run build
+RUN yarn run build
 
 CMD node webapp.server.js
