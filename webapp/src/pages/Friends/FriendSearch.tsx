@@ -31,7 +31,6 @@ const FriendSearch = () => {
         nickname: '',
         avatar: '',
         current_status: '',
-        friends: [''],
         id_42: 0,
     });
 

@@ -79,7 +79,6 @@ export class UserService {
             nickname: user.nickname,
             avatar: user.avatar,
             current_status: user.current_status,
-            friends: user.friends,
             two_factor_enabled: user.two_factor_enabled,
             two_factor_secret: user.two_factor_secret,
         };
@@ -96,7 +95,6 @@ export class UserService {
             nickname: user.nickname,
             avatar: user.avatar,
             current_status: user.current_status,
-            friends: user.friends,
             two_factor_enabled: user.two_factor_enabled,
             two_factor_secret: user.two_factor_secret,
         };
@@ -120,18 +118,5 @@ export class UserService {
         });
         user.current_status = current_status;
         await this.userRepository.save(user);
-    }
-
-    async addFriend(friend: string, nickname: string): Promise<void> {
-        const user = await this.userRepository.findOneBy({
-            nickname: nickname
-        });
-        if (!user.friends) {
-            user.friends = [];
-        }
-        if (user.friends.indexOf(friend) == -1) {
-            user.friends.push(friend);
-            await this.userRepository.save(user);
-        }
     }
 }

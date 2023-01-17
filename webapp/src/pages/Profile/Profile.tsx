@@ -18,7 +18,6 @@ const Profile = () => {
         nickname: '',
         avatar: '',
         current_status: '',
-        friends: [''],
         id: '',
     });
     const [, forceUpdate] = useReducer(x => x + 1, 0);
