@@ -3,6 +3,7 @@ import { Button, Checkbox, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import Helpers from "../../helpers/Helpers";
 import { toast } from "react-toastify";
+import './Settings.scss';
 
 const Settings = () => {
 
@@ -12,6 +13,8 @@ const Settings = () => {
     const [allMembers, setAllMembers] = useState([]);
     const [checkedIndex, setCheckedIndex] = useState<number[]>([]);
     const [initialIndexAdmin, setInitialIndexAdmin] = useState<number[]>([]);
+    const [blockUserInput, setBlockUserInput] = useState<string>('');
+    const [allUsersBlocked, setAllUsersBlocked] = useState<{id: string, nickname: string}[]>([]);
 
     const handleSubmit = async() => {
         const req = await Helpers.Messagerie.update_password_chat(
@@ -58,8 +61,31 @@ const Settings = () => {
         }
     };
 
+    const handleBlockUserSubmit = async() => {
+        const req = await Helpers.Messagerie.block_user_in_public_chat(
+            chat_id ?? '',
+            blockUserInput,
+            localStorage.getItem('user_id') ?? '',
+        );
+        if (req){
+            toast.success('User successfully blocked from the public chat');
+            getAllUsersBlocked();
+            setBlockUserInput('');
+        }
+    };
+
+    const getAllUsersBlocked = async () => {
+        const req = await Helpers.Messagerie.get_all_users_blocked_by_public_chat(
+            chat_id ?? ''
+        );
+        if (req){
+            setAllUsersBlocked(req);
+        }
+    };
+
     useEffect(() => {
         getMembersAndAdmin();
+        getAllUsersBlocked();
     }, [false]);
 
     return (
@@ -110,6 +136,35 @@ const Settings = () => {
                 >
                     Validate
                 </Button>
+            </div>
+            <hr/>
+            <div>
+                <p>Block member</p>
+                <TextField
+                    label="Enter the name of the users you want to block"
+                    variant="standard"
+                    value={blockUserInput}
+                    onChange={(e) => setBlockUserInput(e.target.value)}
+                />
+                <Button
+                    variant='contained'
+                    onClick={handleBlockUserSubmit}
+                >
+                    Validate
+                </Button>
+                <br/>
+                <br/>
+                {allUsersBlocked.map((item) => {
+                    return (
+                        <li>{item?.nickname} <span className='span-user-blocked' onClick={async() => {
+                            const req = await Helpers.Messagerie.delete_blocked_users(chat_id ?? '', item?.id);
+                            if (req){
+                                toast.success('User succefully unblocked');
+                                getAllUsersBlocked();
+                            }
+                        }}>Unblock</span></li>
+                    );
+                })}
             </div>
         </>
     );

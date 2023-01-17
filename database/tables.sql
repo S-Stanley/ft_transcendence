@@ -104,9 +104,13 @@ CREATE TABLE IF NOT EXISTS public.chat_admin(
 
 CREATE TABLE IF NOT EXISTS public.blocked_users(
     id              UUID PRIMARY KEY DEFAULT uuid_generate_v4() NOT NULL UNIQUE,
-    user_id         INT NOT NULL,
+    user_id         INT,
     blocked_user_id INT NOT NULL,
+    chat_id         UUID,
+    type            public.chat_type DEFAULT 'private',
 
     CONSTRAINT  fk_user_id FOREIGN KEY (user_id) REFERENCES public.users (id),
-    CONSTRAINT  fk_blocked_user FOREIGN KEY (blocked_user_id) REFERENCES public.users (id)
+    CONSTRAINT  fk_blocked_user FOREIGN KEY (blocked_user_id) REFERENCES public.users (id),
+    CONSTRAINT  fk_chat_id FOREIGN KEY (chat_id) REFERENCES public.chat (id) 
 );
+

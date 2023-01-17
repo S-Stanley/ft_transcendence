@@ -160,6 +160,47 @@ const   leave_public_chat = async (chat_id: string, user_id: string) => {
     }
 };
 
+const   block_user_in_public_chat = async (chat_id: string, user_to_block: string, user_id: string) => {
+    try {
+        const req = await axios.post(`${Config.Api.url}/chat/public/block`, {
+            chat_id: chat_id,
+            user_to_block: user_to_block,
+            user_id: user_id,
+        });
+        return (req.data);
+    } catch (e) {
+        console.error(e);
+        toast.error("There was an error from our side, please try again later");
+        return (null);
+    }
+};
+
+const   get_all_users_blocked_by_public_chat = async(chat_id: string) => {
+    try {
+        const req = await axios.get(`${Config.Api.url}/chat/public/${chat_id}/blocked`);
+        return (req.data);
+    } catch (e) {
+        console.error(e);
+        toast.error("There was an error from our side, please try again later");
+        return (null);
+    }
+};
+
+const   delete_blocked_users = async (chat_id: string, blocked_row_id: string) => {
+    try {
+        const req = await axios.post(`${Config.Api.url}/chat/public/blocked`, {
+            blocked_row_id: blocked_row_id,
+            chat_id: chat_id,
+            user_id: localStorage.getItem('user_id') ?? '',
+        });
+        return (req.data);
+    } catch (e) {
+        console.error(e);
+        toast.error("There was an error from our side, please try again later");
+        return (null);
+    }
+};
+
 const Messagerie = {
     create_or_get_discussion,
     send_message_to_discussion,
@@ -173,6 +214,9 @@ const Messagerie = {
     update_admin_list,
     get_chat_info,
     leave_public_chat,
+    block_user_in_public_chat,
+    get_all_users_blocked_by_public_chat,
+    delete_blocked_users,
 };
 
 export default Messagerie;
