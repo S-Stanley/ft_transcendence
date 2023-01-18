@@ -1,7 +1,6 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 import Config from "../config/Config";
-import { toast } from "react-toastify";
 
 const sendFriendRequest = async(friend: string, nickname: string): Promise<any> => {
     try {
