@@ -122,6 +122,25 @@ export class ChatController {
             if (check_blocked?.rows.length > 0) {
                 throw new HttpException('cannot send msg because user is blocked', 500);
             }
+        } else {
+            const check_blocked_in_public_chat = await this.db.query(
+                `
+                    SELECT
+                        *
+                    FROM
+                        public.blocked_users
+                    WHERE
+                        blocked_user_id=$1
+                    AND
+                        chat_id=$2
+                    AND
+                        type='public';
+                `,
+                [body?.sender_id, body?.chat_id]
+            );
+            if (check_blocked_in_public_chat?.rows.length > 0) {
+                throw new HttpException('cannot send msg because user is blocked', 500);
+            }
         }
         const message_created = await this.db.query(
             'INSERT INTO chat_message (chat_id, sent_by, content) VALUES($1, $2, $3) RETURNING id',
@@ -503,6 +522,143 @@ export class ChatController {
         } catch (e) {
             console.error(e);
             throw new HttpException('There was an error from our side, please try again later', 500);
+        }
+    }
+
+    @Post('/public/block')
+    async BlockUserInPublicChat(@Body() body){
+        try {
+            const is_user_admin = await this.db.query(
+                `
+                    SELECT
+                        user_id
+                    FROM
+                        public.chat_admin
+                    WHERE
+                        chat_id = $1
+                `,
+                [body?.chat_id]
+            );
+            if (
+                is_user_admin?.rows?.length === 0 ||
+                !is_user_admin?.rows.find((chat_admin) => chat_admin.user_id == body?.user_id)
+            ){
+                throw new HttpException('User is not admin or chat does not exist', 500);
+            }
+            const is_user_member = await this.db.query(
+                `
+                    SELECT
+                        user_id
+                    FROM
+                        public.chat_member
+                    WHERE
+                        chat_id=$1
+                    AND
+                        user_id=(
+                            SELECT
+                                id
+                            FROM
+                                public.users
+                            WHERE
+                                nickname = $2
+                        )
+                `,
+                [body?.chat_id, body?.user_to_block]
+            );
+            if (is_user_member?.rows?.length === 0){
+                throw new HttpException('User is not member of the chat', 500);
+            }
+            await this.db.query(
+                `
+                    INSERT INTO
+                        public.blocked_users (
+                            chat_id,
+                            blocked_user_id,
+                            type
+                        )
+                    VALUES(
+                        $1,
+                        (
+                            SELECT
+                                id
+                            FROM
+                                public.users
+                            WHERE
+                                nickname = $2
+                        ),
+                        'public'
+                    );
+                `,
+                [body?.chat_id, body?.user_to_block]
+            );
+            return (true);
+        } catch (e) {
+            console.error(e);
+            throw new HttpException('Error from our side', 500);
+        }
+    }
+
+    @Get('/public/:chat_id/blocked')
+    async getAllUsersBlockByChatId(@Param() params){
+        try {
+            const all_users_blocked = await this.db.query(
+                `
+                    SELECT
+                        blocked_users.id,
+                        users.nickname
+                    FROM
+                        public.blocked_users
+                    JOIN
+                        public.users
+                    ON
+                        users.id = blocked_users.blocked_user_id
+                    WHERE
+                        chat_id = $1
+                    LIMIT
+                        25;
+                `,
+                [params?.chat_id]
+            );
+            return (all_users_blocked?.rows ?? []);
+        } catch (e) {
+            console.error(e);
+            throw new HttpException('Error from our side', 500);
+        }
+    }
+
+    @Post('/public/blocked')
+    async deleteBlockedUsers(@Body() body){
+        try {
+            const is_user_admin = await this.db.query(
+                `
+                    SELECT
+                        user_id
+                    FROM
+                        public.chat_admin
+                    WHERE
+                        chat_id = $1
+                `,
+                [body?.chat_id]
+            );
+            if (
+                is_user_admin?.rows?.length === 0 ||
+                !is_user_admin?.rows.find((chat_admin) => chat_admin.user_id == body?.user_id)
+            ){
+                throw new HttpException('User is not admin or chat does not exist', 500);
+            }
+            await this.db.query(
+                `
+                    DELETE FROM
+                        public.blocked_users
+                    WHERE
+                        id=$1
+                `,
+                [body?.blocked_row_id]
+            );
+            return (true);
+        } catch (e) {
+            console.error(e);
+            throw new HttpException('Error from our side', 500);
         }
     }
 }
