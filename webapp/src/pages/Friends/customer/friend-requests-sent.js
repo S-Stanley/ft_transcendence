@@ -4,31 +4,31 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import Helpers from '../../../helpers/Helpers';
 import { useState } from "react";
 
+export const RequestSentButton = ({otherUser}) => {
+    const [cancelled, setCancelled] = useState(0);
+    return (cancelled === 0 ?
+        <Button sx={{ ml: 2 }}
+            size="small"
+            variant="contained"
+            color="error"
+            onClick={() => {
+                Helpers.Friends.acceptFriendRequest(localStorage.getItem('nickname'), otherUser, false);
+                setCancelled(1);
+            }}>
+                Cancel
+        </Button>
+        :
+        <Button sx={{ ml: 2 }}
+            size="small"
+            variant="contained" disabled
+        >
+                Cancelled
+        </Button>
+    );
+};
 export const FriendRequestsSent = ({requests}) => {
     const toUserProfile = (nickname) => {
         window.location.href = `users/${nickname}`;
-    };
-    const [cancelled, setCancelled] = useState(0);
-    const requestSentButton = (otherUser) => {
-        return (cancelled === 0 ?
-            <Button sx={{ ml: 2 }}
-                size="small"
-                variant="contained"
-                color="error"
-                onClick={() => {
-                    Helpers.Friends.acceptFriendRequest(localStorage.getItem('nickname'), otherUser, false);
-                    setCancelled(1);
-                }}>
-                    Cancel
-            </Button>
-            :
-            <Button sx={{ ml: 2 }}
-                size="small"
-                variant="contained" disabled
-            >
-                    Cancelled
-            </Button>
-        );
     };
     return (requests.length === 0 ?
         <Card>
@@ -75,7 +75,7 @@ export const FriendRequestsSent = ({requests}) => {
                                             >
                                                 {req.nickname}
                                             </Typography>
-                                            {requestSentButton(req.nickname)}
+                                            <RequestSentButton key={req.nickname} otherUser={req.nickname} />
                                         </Box>
                                     </TableCell>
                                     <TableCell>
