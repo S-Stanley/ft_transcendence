@@ -51,6 +51,15 @@ CREATE TABLE IF NOT EXISTS public.matchmaking(
     created_at          DATE DEFAULT NOW() NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS public.live(
+    id                  SERIAL PRIMARY KEY NOT NULL UNIQUE,
+    id_one              INT NOT NULL,
+    id_two              INT NOT NULL,
+    player_one          VARCHAR(255) NOT NULL,
+    player_two          VARCHAR(255) NOT NULL,
+    created_at          DATE DEFAULT NOW() NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS public.chat(
     id          UUID PRIMARY KEY DEFAULT uuid_generate_v4() NOT NULL UNIQUE,
     name        VARCHAR(200) DEFAULT NULL,

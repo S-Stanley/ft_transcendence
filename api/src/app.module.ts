@@ -24,8 +24,11 @@ import { TwoFactorAuthController } from './two_factor_auth/two_factor_auth.contr
 import { TwoFactorAuthService } from './services/two_factor_auth.service';
 import { JwtModule } from '@nestjs/jwt';
 import { FriendRequest } from './entities/friendrequest.entity';
+import { Live } from './entities/live.entity';
 import { FriendRequestController } from './friendrequest/friendrequest.controller';
 import { FriendRequestService } from './services/friend_request.service';
+import { LiveController } from './live/live.controller';
+import { LiveService } from './services/live.service';
 
 @Module({
     imports:
@@ -42,14 +45,14 @@ import { FriendRequestService } from './services/friend_request.service';
             username: process.env.POSTGRES_USER,
             password: '',
             database: process.env.POSTGRES_DB,
-            entities: [Users, History, Matchmaking, FriendRequest],               // On renseigne ici les entités voulant être mappées en base de données
+            entities: [Users, History, Matchmaking, FriendRequest, Live],               // On renseigne ici les entités voulant être mappées en base de données
         }),
-        TypeOrmModule.forFeature([Users, History, Matchmaking, FriendRequest]),     // On renseigne ici les entités possédant un repository
+        TypeOrmModule.forFeature([Users, History, Matchmaking, FriendRequest, Live]),     // On renseigne ici les entités possédant un repository
         MulterModule.register({dest: './public',}),
         ServeStaticModule.forRoot({
             rootPath: join(__dirname, '..', 'public'),
         }),
-        TypeOrmModule.forFeature([Users, History, FriendRequest]),     // On renseigne ici les entités possédant un repository
+        TypeOrmModule.forFeature([Users, History, FriendRequest, Live]),     // On renseigne ici les entités possédant un repository
         MulterModule.register({dest: './public',}),
         ServeStaticModule.forRoot({
             rootPath: join(__dirname, '..', 'public'),
@@ -59,8 +62,8 @@ import { FriendRequestService } from './services/friend_request.service';
             signOptions: { expiresIn: '1d' },
         }),
         ],
-    controllers: [AppController, UsersController, ChatController, HistoryController, MatchmakingController, TwoFactorAuthController, FriendRequestController],
-    providers: [AppService, UserService, SocketGateway, HistoryService, MatchmakingService, TwoFactorAuthService, FriendRequestService],
+    controllers: [AppController, UsersController, ChatController, HistoryController, MatchmakingController, TwoFactorAuthController, FriendRequestController, LiveController],
+    providers: [AppService, UserService, SocketGateway, HistoryService, MatchmakingService, TwoFactorAuthService, FriendRequestService, LiveService],
 })
 export class AppModule implements NestModule {
     configure(consumer: MiddlewareConsumer) {

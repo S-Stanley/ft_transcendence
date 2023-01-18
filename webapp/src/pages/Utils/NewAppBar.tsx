@@ -38,6 +38,8 @@ import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { Avatar } from '@mui/material';
 import Bonus from '../Bonus/Bonus';
 import Settings from '../chat/Settings';
+import Live from '../Live/Live';
+import Spectating from '../Spectating';
 
 
 
@@ -113,7 +115,7 @@ export default function PersistentDrawerLeft() {
     };
 
     const is_public_page = [
-        '/', '/login/email', '/oauth2-redirect', '/2fa', '/login/email/', '/oauth2-redirect/', '/2fa/', '/play/pong', '/play/plong/', '/play/bonus', '/login'].includes(window.location.pathname);
+        '/', '/login/email', '/oauth2-redirect', '/2fa', '/login/email/', '/oauth2-redirect/', '/2fa/', '/play/pong', '/play/plong/', '/play/bonus', '/login', '/play/spectating'].includes(window.location.pathname);
 
     const handleCloseTab = () => {
         Helpers.Users.updateStatus(localStorage.getItem('nickname')!, 'offline');
@@ -250,6 +252,8 @@ export default function PersistentDrawerLeft() {
                     <Route path="/friends" element={<FriendSearch />} />
                     <Route path="/login/email" element={<EmailLogin />} />
                     <Route path="/play/matchmaking" element={<Matchmaking/>}/>
+                    <Route path="/play/live" element={<Live/>}/>
+                    <Route path="/play/spectating" element={<Spectating/>}/>
                 </Routes>
             ) : (
                 <Main open={open}>
@@ -276,6 +280,8 @@ export default function PersistentDrawerLeft() {
                         <Route path="/friends" element={<FriendSearch />} />
                         <Route path="/login/email" element={<EmailLogin />} />
                         <Route path="/play/matchmaking" element={<Matchmaking/>}/>
+                        <Route path="/play/live" element={<Live/>}/>
+                        <Route path="/play/spectating" element={<Spectating/>}/>
                     </Routes>
                 </Main>
             )}
