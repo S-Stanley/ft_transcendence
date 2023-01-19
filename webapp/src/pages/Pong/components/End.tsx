@@ -1,8 +1,11 @@
 import { Button, Typography } from "@mui/material";
 import React from "react";
 import Helpers from "../../../helpers/Helpers";
+import Cookies from 'universal-cookie';
 
 export const End = ( props: { scoreOne: number; scoreTwo: number } ) => {
+
+    const cookies = new Cookies();
 
     return (
         <React.Fragment>
@@ -26,7 +29,7 @@ export const End = ( props: { scoreOne: number; scoreTwo: number } ) => {
                 size="large"
                 sx={{ ml:'730px', }}
                 href='/play'
-                onClick={() => Helpers.Users.updateStatus(localStorage.getItem('nickname')!, 'online')}
+                onClick={() => Helpers.Users.updateStatus(cookies.get('nickname')!, 'online')}
             >
 				Menu
             </Button>

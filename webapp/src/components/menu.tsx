@@ -2,6 +2,7 @@ import { Fragment, useEffect, useState } from 'react';
 import { AppBar, Toolbar, IconButton, Typography, Button, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import Helpers from '../helpers/Helpers';
+import Cookies from 'universal-cookie';
 
 const MenuComponent = () => {
     const navigate = useNavigate();
@@ -9,8 +10,15 @@ const MenuComponent = () => {
         email: '',
         nickname: ''
     });
+
+    const cookies = new Cookies();
+
     const disconnectUser = () => {
-        localStorage.clear();
+        cookies.remove('token');
+        cookies.remove('email');
+        cookies.remove('user_id');
+        cookies.remove('nickname');
+        cookies.remove('avatar');
         navigate('/');
     };
 

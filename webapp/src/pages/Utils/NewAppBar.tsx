@@ -16,6 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import { useState, useEffect, Fragment } from 'react';
 import MainListItems from '../Utils/listItems';
 import { Box } from '@mui/material';
+import Cookies from 'universal-cookie';
 
 import Login from '../Login/Login';
 import EmailLogin from '../Login/EmailLogin';
@@ -98,6 +99,8 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })<{
 
 export default function PersistentDrawerLeft() {
     const theme = useTheme();
+    const cookies = new Cookies();
+
     const [open, setOpen] = useState(true);
     const navigate = useNavigate();
 
@@ -112,8 +115,12 @@ export default function PersistentDrawerLeft() {
     });
 
     const disconnectUser = () => {
-        Helpers.Users.updateStatus(localStorage.getItem('nickname')!, 'offline');
-        localStorage.clear();
+        Helpers.Users.updateStatus(cookies.get('nickname')!, 'offline');
+        cookies.remove('token');
+        cookies.remove('email');
+        cookies.remove('user_id');
+        cookies.remove('nickname');
+        cookies.remove('avatar');
         navigate('/');
     };
 
@@ -121,7 +128,7 @@ export default function PersistentDrawerLeft() {
         '/', '/login/email', '/oauth2-redirect', '/2fa', '/login/email/', '/oauth2-redirect/', '/2fa/', '/play/pong', '/play/plong/', '/play/bonus', '/login', '/play/spectating'].includes(window.location.pathname);
 
     const handleCloseTab = () => {
-        Helpers.Users.updateStatus(localStorage.getItem('nickname')!, 'offline');
+        Helpers.Users.updateStatus(cookies.get('nickname')!, 'offline');
     };
 
     useEffect(() => {

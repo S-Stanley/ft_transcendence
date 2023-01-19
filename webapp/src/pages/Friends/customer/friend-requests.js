@@ -4,9 +4,12 @@ import DoneIcon from '@mui/icons-material/Done';
 import ClearIcon from '@mui/icons-material/Clear';
 import Helpers from '../../../helpers/Helpers';
 import { useState } from 'react';
+import Cookies from 'universal-cookie';
 
 export const RequestButton = ({otherUser}) => {
     const [requestStatus, setRequestStatus] = useState('');
+    const cookies = new Cookies();
+
     Helpers.Friends.getFriendRequestStatus(otherUser).then(res => {
         setRequestStatus(res);});
     switch (requestStatus) {
@@ -32,13 +35,13 @@ export const RequestButton = ({otherUser}) => {
         return(
             <Box>
                 <IconButton sx={{ml: 2}} onClick={() => {
-                    Helpers.Friends.acceptFriendRequest(otherUser, localStorage.getItem('nickname'), true);
+                    Helpers.Friends.acceptFriendRequest(otherUser, cookies.get('nickname'), true);
                     setRequestStatus('accepted');
                 }}>
                     <DoneIcon/>
                 </IconButton>
                 <IconButton onClick={() => {
-                    Helpers.Friends.acceptFriendRequest(otherUser, localStorage.getItem('nickname'), false);
+                    Helpers.Friends.acceptFriendRequest(otherUser, cookies.get('nickname'), false);
                     setRequestStatus('cancelled');
                 }}>
                     <ClearIcon/>

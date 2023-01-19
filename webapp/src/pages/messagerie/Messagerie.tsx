@@ -8,6 +8,7 @@ import './Messagerie.scss';
 import { MessagerieInterface } from "../../interfaces/messagerie";
 import { toast } from "react-toastify";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import Cookies from 'universal-cookie';
 
 const Messaging = () => {
 
@@ -17,9 +18,10 @@ const Messaging = () => {
     const [discussionSelected, setDiscussionSelected] = useState<MessagerieInterface>();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const navigate = useNavigate();
+    const cookies = new Cookies();
 
     const handleSubmit = async(): Promise<void> => {
-        if (destinationChatName === localStorage.getItem('email')) {
+        if (destinationChatName === cookies.get('email')) {
             alert('Error, you cannot send an message to yourself');
             return ;
         }
@@ -42,7 +44,7 @@ const Messaging = () => {
         }
         const req = await Helpers.Messagerie.create_new_public_chat(
             destinationChatName,
-            localStorage.getItem('user_id') ?? '',
+            cookies.get('user_id') ?? '',
         );
         if (req) {
             setDestinationChatName('');
@@ -63,7 +65,7 @@ const Messaging = () => {
     };
 
     const get_all_discussions = async(): Promise<void> => {
-        const data = await Helpers.Messagerie.get_all_chat_by_user_id(localStorage.getItem('user_id') ?? '');
+        const data = await Helpers.Messagerie.get_all_chat_by_user_id(cookies.get('user_id') ?? '');
         if (data) {
             setAllDiscussions(data);
         }
@@ -89,7 +91,7 @@ const Messaging = () => {
                         } else {
                             const req = await Helpers.Messagerie.leave_public_chat(
                                 discussionSelected?.id ?? '',
-                                localStorage.getItem('user_id') ?? ''
+                                cookies.get('user_id') ?? ''
                             );
                             if (req) {
                                 toast.success('Succefully left the chat');
@@ -143,7 +145,7 @@ const Messaging = () => {
                                                 if (await Helpers.Messagerie.join_chat(
                                                     discussion.id,
                                                     pass,
-                                                    localStorage.getItem('user_id') ?? ''
+                                                    cookies.get('user_id') ?? ''
                                                 )) {
                                                     navigateToChat(discussion.id);
                                                 } else {

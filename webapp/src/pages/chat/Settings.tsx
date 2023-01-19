@@ -4,10 +4,12 @@ import { useEffect, useState } from "react";
 import Helpers from "../../helpers/Helpers";
 import { toast } from "react-toastify";
 import './Settings.scss';
+import Cookies from 'universal-cookie';
 
 const Settings = () => {
 
     const { chat_id } = useParams();
+    const cookies = new Cookies();
 
     const [chatPassword, setChatPassword] = useState<string>('');
     const [allMembers, setAllMembers] = useState([]);
@@ -20,7 +22,7 @@ const Settings = () => {
         const req = await Helpers.Messagerie.update_password_chat(
             chat_id ?? '',
             chatPassword,
-            localStorage.getItem('user_id') ?? ''
+            cookies.get('user_id') ?? ''
         );
         if (req) {
             toast.success('The password for this chat has been update');
@@ -65,7 +67,7 @@ const Settings = () => {
         const req = await Helpers.Messagerie.block_user_in_public_chat(
             chat_id ?? '',
             blockUserInput,
-            localStorage.getItem('user_id') ?? '',
+            cookies.get('user_id') ?? '',
         );
         if (req){
             toast.success('User successfully blocked from the public chat');
