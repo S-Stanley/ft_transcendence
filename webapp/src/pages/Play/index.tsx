@@ -37,6 +37,23 @@ export const Play = () => {
                     Matchmaking
                 </Button>
             </Box>
+            <Box
+                sx={{
+                    alignItems: 'center',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    mt:'200px',
+                }}
+            >
+                <Button
+                    color="secondary"
+                    variant="contained"
+                    size="large"
+                    href="/play/live"
+                >
+                    Live
+                </Button>
+            </Box>
         </>
     );
 };

@@ -1,4 +1,4 @@
-const INITIAL_VELOCITY = .0001;
+const INITIAL_VELOCITY = .002;
 const VELOCITY_INCREASE = 0.0000001;
 let tmp = false;
 
