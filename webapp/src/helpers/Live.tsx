@@ -29,7 +29,6 @@ const liveRequest = async (): Promise<LiveRequest[] | undefined> => {
 
 const liveCancel = async (id_one:number): Promise<null> => {
     try {
-        console.log(`the id helper is ${id_one}`);
         await axios.post(`${Config.Api.url}/live/cancel`, {
             id_one: id_one,
         });

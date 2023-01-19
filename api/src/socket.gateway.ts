@@ -40,6 +40,31 @@ export class SocketGateway {
         });
     }
 
+    @SubscribeMessage('endgame')
+    announceEndgame(@MessageBody() message: { data: { target: string, endgame:number } }): void {
+        this.server.emit(message.data.target + 'endgame', {
+            endgame:message.data?.endgame,
+        });
+    }
+
+    @SubscribeMessage('forfait')
+    announceForfait(@MessageBody() message: { data: { target: string, forfait:boolean } }): void {
+        this.server.emit(message.data.target + 'forfait', {
+            forfait:message.data?.forfait,
+        });
+    }
+
+    @SubscribeMessage('replay')
+    announceReplay(@MessageBody() message: { data: { target: string, incoming_id:number, incoming_nickname:string, nickname:string, cancel:boolean, confirmation:boolean } }): void {
+        this.server.emit(message.data.target + 'replay', {
+            incoming_id:message.data?.incoming_id,
+            incoming_nickname:message.data?.incoming_nickname,
+            nickname:message.data?.nickname,
+            cancel:message.data?.cancel,
+            confirmation:message.data?.confirmation,
+        });
+    }
+
     @SubscribeMessage('score')
     updateScore(@MessageBody() message: { data: { target: string, player: number, computer: number } }): void {
         this.server.emit(message.data.target + 'score', {

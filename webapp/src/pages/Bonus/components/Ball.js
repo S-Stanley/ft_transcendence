@@ -138,16 +138,13 @@ export default class Ball {
         }
         if (power === 0)
         {
-            // console.log('no speed powerups');
             this.velocity_toleft += (VELOCITY_INCREASE * delta);
             this.velocity_toright += (VELOCITY_INCREASE * delta);
         }
         else if (power === 1)
             ;
-            // console.log('no increase on both');
         else if (power === 2)
         {
-            // console.log('double on both');
             this.velocity_toleft += (VELOCITY_INCREASE * delta) * 2;
             this.velocity_toright += (VELOCITY_INCREASE * delta) * 2;
         }
@@ -157,93 +154,24 @@ export default class Ball {
             this.velocity_toright += VELOCITY_INCREASE * delta;
         else if (power === 5)
         {
-            // console.log('double to right');
             this.velocity_toleft += VELOCITY_INCREASE * delta;
             this.velocity_toright += (VELOCITY_INCREASE * delta) * 2;
         }
         else if (power === 6)
         {
-            // console.log('increase normal to right');
             this.velocity_toright += (VELOCITY_INCREASE * delta);
         }
         else if (power === 7)
         {
-            // console.log('double to left');
             this.velocity_toleft += VELOCITY_INCREASE * delta * 2;
             this.velocity_toright += (VELOCITY_INCREASE * delta);
         }
         else if (power === 8)
         {
-            // console.log('increase normal to left');
             this.velocity_toleft += VELOCITY_INCREASE * delta;
         }
     }
 }
-
-// update(delta, paddleRects, power){
-//     if (this.direction.x > 0)
-//     {
-//         this.x += this.direction.x * this.velocity_toright * delta;
-//         this.y += this.direction.y * this.velocity_toright * delta;
-//     }
-//     else
-//     {
-//         this.x += this.direction.x * this.velocity_toleft * delta;
-//         this.y += this.direction.y * this.velocity_toleft * delta;
-//     }
-//     const rect = this.rect();
-//     if (rect.bottom >= window.innerHeight || rect.top <= 60) {
-//         this.direction.y *= -1;
-//     }
-//     if (paddleRects.some(r => isCollision(r, rect))){
-//         this.direction.x *= -1;
-//     }
-//     if (power === 0)
-//     {
-//         console.log('no speed powerups');
-//         this.velocity_toleft += (VELOCITY_INCREASE * delta);
-//         this.velocity_toright += (VELOCITY_INCREASE * delta);
-//     }
-//     else if (power === 1)
-//         console.log('no increase on both');
-//     else if (power === 2)
-//     {
-//         console.log('double on both');
-//         this.velocity_toleft += (VELOCITY_INCREASE * delta) * 2;
-//         this.velocity_toright += (VELOCITY_INCREASE * delta) * 2;
-//     }
-//     else if (power === 3)
-//         this.velocity_toleft += VELOCITY_INCREASE * delta;
-//     else if (power == 4)
-//         this.velocity_toright += VELOCITY_INCREASE * delta;
-//     else if (power === 5)
-//     {
-//         console.log('double to right');
-//         this.velocity_toleft += VELOCITY_INCREASE * delta;
-//         this.velocity_toright += (VELOCITY_INCREASE * delta) * 2;
-//     }
-//     else if (power === 6)
-//     {
-//         console.log('increase normal to right');
-//         this.velocity_toright += (VELOCITY_INCREASE * delta);
-//     }
-//     else if (power === 7)
-//     {
-//         console.log('double to left');
-//         this.velocity_toleft += VELOCITY_INCREASE * delta * 2;
-//         this.velocity_toright += (VELOCITY_INCREASE * delta);
-//     }
-//     else if (power === 8)
-//     {
-//         console.log('increase normal to left');
-//         this.velocity_toleft += VELOCITY_INCREASE * delta;
-//     }
-// }
-// };
-
-// function isCollision(rect1, rect2){
-//     return (rect1.left <= rect2.right && rect1.right >= rect2.left && rect1.top <= rect2.bottom && rect1.bottom >= rect2.top);
-// }
 
 function randomNumberBetween(min, max) {
     return Math.random() * (max-min) + min;
