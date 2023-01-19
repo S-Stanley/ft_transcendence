@@ -1,12 +1,64 @@
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { Avatar, Box, Card, Button, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
 import Helpers from '../../../helpers/Helpers';
+import { useNavigate } from 'react-router-dom';
+import { useState} from 'react';
+
+const AddFriendButton = ( { friendUser }) => {
+
+    const [friendStatus, setFriendStatus] = useState('initial');
+
+    Helpers.Friends.getFriendRequestStatus(friendUser).then(res => {
+        setFriendStatus(res);});
+
+    switch (friendStatus) {
+    case 'accepted':
+        return (
+            <Box>
+                <Button sx={{ ml: 2 }}
+                    size="small"
+                    variant="contained" disabled>
+                    Friends
+                </Button>
+            </Box>);
+    case 'pending':
+        return(
+            <Box>
+                <Button sx={{ ml: 2 }}
+                    size="small"
+                    variant="contained" disabled>
+                    Request sent
+                </Button>
+            </Box>);
+    case 'to_accept':
+        return(
+            <Box>
+                <Button sx={{ ml: 2 }}
+                    size="small"
+                    variant="contained" disabled>
+                    Request sent
+                </Button>
+            </Box>);
+    default:
+        return (
+            <Box>
+                <Button
+                    onClick={() => {
+                        Helpers.Friends.sendFriendRequest(friendUser, localStorage.getItem('nickname'));
+                        setFriendStatus('pending');
+                    }}
+                    size="small"
+                    color="primary"
+                    variant="outlined">
+                    Add Friend
+                </Button>
+            </Box>);
+    }
+};
 
 export const FriendList = ({ users }) => {
 
-    const toUserProfile = (nickname) => {
-        window.location.href = `users/${nickname}`;
-    };
+    const navigate = useNavigate();
 
     return (
         <Card>
@@ -65,7 +117,7 @@ export const FriendList = ({ users }) => {
                                     </TableCell>
                                     <TableCell>
                                         <Button
-                                            onClick={() => {toUserProfile(users.nickname);}}
+                                            onClick={() => navigate(`/users/${users.nickname}`)}
                                             size="small"
                                             color="secondary"
                                             variant="outlined"
@@ -74,14 +126,7 @@ export const FriendList = ({ users }) => {
                                         </Button>
                                     </TableCell>
                                     <TableCell>
-                                        <Button
-                                            onClick={() => {Helpers.Friends.sendFriendRequest(users.nickname, localStorage.getItem('nickname'));}}
-                                            size="small"
-                                            color="primary"
-                                            variant="outlined"
-                                        >
-                                        Add Friend
-                                        </Button>
+                                        <AddFriendButton key={users.id} friendUser={users.nickname} />
                                     </TableCell>
                                 </TableRow>
                             ))}

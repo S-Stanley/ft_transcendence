@@ -7,6 +7,7 @@ const sendFriendRequest = async(friend: string, nickname: string): Promise<any> 
         const res = await axios.post(`${Config.Api.url}/friends/sendrequest/${friend}`, {
             nickname: nickname
         });
+        toast.success(`Friend request to ${friend} has been sent`);
         return (res.data);
     } catch (e) {
         console.error(e);
