@@ -110,7 +110,19 @@ const Chat = () => {
                                 className='chat-item'
                             >
                                 <div className={`content-message-${msg?.nickname === localStorage.getItem('nickname') ? 'right' : 'left'}`}>
-                                    { msg?.content }
+                                    { (msg?.content.indexOf('http://localhost:3000/play/matchmaking/') >= 0) ? (
+                                        <div>
+                                            Do you want to play a pong game ?&nbsp;
+                                            <u
+                                                className='invitation-chat-ling'
+                                                onClick={() => navigate(msg?.content.split('http://localhost:3000')[1])}
+                                            >
+                                                Click here to join
+                                            </u>
+                                        </div>
+                                    ): (
+                                        msg?.content
+                                    )}
                                 </div>
                                 <div className={`nickname-message-${msg?.nickname === localStorage.getItem('nickname') ? 'right' : 'left'}`}>
                                     Posted by { msg?.nickname }
