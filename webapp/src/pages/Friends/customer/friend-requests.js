@@ -5,48 +5,50 @@ import ClearIcon from '@mui/icons-material/Clear';
 import Helpers from '../../../helpers/Helpers';
 import { useState } from 'react';
 
-export const FriendRequests = ({ requests }) => {
+export const RequestButton = ({otherUser}) => {
     const [requestStatus, setRequestStatus] = useState('');
+    Helpers.Friends.getFriendRequestStatus(otherUser).then(res => {
+        setRequestStatus(res);});
+    switch (requestStatus) {
+    case 'accepted':
+        return(
+            <Box>
+                <Button sx={{ ml: 2 }}
+                    size="small"
+                    variant="contained" disabled>
+                        Friends
+                </Button>
+            </Box>);
+    case 'cancelled':
+        return(
+            <Box>
+                <Button sx={{ ml: 2 }}
+                    size="small"
+                    variant="contained" disabled>
+                        Declined
+                </Button>
+            </Box>);
+    default:
+        return(
+            <Box>
+                <IconButton sx={{ml: 2}} onClick={() => {
+                    Helpers.Friends.acceptFriendRequest(otherUser, localStorage.getItem('nickname'), true);
+                    setRequestStatus('accepted');
+                }}>
+                    <DoneIcon/>
+                </IconButton>
+                <IconButton onClick={() => {
+                    Helpers.Friends.acceptFriendRequest(otherUser, localStorage.getItem('nickname'), false);
+                    setRequestStatus('cancelled');
+                }}>
+                    <ClearIcon/>
+                </IconButton>
+            </Box>);
+    }
+};
+export const FriendRequests = ({ requests }) => {
     const toUserProfile = (nickname) => {
         window.location.href = `users/${nickname}`;
-    };
-    const requestButton = (otherUser) => {
-        switch (requestStatus) {
-        case 'accepted':
-            return(
-                <Box>
-                    <Button sx={{ ml: 2 }}
-                        size="small"
-                        variant="contained" disabled>
-                        Friends
-                    </Button>
-                </Box>);
-        case 'cancelled':
-            return(
-                <Box>
-                    <Button sx={{ ml: 2 }}
-                        size="small"
-                        variant="contained" disabled>
-                        Declined
-                    </Button>
-                </Box>);
-        default:
-            return(
-                <Box>
-                    <IconButton sx={{ml: 2}} onClick={() => {
-                        Helpers.Friends.acceptFriendRequest(otherUser, localStorage.getItem('nickname'), true);
-                        setRequestStatus('accepted');
-                    }}>
-                        <DoneIcon/>
-                    </IconButton>
-                    <IconButton onClick={() => {
-                        Helpers.Friends.acceptFriendRequest(otherUser, localStorage.getItem('nickname'), false);
-                        setRequestStatus('cancelled');
-                    }}>
-                        <ClearIcon/>
-                    </IconButton>
-                </Box>);
-        }
     };
     return (requests.length === 0 ?
         <Card>
@@ -93,7 +95,7 @@ export const FriendRequests = ({ requests }) => {
                                             >
                                                 {req.nickname}
                                             </Typography>
-                                            {requestButton(req.nickname)}
+                                            <RequestButton key={req.nickname} otherUser={req.nickname} />
                                         </Box>
                                     </TableCell>
                                     <TableCell>
