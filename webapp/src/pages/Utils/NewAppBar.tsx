@@ -40,6 +40,8 @@ import Bonus from '../Bonus/Bonus';
 import Settings from '../chat/Settings';
 import Live from '../Live/Live';
 import Spectating from '../Spectating';
+import Endgame from '../Endgame/Endgame';
+import Forfait from '../Forfait/Forfait';
 
 
 
@@ -254,6 +256,8 @@ export default function PersistentDrawerLeft() {
                     <Route path="/play/matchmaking" element={<Matchmaking/>}/>
                     <Route path="/play/live" element={<Live/>}/>
                     <Route path="/play/spectating" element={<Spectating/>}/>
+                    <Route path="/play/endgame" element={<Endgame/>}/>
+                    <Route path="/play/forfait" element={<Forfait/>}/>
                 </Routes>
             ) : (
                 <Main open={open}>
@@ -282,6 +286,8 @@ export default function PersistentDrawerLeft() {
                         <Route path="/play/matchmaking" element={<Matchmaking/>}/>
                         <Route path="/play/live" element={<Live/>}/>
                         <Route path="/play/spectating" element={<Spectating/>}/>
+                        <Route path="/play/endgame" element={<Endgame/>}/>
+                        <Route path="/play/forfait" element={<Forfait/>}/>
                     </Routes>
                 </Main>
             )}

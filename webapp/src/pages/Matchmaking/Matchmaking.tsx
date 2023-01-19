@@ -31,6 +31,18 @@ const Matchmaking = () => {
             }
             else
             {
+                if (res?.result[0].id_42 === user.id_42 && res?.result.length === 1)
+                    return ;
+                else if (res?.result[0].id_42 === user.id_42)
+                {
+                    socket.emit('matchmaking', {
+                        data: {
+                            target: res?.result[1].id_42.toString(),
+                            callback: user.id_42,
+                            nickname: user.nickname,
+                        }
+                    });
+                }
                 socket.emit('matchmaking', {
                     data: {
                         target: res?.result[0].id_42.toString(),

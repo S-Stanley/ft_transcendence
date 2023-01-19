@@ -7,9 +7,8 @@ import { useEffect } from "react";
 import Helpers from "../../helpers/Helpers";
 
 const Home = () => {
-
     useEffect(() => {
-        Helpers.Users.me().then((res:any) => console.log(res!));
+        Helpers.Users.me().then((res: any) => console.log(res!));
     }, []);
 
     return (
@@ -20,8 +19,8 @@ const Home = () => {
                         <Paper
                             sx={{
                                 p: 2,
-                                display: 'flex',
-                                flexDirection: 'column',
+                                display: "flex",
+                                flexDirection: "column",
                                 height: 220,
                             }}
                         >
@@ -32,8 +31,8 @@ const Home = () => {
                         <Paper
                             sx={{
                                 p: 2,
-                                display: 'flex',
-                                flexDirection: 'column',
+                                display: "flex",
+                                flexDirection: "column",
                                 height: 220,
                             }}
                         >
@@ -41,8 +40,14 @@ const Home = () => {
                         </Paper>
                     </Grid>
                     <Grid item xs={12}>
-                        <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                            <MatchHistory  />
+                        <Paper
+                            sx={{
+                                p: 2,
+                                display: "flex",
+                                flexDirection: "column",
+                            }}
+                        >
+                            <MatchHistory />
                         </Paper>
                     </Grid>
                 </Grid>

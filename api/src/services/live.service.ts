@@ -20,7 +20,6 @@ export class LiveService {
     }
 
     async cancelLive(id_one:number): Promise<null> {
-        console.log(`id one correspond to ${id_one}`);
         await this.db.query(`DELETE FROM public.live WHERE id_one='${id_one}'`);
         return (null);
     }

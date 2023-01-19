@@ -10,6 +10,7 @@ import { io } from "socket.io-client";
 
 import Power from "./Power";
 import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 let lastTime: any = null;
 let ball: any = null;
@@ -30,6 +31,8 @@ let playerPower: any = null;
 let computerPower: any = null;
 let playerTime: number = 0;
 let computerTime: number = 0;
+
+let renderStop: number = 0;
 
 const SpectatePong = (props: {
     my_id: number;
@@ -61,6 +64,8 @@ const SpectatePong = (props: {
         nickname: "",
         avatar: "",
     };
+
+    const navigate = useNavigate();
 
     const [end, setEnd] = useState<boolean>(false);
 
@@ -197,6 +202,10 @@ const SpectatePong = (props: {
 
     function update(time: any) {
         if (stop) return;
+        renderStop += 1;
+        if (renderStop > 50) {
+            navigate("/play/live", {});
+        }
         if (lastTime != null) {
             const delta = time - lastTime;
             if (props.player === 1) {
@@ -204,17 +213,6 @@ const SpectatePong = (props: {
                 checkPowerUps(time);
                 timeoutPowerUps(time);
                 updatingPower(delta);
-                socket.emit("ball", {
-                    data: {
-                        target: props.opp_id,
-                        x: ball.get_x(),
-                        y: ball.get_y(), //emit also power coordinates, power ups
-                        p_x: power.get_x(),
-                        p_y: power.get_y(),
-                        p_l: playerPower.textContent,
-                        p_r: computerPower.textContent,
-                    },
-                });
             }
             computerPaddle.position = socket_position;
             playerPaddle.position = another_socket_position;
@@ -276,6 +274,7 @@ const SpectatePong = (props: {
             parseInt(computerScoreElem.textContent) === 1 ||
             parseInt(playerScoreElem.textContent) === 1
         ) {
+            navigate("/play/live", {});
             stop = true;
             setEnd(true);
         }
@@ -326,6 +325,7 @@ const SpectatePong = (props: {
             power.set_y(data.p_y);
             playerPower.textContent = data.p_l;
             computerPower.textContent = data.p_r;
+            renderStop = 0;
         }
     );
 

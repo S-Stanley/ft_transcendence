@@ -4,6 +4,7 @@ import { Box, Button, Card, CardContent, Toolbar, Typography } from '@mui/materi
 import { useLocation } from "react-router-dom";
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 import "./styles.css";
+import Helpers from '../../helpers/Helpers';
 
 const Bonus = () => {
 
@@ -68,12 +69,16 @@ const Bonus = () => {
     const [end, setEnd] = useState<boolean>(false);
     const location = useLocation();
 
+    const properQuit = async () => {
+        if (location?.state?.player === 1) await Helpers.Live.liveCancel(location?.state?.my_id);
+    };
+
     return (
         <Fragment>
                 	{
                     	end?
                     <>
-                        <Button href="/play/matchmaking">
+                        <Button href="/play/matchmaking" onClick={properQuit}>
                                     Exit
                         </Button>
                         <Pong my_id={location?.state?.my_id} opp_id={location?.state?.opp_id} nickname={location?.state?.nickname} player={location?.state?.player} opp_nickname={location?.state?.opp_nickname}/>
