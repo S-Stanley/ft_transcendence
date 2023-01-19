@@ -42,6 +42,7 @@ import Live from '../Live/Live';
 import Spectating from '../Spectating';
 import Endgame from '../Endgame/Endgame';
 import Forfait from '../Forfait/Forfait';
+import PrivateGame from '../Matchmaking/PrivateGame';
 
 
 
@@ -254,6 +255,7 @@ export default function PersistentDrawerLeft() {
                     <Route path="/friends" element={<FriendSearch />} />
                     <Route path="/login/email" element={<EmailLogin />} />
                     <Route path="/play/matchmaking" element={<Matchmaking/>}/>
+                    <Route path="/play/matchmaking/:game_id" element={<PrivateGame/>}/>
                     <Route path="/play/live" element={<Live/>}/>
                     <Route path="/play/spectating" element={<Spectating/>}/>
                     <Route path="/play/endgame" element={<Endgame/>}/>
@@ -284,6 +286,7 @@ export default function PersistentDrawerLeft() {
                         <Route path="/friends" element={<FriendSearch />} />
                         <Route path="/login/email" element={<EmailLogin />} />
                         <Route path="/play/matchmaking" element={<Matchmaking/>}/>
+                        <Route path="/play/matchmaking/:game_id" element={<PrivateGame/>}/>
                         <Route path="/play/live" element={<Live/>}/>
                         <Route path="/play/spectating" element={<Spectating/>}/>
                         <Route path="/play/endgame" element={<Endgame/>}/>
