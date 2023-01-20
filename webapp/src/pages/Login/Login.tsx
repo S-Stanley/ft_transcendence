@@ -32,7 +32,12 @@ function Login() {
                     toast.success('Successfully logged!', {
                         position: "bottom-left",
                     });
-                    navigate('/home');
+                    if (req.first_connexion === true) {
+                        navigate('/user');
+                    }
+                    else {
+                        navigate('/home');
+                    }
                     Helpers.Users.updateStatus(req.nickname, 'online');
                 }
             }

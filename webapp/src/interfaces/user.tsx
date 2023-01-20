@@ -8,5 +8,6 @@ export interface User {
     avatar: string,
     user_id: string,
     token: string,
-    current_status: string
+    current_status: string,
+    first_connexion: boolean
 }
