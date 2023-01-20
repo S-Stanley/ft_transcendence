@@ -20,6 +20,7 @@ import {
 } from '@mui/material';
 import Helpers from '../../../helpers/Helpers';
 import { useNavigate } from 'react-router-dom';
+import Cookies from 'universal-cookie';
 
 export const AccountProfileDetails = (props:any) => {
 
@@ -40,6 +41,7 @@ export const AccountProfileDetails = (props:any) => {
     });
 
 	const navigate = useNavigate();
+    const cookies = new Cookies();
 
     const [error, setError] = useState<boolean>(false);
     const [message, setMessage] = useState<string>('');
@@ -103,7 +105,11 @@ export const AccountProfileDetails = (props:any) => {
 		{
 			setCheck(!check);
 			Helpers.Users.toggleTwoFactor(false, user.id_42).then((res) => {console.log(res);});
-            localStorage.clear();
+            cookies.remove('token');
+            cookies.remove('email');
+            cookies.remove('user_id');
+            cookies.remove('nickname');
+            cookies.remove('avatar');
 		    navigate('/');
 		}
 	};

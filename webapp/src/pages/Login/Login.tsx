@@ -4,23 +4,24 @@ import { useEffect } from 'react';
 import Helpers from '../../helpers/Helpers';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-
+import Cookies from 'universal-cookie';
 
 function Login() {
     const code_url = `https://api.intra.42.fr/oauth/authorize?client_id=${process.env.REACT_APP_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_REDIRECT_URI}&response_type=code`;
     const search = useLocation().search;
     const code = new URLSearchParams(search).get('code');
     const navigate = useNavigate();
+    const cookies = new Cookies();
 
     const loggUser = async(): Promise<void> => {
         if (code){
             const req = await Helpers.Users.login(code);
             if (req) {
-                window.localStorage.setItem('token', req.token);
-                window.localStorage.setItem('email', req.email);
-                window.localStorage.setItem('user_id', req.user_id);
-                window.localStorage.setItem('nickname', req.nickname);
-                window.localStorage.setItem('avatar', req.avatar);
+                cookies.set('token', req.token);
+                cookies.set('email', req.email);
+                cookies.set('user_id', req.user_id);
+                cookies.set('nickname', req.nickname);
+                cookies.set('avatar', req.avatar);
                 //check if user has two factor auth
                 const user = await Helpers.Users.me();
                 if (user?.two_factor_enabled === true)

@@ -11,6 +11,7 @@ import DoneIcon from '@mui/icons-material/Done';
 import ClearIcon from '@mui/icons-material/Clear';
 import GroupIcon from '@mui/icons-material/Group';
 import { toast } from 'react-toastify';
+import Cookies from 'universal-cookie';
 
 const Profile = () => {
     const [user, setUser] = useState({
@@ -27,6 +28,7 @@ const Profile = () => {
     const userToGet = window.location.pathname.split('/')[2];
     const [isBlocked, setIsBlocked] = useState(false);
     const navigate = useNavigate();
+    const cookies = new Cookies();
 
     const statusMap = new Map([
         ['online', 'success'],
@@ -78,13 +80,13 @@ const Profile = () => {
                         { buttonText }
                     </Button>
                     <IconButton onClick={() => {
-                        Helpers.Friends.acceptFriendRequest(userToGet, localStorage.getItem('nickname')!, true);
+                        Helpers.Friends.acceptFriendRequest(userToGet, cookies.get('nickname')!, true);
                         forceUpdate();
                     }}>
                         <DoneIcon sx={{ml: 1, mb: 0.3}}/>
                     </IconButton>
                     <IconButton onClick={() => {
-                        Helpers.Friends.acceptFriendRequest(userToGet, localStorage.getItem('nickname')!, false);
+                        Helpers.Friends.acceptFriendRequest(userToGet, cookies.get('nickname')!, false);
                         forceUpdate();
                     }}>
                         <ClearIcon sx={{ml: 1, mb: 0.3}}/>
@@ -113,13 +115,13 @@ const Profile = () => {
 
     const sendFriendRequest = () => {
         setButtonText('Request sent');
-        Helpers.Friends.sendFriendRequest(user.nickname, localStorage.getItem('nickname')!);
+        Helpers.Friends.sendFriendRequest(user.nickname, cookies.get('nickname')!);
     };
     getFriendStatus();
 
     const blockUser = async() => {
         const req = await Helpers.Users.blockUser(
-            localStorage.getItem('user_id') ?? '',
+            cookies.get('user_id') ?? '',
             user?.id
         );
         if (req) {
@@ -130,7 +132,7 @@ const Profile = () => {
 
     const is_user_blocked= async(user_id_profile: string = ''): Promise<void>  => {
         const req = await Helpers.Friends.is_user_blocked(
-            localStorage.getItem('user_id') ?? '',
+            cookies.get('user_id') ?? '',
             user_id_profile,
         );
         if (req){
@@ -171,7 +173,7 @@ const Profile = () => {
                 <Typography id='nickname'>
                     { user?.nickname }
                 </Typography>
-                { user?.nickname === localStorage.getItem('nickname') ?
+                { user?.nickname === cookies.get('nickname') ?
                     <Button id='edit-button' onClick={() => navigate('/user')}>
                         Edit Profile
                     </Button>

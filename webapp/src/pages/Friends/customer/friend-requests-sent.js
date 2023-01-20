@@ -3,16 +3,19 @@ import { Box } from "@mui/system";
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import Helpers from '../../../helpers/Helpers';
 import { useState } from "react";
+import Cookies from 'universal-cookie';
 
 export const RequestSentButton = ({otherUser}) => {
     const [cancelled, setCancelled] = useState(0);
+    const cookies = new Cookies();
+
     return (cancelled === 0 ?
         <Button sx={{ ml: 2 }}
             size="small"
             variant="contained"
             color="error"
             onClick={() => {
-                Helpers.Friends.acceptFriendRequest(localStorage.getItem('nickname'), otherUser, false);
+                Helpers.Friends.acceptFriendRequest(cookies.get('nickname'), otherUser, false);
                 setCancelled(1);
             }}>
                 Cancel

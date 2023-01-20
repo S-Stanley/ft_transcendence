@@ -3,10 +3,12 @@ import { Avatar, Box, Card, Button, Table, TableBody, TableCell, TableHead, Tabl
 import Helpers from '../../../helpers/Helpers';
 import { useNavigate } from 'react-router-dom';
 import { useState} from 'react';
+import Cookies from 'universal-cookie';
 
 const AddFriendButton = ( { friendUser }) => {
 
     const [friendStatus, setFriendStatus] = useState('initial');
+    const cookies = new Cookies();
 
     Helpers.Friends.getFriendRequestStatus(friendUser).then(res => {
         setFriendStatus(res);});
@@ -44,7 +46,7 @@ const AddFriendButton = ( { friendUser }) => {
             <Box>
                 <Button
                     onClick={() => {
-                        Helpers.Friends.sendFriendRequest(friendUser, localStorage.getItem('nickname'));
+                        Helpers.Friends.sendFriendRequest(friendUser, cookies.get('nickname'));
                         setFriendStatus('pending');
                     }}
                     size="small"

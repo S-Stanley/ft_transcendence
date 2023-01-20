@@ -2,15 +2,18 @@ import Config from "../config/Config";
 import axios from 'axios';
 import { MessagerieInterface } from "../interfaces/messagerie";
 import { toast } from "react-toastify";
+import Cookies from 'universal-cookie';
+
+const cookies = new Cookies();
 
 const create_or_get_discussion = async (email: string) => {
     try {
         const req = await axios.post(`${Config.Api.url}/chat/`, {
             email: email,
-            from: localStorage.getItem('email')
+            from: cookies.get('email')
         }, {
             headers: {
-                token: localStorage.getItem('token'),
+                token: cookies.get('token'),
             }
         });
         return (req.data);
@@ -23,7 +26,7 @@ const send_message_to_discussion = async (chat_id: string, content: string) => {
     try {
         const req = await axios.post(`${Config.Api.url}/chat/send`, {
             chat_id: chat_id,
-            sender_id: localStorage.getItem('user_id'),
+            sender_id: cookies.get('user_id'),
             content: content,
         });
         return (req.data);
@@ -37,7 +40,7 @@ const get_message_of_discussion = async (chat_id: string) => {
     try {
         const req = await axios.get(`${Config.Api.url}/chat/${chat_id}`, {
             headers: {
-                token: localStorage.getItem('token'),
+                token: cookies.get('token'),
             }
         });
         return (req.data);
@@ -127,7 +130,7 @@ const   update_admin_list = async (chat_id: string, list_to_add: number[], list_
             chat_id: chat_id,
             list_to_add: list_to_add,
             list_to_delete: list_to_delete,
-            user_id: localStorage.getItem('user_id') ?? '',
+            user_id: cookies.get('user_id') ?? '',
         });
         return (req.data);
     } catch (e) {
@@ -191,7 +194,7 @@ const   delete_blocked_users = async (chat_id: string, blocked_row_id: string) =
         const req = await axios.post(`${Config.Api.url}/chat/public/blocked`, {
             blocked_row_id: blocked_row_id,
             chat_id: chat_id,
-            user_id: localStorage.getItem('user_id') ?? '',
+            user_id: cookies.get('user_id') ?? '',
         });
         return (req.data);
     } catch (e) {

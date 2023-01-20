@@ -8,12 +8,15 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import NewAppBar from './pages/Utils/NewAppBar';
+import Cookies from 'universal-cookie';
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
 );
 
-axios.defaults.headers.common['Authorization'] = 'Bearer ' + window.localStorage.getItem('token');
+const cookies = new Cookies();
+
+axios.defaults.headers.common['Authorization'] = 'Bearer ' + cookies.get('token');
 
 root.render(
     <BrowserRouter>

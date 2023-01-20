@@ -5,6 +5,7 @@ import { io } from 'socket.io-client';
 import './Chat.scss';
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { MessagerieInterface } from "../../interfaces/messagerie";
+import Cookies from 'universal-cookie';
 
 const socket = io('http://localhost:5000', { transports: ['websocket'] });
 
@@ -18,6 +19,7 @@ const Chat = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const { chat_id } = useParams();
+    const cookies = new Cookies();
 
     const handleSubmit = async(): Promise<void> => {
         const req = await Helpers.Messagerie.send_message_to_discussion(location?.state?.chat_id ?? '', answer);
@@ -27,7 +29,7 @@ const Chat = () => {
                 data: {
                     chat_id: location?.state?.chat_id,
                     content: answer,
-                    nickname: localStorage.getItem('nickname'),
+                    nickname: cookies.get('nickname'),
                     msg_id: req,
                 }
             });
@@ -44,7 +46,7 @@ const Chat = () => {
     const isUserAdmin = async(): Promise<void> => {
         const req = await Helpers.Messagerie.is_user_admin(
             location?.state?.chat_id,
-            localStorage.getItem('user_id') ?? ''
+            cookies.get('user_id') ?? ''
         );
         if (req) {
             setIsAdmin(true);
@@ -80,16 +82,16 @@ const Chat = () => {
             {(chatInfo && chatInfo?.type === 'private') &&
                 <div
                     id='dest-private-chat'
-                    onClick={() => navigate(`/users/${chatMembers?.find((member) => member?.nickname !== localStorage.getItem('nickname'))?.nickname}`)}
+                    onClick={() => navigate(`/users/${chatMembers?.find((member) => member?.nickname !== cookies.get('nickname'))?.nickname}`)}
                 >
                     <div id='div-avatar-private-chat'>
                         <img
                             id='avatar-dest-private-chat'
-                            src={chatMembers?.find((member) => member?.nickname !== localStorage.getItem('nickname'))?.avatar}
+                            src={chatMembers?.find((member) => member?.nickname !== cookies.get('nickname'))?.avatar}
                         />
                     </div>
                     <p id='name-dest-private-chat'>
-                        {chatMembers?.find((member) => member?.nickname !== localStorage.getItem('nickname'))?.nickname}
+                        {chatMembers?.find((member) => member?.nickname !== cookies.get('nickname'))?.nickname}
                     </p>
                 </div>
             }
@@ -108,7 +110,7 @@ const Chat = () => {
                                 id={`msg-chat-${index}`}
                                 className='chat-item'
                             >
-                                <div className={`content-message-${msg?.nickname === localStorage.getItem('nickname') ? 'right' : 'left'}`}>
+                                <div className={`content-message-${msg?.nickname === cookies.get('nickname') ? 'right' : 'left'}`}>
                                     { (msg?.content.indexOf('http://localhost:3000/play/matchmaking/') >= 0) ? (
                                         <div>
                                             Do you want to play a pong game ?&nbsp;
@@ -123,7 +125,7 @@ const Chat = () => {
                                         msg?.content
                                     )}
                                 </div>
-                                <div className={`nickname-message-${msg?.nickname === localStorage.getItem('nickname') ? 'right' : 'left'}`}>
+                                <div className={`nickname-message-${msg?.nickname === cookies.get('nickname') ? 'right' : 'left'}`}>
                                     Posted by { msg?.nickname }
                                 </div>
                             </div>

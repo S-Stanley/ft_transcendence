@@ -4,12 +4,14 @@ import { useNavigate } from 'react-router-dom';
 import { TextField, Button, Typography } from '@mui/material';
 import { toast } from 'react-toastify';
 import './EmailLogin.scss';
+import Cookies from 'universal-cookie';
 
 function EmailLogin() {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
+    const cookies = new Cookies();
 
     const handleSubmit = async(e: { preventDefault: any }): Promise<void> => {
         e.preventDefault();
@@ -17,10 +19,10 @@ function EmailLogin() {
         if (req){
             setEmail('');
             setPassword('');
-            localStorage.setItem('token', req.token);
-            localStorage.setItem('email', req.email);
-            localStorage.setItem('user_id', req.user_id);
-            localStorage.setItem('nickname', req.nickname);
+            cookies.set('token', req.token);
+            cookies.set('email', req.email);
+            cookies.set('user_id', req.user_id);
+            cookies.set('nickname', req.nickname);
             navigate('/home');
             Helpers.Users.updateStatus(req.nickname, 'online');
         } else {

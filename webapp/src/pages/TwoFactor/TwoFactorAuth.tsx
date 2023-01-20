@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import Config from "../../config/Config";
 import Helpers from "../../helpers/Helpers";
+import Cookies from 'universal-cookie';
 
 //update status to online
 const TwoFactorAuth = () => {
@@ -22,6 +23,7 @@ const TwoFactorAuth = () => {
     const [wrongCode, setWrongCode] = useState<boolean>(false);
 
     const navigate = useNavigate();
+    const cookies = new Cookies();
 
     const generateQr = async () => {
         try {
@@ -52,7 +54,7 @@ const TwoFactorAuth = () => {
                 id_42: user.id_42,
                 token: req.data.access_token,
             });
-            window.localStorage.setItem('token', req.data.access_token);
+            cookies.set('token', req.data.access_token);
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + req?.data?.token;
             navigate('/home');
         } catch (e) {
