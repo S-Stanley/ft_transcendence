@@ -98,7 +98,6 @@ const Chat = () => {
                 style={{height: (window.innerHeight * 0.7)}}
             >
                 <Box sx={{
-                    overflow: "hidden",
                     overflowY: "scroll",
                     height: '90%'
                 }}>
