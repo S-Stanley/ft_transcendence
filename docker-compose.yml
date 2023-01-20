@@ -20,8 +20,6 @@ services:
       - '5000:5000'
     environment:
       - POSTGRES_HOST=postgres
-    volumes:
-      - ./api/:/app/
   webapp:
     build: webapp/
     restart: always
@@ -29,5 +27,3 @@ services:
       - api
     ports:
       - '3000:3000'
-    volumes:
-      - ./webapp/:/app/
