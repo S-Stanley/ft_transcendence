@@ -56,12 +56,6 @@ export const AccountProfile = () => {
                     >
                         {user.nickname}
                     </Typography>
-                    <Typography
-                        color="textSecondary"
-                        variant="body2"
-                    >
-                        {`mettre bio`}
-                    </Typography>
                 </Box>
             </CardContent>
             <Divider />

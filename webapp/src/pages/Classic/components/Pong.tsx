@@ -9,7 +9,6 @@ import { End } from "./End";
 import { io } from "socket.io-client";
 
 import Helpers from "../../../helpers/Helpers";
-import Power from "./Power";
 import { useNavigate } from "react-router-dom";
 
 let renderStop: number = 0;
@@ -24,14 +23,7 @@ let computerPongs: number = 0;
 let playerPongs: number = 0;
 let stop: boolean = false;
 let collision_tmp = false;
-let collision_power_tmp = false;
 let unique_match = 0;
-
-let power: any = null;
-let playerPower: any = null;
-let computerPower: any = null;
-let playerTime: number = 0;
-let computerTime: number = 0;
 
 let forfait: boolean = false;
 
@@ -44,21 +36,6 @@ const Pong = (props: {
 }) => {
     const socket = io("http://localhost:5000", { transports: ["websocket"] });
     const navigate = useNavigate();
-
-    const poweringUp = (side: number) => {
-        const random = Math.floor(Math.random() * 10);
-        if (random < 5) {
-            if (side === 1) playerPower.textContent = "no speed increase";
-            else computerPower.textContent = "no speed increase";
-        } else if (random < 7) {
-            if (side === 1) playerPower.textContent = "immunity";
-            else computerPower.textContent = "immunity";
-        } else {
-            if (side === 1)
-                playerPower.textContent = "opponent double speed increase";
-            else computerPower.textContent = "opponent double speed increase";
-        }
-    };
 
     const [user, setUser] = useState({
         id_42: 0,
@@ -79,102 +56,12 @@ const Pong = (props: {
     const [end, setEnd] = useState<boolean>(false);
 
     const updating_ball = (delta: number, collision: number) => {
-        if (
-            playerPower.textContent === "no speed increase" &&
-            computerPower.textContent === "no speed increase"
-        )
-            ball.update(
-                delta,
-                [playerPaddle.rect(), computerPaddle.rect()],
-                collision,
-                1
-            );
-        else if (
-            playerPower.textContent === "opponent double speed increase" &&
-            computerPower.textContent === "opponent double speed increase"
-        )
-            ball.update(
-                delta,
-                [playerPaddle.rect(), computerPaddle.rect()],
-                collision,
-                2
-            );
-        else if (
-            playerPower.textContent === "no speed increase" &&
-            computerPower.textContent === "opponent double speed increase"
-        )
-            ball.update(
-                delta,
-                [playerPaddle.rect(), computerPaddle.rect()],
-                collision,
-                3
-            );
-        else if (
-            playerPower.textContent === "opponent double speed increase" &&
-            computerPower.textContent === "no speed increase"
-        )
-            ball.update(
-                delta,
-                [playerPaddle.rect(), computerPaddle.rect()],
-                collision,
-                4
-            );
-        else if (playerPower.textContent === "opponent double speed increase")
-            ball.update(
-                delta,
-                [playerPaddle.rect(), computerPaddle.rect()],
-                collision,
-                5
-            );
-        else if (playerPower.textContent === "no speed increase")
-            ball.update(
-                delta,
-                [playerPaddle.rect(), computerPaddle.rect()],
-                collision,
-                6
-            );
-        else if (computerPower.textContent === "opponent double speed increase")
-            ball.update(
-                delta,
-                [playerPaddle.rect(), computerPaddle.rect()],
-                collision,
-                7
-            );
-        else if (computerPower.textContent === "no speed increase")
-            ball.update(
-                delta,
-                [playerPaddle.rect(), computerPaddle.rect()],
-                collision,
-                8
-            );
-        else
-            ball.update(
-                delta,
-                [playerPaddle.rect(), computerPaddle.rect()],
-                collision,
-                0
-            );
-    };
-
-    const timeoutPowerUps = (time: number) => {
-        if (time > playerTime + 8000) playerPower.textContent = "no powerups";
-        if (time > computerTime + 8000)
-            computerPower.textContent = "no powerups";
-    };
-
-    const checkPowerUps = (time: number) => {
-        if (isCollision(playerPaddle.rect(), power.rect())) {
-            if (playerPower.textContent === "no powerups") {
-                poweringUp(1);
-                playerTime = time;
-            }
-        }
-        if (isCollision(computerPaddle.rect(), power.rect())) {
-            if (computerPower.textContent === "no powerups") {
-                poweringUp(2);
-                computerTime = time;
-            }
-        }
+        ball.update(
+            delta,
+            [playerPaddle.rect(), computerPaddle.rect()],
+            collision,
+            0
+        );
     };
 
     const updatingBall = (delta: number) => {
@@ -195,23 +82,10 @@ const Pong = (props: {
         }
     };
 
-    const updatingPower = (delta: number) => {
-        if (
-            (power.rect().right >= window.innerWidth ||
-                power.rect().left <= 0) &&
-            collision_power_tmp === false
-        ) {
-            power.update(delta, 1);
-            collision_power_tmp = true;
-        } else {
-            power.update(delta, 0);
-            collision_power_tmp = false;
-        }
-    };
-
     async function update(time: any) {
-        if (forfait === true)
-        {
+        if (forfait === true) {
+            if (props.player === 1) await Helpers.Live.liveCancel(props.my_id);
+            else await Helpers.Live.liveCancel(props.opp_id);
             socket.emit("forfait", {
                 data: {
                     target: props.opp_id.toString(),
@@ -222,8 +96,6 @@ const Pong = (props: {
         renderStop += 1;
         if (renderStop > 600) {
             forfait = true;
-            if (props.player === 1) await Helpers.Live.liveCancel(props.my_id);
-            else await Helpers.Live.liveCancel(props.opp_id);
             navigate("/play/forfait", {
                 state: {
                     opp_nickname: props.opp_nickname,
@@ -235,18 +107,11 @@ const Pong = (props: {
             const delta = time - lastTime;
             if (props.player === 1) {
                 updatingBall(delta);
-                checkPowerUps(time);
-                timeoutPowerUps(time);
-                updatingPower(delta);
                 socket.emit("ball", {
                     data: {
                         target: props.opp_id,
                         x: ball.get_x(),
                         y: ball.get_y(), //emit also power coordinates, power ups
-                        p_x: power.get_x(),
-                        p_y: power.get_y(),
-                        p_l: playerPower.textContent,
-                        p_r: computerPower.textContent,
                     },
                 });
             }
@@ -286,22 +151,9 @@ const Pong = (props: {
         if (stop) return;
         const rect = ball.rect();
         if (rect.right >= window.innerWidth) {
-            if (
-                props.player === 2 &&
-                computerPower.textContent === "immunity"
-            ) {
-                ball.invert();
-                computerPower.textContent = "";
-                return;
-            }
             playerScoreElem.textContent =
                 parseInt(playerScoreElem.textContent) + 1;
         } else {
-            if (props.player === 1 && playerPower.textContent === "immunity") {
-                ball.invert();
-                playerPower.textContent = "";
-                return;
-            }
             computerScoreElem.textContent =
                 parseInt(computerScoreElem.textContent) + 1;
         }
@@ -321,8 +173,7 @@ const Pong = (props: {
                 const score_doss = parseInt(computerScoreElem.textContent);
                 playerScoreElem.textContent = 0;
                 computerScoreElem.textContent = 0;
-                if (forfait !== true)
-                {
+                if (forfait !== true) {
                     if (props.player === 1) await Helpers.Live.liveCancel(props.my_id);
                     else await Helpers.Live.liveCancel(props.opp_id);
                     socket.emit("endgame", {
@@ -340,7 +191,7 @@ const Pong = (props: {
                             score_one: score_uno,
                             score_two: score_doss,
                             is_one: 1,
-                            type: 1,
+                            type: 2,
                         },
                     });
                 }
@@ -356,11 +207,6 @@ const Pong = (props: {
             },
         });
         ball.reset();
-        power.reset();
-        computerPower.textContent = "no powerups";
-        playerPower.textContent = "no powerups";
-        playerTime -= 4000;
-        computerTime -= 4000;
         computerPaddle.reset();
     }
 
@@ -377,8 +223,7 @@ const Pong = (props: {
     socket.on(
         user.id_42.toString() + "paddle",
         (data: { position: number }) => {
-            if (socket_position != data.position)
-                renderStop = 0;
+            if (socket_position != data.position) renderStop = 0;
             socket_position = data.position;
         }
     );
@@ -392,23 +237,20 @@ const Pong = (props: {
         });
     });
 
-    socket.on(
-        user.id_42.toString() + "endgame",
-        () => {
-            navigate("/play/endgame", {
-                state: {
-                    id_one: props.opp_id,
-                    id_two: props.my_id,
-                    player_one: props.opp_nickname,
-                    player_two: props.nickname,
-                    score_one: parseInt(playerScoreElem.textContent),
-                    score_two: parseInt(computerScoreElem.textContent),
-                    is_one: 0,
-                    type: 1,
-                },
-            });
-        }
-    );
+    socket.on(user.id_42.toString() + "endgame", () => {
+        navigate("/play/endgame", {
+            state: {
+                id_one: props.opp_id,
+                id_two: props.my_id,
+                player_one: props.opp_nickname,
+                player_two: props.nickname,
+                score_one: parseInt(playerScoreElem.textContent),
+                score_two: parseInt(computerScoreElem.textContent),
+                is_one: 0,
+                type: 2,
+            },
+        });
+    });
 
     socket.on(
         user.id_42.toString() + "score",
@@ -430,10 +272,6 @@ const Pong = (props: {
         }) => {
             ball.set_x(data.x);
             ball.set_y(data.y);
-            power.set_x(data.p_x);
-            power.set_y(data.p_y);
-            playerPower.textContent = data.p_l;
-            computerPower.textContent = data.p_r;
         }
     );
 
@@ -449,13 +287,7 @@ const Pong = (props: {
         playerPongs = 0;
         stop = false;
         collision_tmp = false;
-        collision_power_tmp = false;
         unique_match = 0;
-        power = null;
-        playerPower = null;
-        computerPower = null;
-        playerTime = 0;
-        computerTime = 0;
         renderStop = 0;
 
         if (props.player === 1 && unique_match == 0) {
@@ -468,7 +300,6 @@ const Pong = (props: {
             unique_match = 1;
         }
         ball = new Ball(document.getElementById("ball"));
-        power = new Power(document.getElementById("power"));
         if (props.player === 1) {
             playerPaddle = new Paddle(document.getElementById("player-paddle"));
             computerPaddle = new Paddle(
@@ -482,10 +313,6 @@ const Pong = (props: {
                 document.getElementById("player-paddle")
             );
         }
-        playerPower = document.getElementById("power-left");
-        computerPower = document.getElementById("power-right");
-        playerPower.textContent = "no powerups";
-        computerPower.textContent = "no powerups";
         playerScoreElem = document.getElementById("player-score");
         computerScoreElem = document.getElementById("computer-score");
         window.requestAnimationFrame(update);
@@ -503,12 +330,6 @@ const Pong = (props: {
                 />
             ) : (
                 <>
-                    <div className="powerleft">
-                        <div id="power-left">bloup</div>
-                    </div>
-                    <div className="powerright">
-                        <div id="power-right">bloup</div>
-                    </div>
                     <div className="score">
                         <div id="player-score">0</div>
                         <div id="computer-score">0</div>
@@ -516,7 +337,6 @@ const Pong = (props: {
                 </>
             )}
             <div className="ball" id="ball"></div>
-            <div className="power" id="power"></div>
             <div className="paddle left" id="player-paddle"></div>
             <div className="paddle right" id="computer-paddle"></div>
         </section>

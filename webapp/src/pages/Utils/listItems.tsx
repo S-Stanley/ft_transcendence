@@ -10,6 +10,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import EmailIcon from '@mui/icons-material/Email';
 import { useNavigate } from 'react-router-dom';
 import Divider from '@mui/material/Divider';
+import LiveTvIcon from '@mui/icons-material/LiveTv';
 
 const MainListItems = () => {
 
@@ -28,6 +29,12 @@ const MainListItems = () => {
                     <NetworkPingIcon />
                 </ListItemIcon>
                 <ListItemText primary="Play" />
+            </ListItemButton>
+            <ListItemButton onClick={() => navigate('/play/live')}>
+                <ListItemIcon>
+                    <LiveTvIcon />
+                </ListItemIcon>
+                <ListItemText primary="Live" />
             </ListItemButton>
             <Divider sx={{ my: 1 }} />
             <ListSubheader component="div" inset>

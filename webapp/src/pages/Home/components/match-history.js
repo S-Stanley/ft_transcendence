@@ -23,9 +23,7 @@ export const MatchHistory = (props) => {
         try{
             const res = await Helpers.History.get_match();
             setValues(res.data.result.reverse());
-        } catch (e) {
-            console.log(e);
-        }
+        } catch (e) {}
     };
 
     useEffect(() => {

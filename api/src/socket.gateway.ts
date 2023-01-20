@@ -24,9 +24,37 @@ export class SocketGateway {
         });
     }
 
+    @SubscribeMessage('classic')
+    handleClassic(@MessageBody() message: { data: { target: string, callback: number, nickname:string } }): void {
+        this.server.emit(message.data.target + 'classic', {
+            id_incoming: message.data?.callback,
+            nickname: message.data?.nickname,
+            confirmation: false,
+        });
+    }
+
     @SubscribeMessage('confirmation')
     handleConfirmation(@MessageBody() message: { data: { target: string, callback: number, nickname:string } }): void {
         this.server.emit(message.data.target + 'matchmaking', {
+            id_incoming: message.data?.callback,
+            nickname:message.data?.nickname,
+            confirmation: true,
+        });
+    }
+
+    @SubscribeMessage('private_game')
+    handlePrivateGame(@MessageBody() message: { data: { game_id: string, confirmation: boolean, opp_id:number, opp_nickname: string } }): void {
+        this.server.emit('private_game', {
+            game_id: message.data?.game_id,
+            confirmation: message.data?.confirmation,
+            opp_id: message.data?.opp_id,
+            opp_nickname: message.data?.opp_nickname,
+        });
+    }
+
+    @SubscribeMessage('confirmation_classic')
+    handleConfirmationClassic(@MessageBody() message: { data: { target: string, callback: number, nickname:string } }): void {
+        this.server.emit(message.data.target + 'classic', {
             id_incoming: message.data?.callback,
             nickname:message.data?.nickname,
             confirmation: true,

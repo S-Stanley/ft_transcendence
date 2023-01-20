@@ -38,7 +38,8 @@ const TwoFactorSetUp = () => {
     }, []);
 
     const authenticate = () => {
-        Helpers.Users.toggleTwoFactor(true, user.id_42).then((res) => {console.log(res);}); //toggle when qr code scanned
+        // eslint-disable-next-line no-unused-vars
+        Helpers.Users.toggleTwoFactor(true, user.id_42).then((res) => {res = res;}); //toggle when qr code scanned
         navigate('/2fa');
     };
 

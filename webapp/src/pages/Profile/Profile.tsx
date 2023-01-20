@@ -198,10 +198,10 @@ const Profile = () => {
                 }
             </h1>
             <h2>
-`                <div id='statistics'>
+                <div id='statistics'>
                     <UserInfos/>
                 </div>
-            </h2>`
+            </h2>
         </Fragment>
     );
 };

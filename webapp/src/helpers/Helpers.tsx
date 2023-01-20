@@ -4,6 +4,7 @@ import History from "./History";
 import Matchmaking from "./Matchmaking";
 import Friends from "./Friends";
 import Live from './Live';
+import Invitations from "./Invitations";
 
 const Helpers = {
     Users,
@@ -11,7 +12,8 @@ const Helpers = {
     History,
     Matchmaking,
     Friends,
-    Live
+    Live,
+    Invitations
 };
 
 export default Helpers;

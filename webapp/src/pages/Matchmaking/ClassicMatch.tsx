@@ -5,7 +5,7 @@ import Helpers from "../../helpers/Helpers";
 import { io } from 'socket.io-client';
 import { useNavigate } from "react-router-dom";
 
-const Matchmaking = () => {
+const ClassicMatch = () => {
 
     const [waiting, setWaiting] = useState<boolean>(false);
     const socket = io('http://localhost:5000', { transports: ['websocket'] });
@@ -23,11 +23,12 @@ const Matchmaking = () => {
     }, []);
 
     const match_request = () => {
-        Helpers.Matchmaking.getRequests(1).then((res) => {
+        Helpers.Matchmaking.getRequests(2).then((res) => {
             if (res?.result.length === 0)
             {
                 setWaiting(true);
-                Helpers.Matchmaking.matchRequest(user.id_42, 1).then((res) => res = res);
+                // eslint-disable-next-line no-unused-vars
+                Helpers.Matchmaking.matchRequest(user.id_42, 2).then((res) => {res = res;});
             }
             else
             {
@@ -35,7 +36,7 @@ const Matchmaking = () => {
                     return ;
                 else if (res?.result[0].id_42 === user.id_42)
                 {
-                    socket.emit('matchmaking', {
+                    socket.emit('classic', {
                         data: {
                             target: res?.result[1].id_42.toString(),
                             callback: user.id_42,
@@ -43,7 +44,7 @@ const Matchmaking = () => {
                         }
                     });
                 }
-                socket.emit('matchmaking', {
+                socket.emit('classic', {
                     data: {
                         target: res?.result[0].id_42.toString(),
                         callback: user.id_42,
@@ -56,25 +57,25 @@ const Matchmaking = () => {
 
     const match_cancel = () => {
         setWaiting(false);
-        Helpers.Matchmaking.matchCancel(user.id_42, 1).then((res) => res = res);
+        Helpers.Matchmaking.matchCancel(user.id_42, 2).then((res) => res = res);
     };
 
     const showDemands = () => {
-        Helpers.Matchmaking.getRequests(1).then((res) => res = res);
+        Helpers.Matchmaking.getRequests(2).then((res) => res = res);
     };
 
-    socket.on(user.id_42.toString() + 'matchmaking', (data: { id_incoming: number, confirmation:boolean, nickname: string }) => {
+    socket.on(user.id_42.toString() + 'classic', (data: { id_incoming: number, confirmation:boolean, nickname: string }) => {
         if (!data.confirmation)
         {
-            Helpers.Matchmaking.matchCancel(user.id_42, 1).then((res) => res = res);
-            socket.emit('confirmation', {
+            Helpers.Matchmaking.matchCancel(user.id_42, 2).then((res) => res = res);
+            socket.emit('confirmation_classic', {
                 data: {
                     target: data.id_incoming.toString(),
                     callback: user.id_42,
                     nickname: user.nickname,
                 }
             });
-            navigate('/play/bonus', {
+            navigate('/play/classic', {
                 state: {
                     my_id: user.id_42,
                     opp_id: data.id_incoming,
@@ -86,7 +87,7 @@ const Matchmaking = () => {
         }
         else
         {
-            navigate('/play/bonus', {
+            navigate('/play/classic', {
                 state: {
                     my_id: user.id_42,
                     opp_id: data.id_incoming,
@@ -137,7 +138,7 @@ const Matchmaking = () => {
                         }}
                     >
                         <Button onClick={match_request} color="primary" variant="contained" sx={{mt:'90px'}} >
-                                Find opponent for bonus
+                                Find opponent for classic
                         </Button>
                     </Box>
             }
@@ -148,4 +149,4 @@ const Matchmaking = () => {
     );
 };
 
-export default Matchmaking;
+export default ClassicMatch;
