@@ -40,6 +40,10 @@ const getSentRequests = async(): Promise<any> => {
     return await axios.get(`${Config.Api.url}/friends/requests/sent`).then((res) => res.data);
 };
 
+const getFriendList = async(): Promise<any> => {
+    return await axios.get(`${Config.Api.url}/friends/requests/friendlist`).then((res) => res.data);
+};
+
 const is_user_blocked = async(user_id: string, user_id_profile: string) => {
     try {
         const req = await axios.get(`${Config.Api.url}/friends/blocked/${user_id}/${user_id_profile}`);
@@ -56,6 +60,7 @@ const Friends = {
     getFriendRequestStatus,
     acceptFriendRequest,
     getSentRequests,
+    getFriendList,
     is_user_blocked,
 };
 

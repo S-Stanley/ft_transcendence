@@ -2,16 +2,17 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 import { Avatar, Box, Card, Button, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
 import Helpers from '../../../helpers/Helpers';
 import { useNavigate } from 'react-router-dom';
-import { useState} from 'react';
 import Cookies from 'universal-cookie';
+import { useState, useEffect } from 'react';
 
 const AddFriendButton = ( { friendUser }) => {
 
     const [friendStatus, setFriendStatus] = useState('initial');
     const cookies = new Cookies();
 
-    Helpers.Friends.getFriendRequestStatus(friendUser).then(res => {
-        setFriendStatus(res);});
+    useEffect(() => {
+        Helpers.Friends.getFriendRequestStatus(friendUser).then((res) => setFriendStatus(res));
+    }, [false]);
 
     switch (friendStatus) {
     case 'accepted':

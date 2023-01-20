@@ -5,7 +5,7 @@ import { FriendList } from './customer/friend-list';
 import { Box, Card, CardContent, TextField, Typography, } from '@mui/material';
 import { FriendRequests } from './customer/friend-requests';
 import { FriendRequestsSent } from './customer/friend-requests-sent';
-
+import { UserFriendList } from './customer/user-friend-list';
 
 const FriendSearch = () => {
 
@@ -64,11 +64,49 @@ const FriendSearch = () => {
                             sx={{ m: 1 }}
                             variant="h4"
                         >
-                                Friend Requests Sent
+                            Friends
+                        </Typography>
+                    </Box>
+                    <Box sx={{ mt: 3 }}>
+                        <UserFriendList />
+                    </Box>
+                    <Box
+                        sx={{
+                            alignItems: 'center',
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            flexWrap: 'wrap',
+                            m: -1
+                        }}
+                    >
+                        <Typography
+                            sx={{ m: 1, mt:5 }}
+                            variant="h4"
+                        >
+                                Requests Sent
                         </Typography>
                     </Box>
                     <Box sx={{ mt: 3 }}>
                         <FriendRequestsSent requests={requestsSent}/>
+                    </Box>
+                    <Box
+                        sx={{
+                            alignItems: 'center',
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            flexWrap: 'wrap',
+                            m: -1
+                        }}
+                    >
+                        <Typography
+                            sx={{ m: 1, mt: 5 }}
+                            variant="h4"
+                        >
+                            Requests Received
+                        </Typography>
+                    </Box>
+                    <Box sx={{ mt: 3 }}>
+                        <FriendRequests requests={friendRequests} />
                     </Box>
                     <Box>
                         <Box
@@ -102,25 +140,6 @@ const FriendSearch = () => {
                                 </CardContent>
                             </Card>
                         </Box>
-                    </Box>
-                    <Box
-                        sx={{
-                            alignItems: 'center',
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            flexWrap: 'wrap',
-                            m: -1
-                        }}
-                    >
-                        <Typography
-                            sx={{ m: 1, mt: 5 }}
-                            variant="h4"
-                        >
-                            Friend Requests
-                        </Typography>
-                    </Box>
-                    <Box sx={{ mt: 3 }}>
-                        <FriendRequests requests={friendRequests} />
                     </Box>
                     <Box sx={{ mt: 3 }}>
                         <FriendList users={users.filter((value) => value.nickname.includes(search) && value.id_42 != user.id_42)} />
