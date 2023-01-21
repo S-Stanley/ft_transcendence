@@ -336,6 +336,32 @@ export class ChatController {
         return (true);
     }
 
+    @Get('/owner/:chat_id')
+    async getOwnerByChatId(@Param() params){
+        try {
+            const owner_chan = await this.db.query(
+                `
+                    SELECT
+                        users.nickname,
+                        users.id
+                    FROM
+                        public.chat
+                    JOIN
+                        public.users
+                    ON
+                        users.id = chat.created_by
+                    WHERE
+                        chat.id = $1;
+                `,
+                [params?.chat_id]
+            );
+            return (owner_chan?.rows[0]);
+        } catch (e) {
+            console.error(e);
+            throw new HttpException('There was an error from our side', 500);
+        }
+    }
+
     @Get('/admin/:chat_id/:user_id')
     async IsUserAdmin(@Param() params){
         try {
