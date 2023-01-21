@@ -84,4 +84,9 @@ export class SocketGateway {
             p_r: message.data?.p_r,
         });
     }
+
+    @SubscribeMessage('ban_user')
+    banUser(@MessageBody() message: { nickname: string, chat_id: string } ): void {
+        this.server.emit(`ban-${message?.chat_id}-${message?.nickname}`);
+    }
 }

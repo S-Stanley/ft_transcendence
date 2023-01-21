@@ -5,6 +5,9 @@ import Helpers from "../../helpers/Helpers";
 import { toast } from "react-toastify";
 import './Settings.scss';
 import Cookies from 'universal-cookie';
+import { io } from 'socket.io-client';
+
+const socket = io('http://localhost:5000', { transports: ['websocket'] });
 
 const Settings = () => {
 
@@ -16,7 +19,9 @@ const Settings = () => {
     const [checkedIndex, setCheckedIndex] = useState<number[]>([]);
     const [initialIndexAdmin, setInitialIndexAdmin] = useState<number[]>([]);
     const [blockUserInput, setBlockUserInput] = useState<string>('');
+    const [banUserInput, setBanUserInput] = useState<string>('');
     const [allUsersBlocked, setAllUsersBlocked] = useState<{id: string, nickname: string}[]>([]);
+    const [allBannedUser, setAllBannedUser] = useState<{id: string, nickname: string}[]>([]);
 
     const handleSubmit = async() => {
         const req = await Helpers.Messagerie.update_password_chat(
@@ -76,6 +81,26 @@ const Settings = () => {
         }
     };
 
+    const get_all_banned_users = async() => {
+        const req = await Helpers.Messagerie.get_all_baned_users(chat_id ?? '');
+        if (req) {
+            setAllBannedUser(req);
+        }
+    };
+
+    const handleBanUserSubmit = async() => {
+        const req = await Helpers.Messagerie.add_baned_users(chat_id ?? '', banUserInput);
+        if (req) {
+            toast.success('user succefully banned');
+            get_all_banned_users();
+            socket.emit('ban_user', {
+                nickname: banUserInput,
+                chat_id: chat_id,
+            });
+            setBanUserInput('');
+        }
+    };
+
     const getAllUsersBlocked = async () => {
         const req = await Helpers.Messagerie.get_all_users_blocked_by_public_chat(
             chat_id ?? ''
@@ -88,6 +113,7 @@ const Settings = () => {
     useEffect(() => {
         getMembersAndAdmin();
         getAllUsersBlocked();
+        get_all_banned_users();
     }, [false]);
 
     return (
@@ -165,6 +191,35 @@ const Settings = () => {
                                 getAllUsersBlocked();
                             }
                         }}>Unblock</span></li>
+                    );
+                })}
+            </div>
+            <hr/>
+            <div>
+                <p>Ban user</p>
+                <TextField
+                    label="Enter the name of the users you want to ban"
+                    variant="standard"
+                    value={banUserInput}
+                    onChange={(e) => setBanUserInput(e.target.value)}
+                />
+                <Button
+                    variant='contained'
+                    onClick={handleBanUserSubmit}
+                >
+                    Ban this user
+                </Button>
+                <br/>
+                <br/>
+                {allBannedUser.map((item) => {
+                    return (
+                        <li>{item?.nickname} <span className='span-user-blocked' onClick={async() => {
+                            const req = await Helpers.Messagerie.delete_baned_users(chat_id ?? '', item.id);
+                            if (req) {
+                                toast.success('User succefully unban');
+                                get_all_banned_users();
+                            }
+                        }}>Unban</span></li>
                     );
                 })}
             </div>

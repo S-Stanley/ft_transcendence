@@ -204,6 +204,39 @@ const   delete_blocked_users = async (chat_id: string, blocked_row_id: string) =
     }
 };
 
+const   get_all_baned_users = async(chat_id: string) => {
+    try {
+        const req = await axios.get(`${Config.Api.url}/chat/${chat_id}/ban`);
+        return (req.data);
+    } catch (e) {
+        console.error(e);
+        toast.error("There was an error from our side, please try again later");
+        return (null);
+    }
+};
+
+const   add_baned_users = async(chat_id: string, nickname: string) => {
+    try {
+        const req = await axios.post(`${Config.Api.url}/chat/${chat_id}/ban/${nickname}`);
+        return (req.data);
+    } catch (e) {
+        console.error(e);
+        toast.error("There was an error from our side, please try again later");
+        return (null);
+    }
+};
+
+const   delete_baned_users = async(chat_id: string, ban_id: string) => {
+    try {
+        const req = await axios.delete(`${Config.Api.url}/chat/${chat_id}/ban/${ban_id}`);
+        return (req.data);
+    } catch (e) {
+        console.error(e);
+        toast.error("There was an error from our side, please try again later");
+        return (null);
+    }
+};
+
 const Messagerie = {
     create_or_get_discussion,
     send_message_to_discussion,
@@ -220,6 +253,9 @@ const Messagerie = {
     block_user_in_public_chat,
     get_all_users_blocked_by_public_chat,
     delete_blocked_users,
+    get_all_baned_users,
+    add_baned_users,
+    delete_baned_users
 };
 
 export default Messagerie;

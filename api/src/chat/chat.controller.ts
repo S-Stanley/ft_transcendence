@@ -1,4 +1,4 @@
-import { Controller, Post, Body, HttpException, Param, Get, Put, Patch } from '@nestjs/common';
+import { Controller, Post, Body, HttpException, Param, Get, Put, Patch, Delete } from '@nestjs/common';
 import { Injectable, Inject } from '@nestjs/common';
 import { isValidUUIDV4 } from 'is-valid-uuid-v4';
 import { Users } from 'src/entities/user.entity';
@@ -365,6 +365,23 @@ export class ChatController {
     @Post('/join')
     async joinChat(@Body() body){
         try {
+            const can_it_join = await this.db.query (
+                `
+                    SELECT
+                        *
+                    FROM
+                        public.banned_user
+                    WHERE
+                        chat_id = $1
+                    AND
+                        user_id = $2;
+                `,
+                [body?.chat_id, body?.user_id]
+            );
+            console.log('**', can_it_join);
+            if ((can_it_join?.rows ?? []).length > 0){
+                throw new HttpException('You are banned from this chat', 500);
+            }
             const join_chat = await this.db.query(
                 'SELECT * FROM public.join_public_chat($1::UUID, $2::INT, $3::VARCHAR)',
                 [body?.chat_id, body?.user_id, body?.password]
@@ -654,6 +671,100 @@ export class ChatController {
                         id=$1
                 `,
                 [body?.blocked_row_id]
+            );
+            return (true);
+        } catch (e) {
+            console.error(e);
+            throw new HttpException('Error from our side', 500);
+        }
+    }
+
+    @Get('/:chat_id/ban')
+    async getAllBannedUsers(@Param() params){
+        try {
+            const all_banned_users = await this.db.query(
+                `
+                    SELECT
+                        users.nickname,
+                        banned_user.id AS id
+                    FROM
+                        public.banned_user
+                    JOIN
+                        public.users
+                    ON
+                        banned_user.user_id = users.id
+                    WHERE
+                        chat_id = $1;
+                `,
+                [params?.chat_id]
+            );
+            return (all_banned_users?.rows ?? []);
+        } catch (e) {
+            console.error(e);
+            throw new HttpException('Error from our side', 500);
+        }
+    }
+
+    @Post('/:chat_id/ban/:nickname')
+    async createAllBannedUsers(@Param() params){
+        try {
+            await this.db.query(
+                `
+                    INSERT INTO
+                        public.banned_user (
+                            user_id,
+                            chat_id
+                        )
+                    VALUES (
+                        (
+                            SELECT
+                                id
+                            FROM
+                                public.users
+                            WHERE
+                                nickname = $1
+                        ),
+                        $2
+                    );
+                `,
+                [params?.nickname, params?.chat_id]
+            );
+            await this.db.query(
+                `
+                    DELETE FROM
+                        public.chat_member
+                    WHERE
+                        user_id = (
+                            SELECT
+                                id
+                            FROM
+                                public.users
+                            WHERE
+                                nickname = $1
+                        )
+                    AND
+                        chat_id = $2;
+                `,
+                [params?.nickname, params?.chat_id]
+            );
+            return (true);
+        } catch (e) {
+            console.error(e);
+            throw new HttpException('Error from our side', 500);
+        }
+    }
+
+    @Delete('/:chat_id/ban/:ban_id')
+    async patchAllBannedUsers(@Param() params){
+        try {
+            await this.db.query(
+                `
+                    DELETE FROM
+                        public.banned_user
+                    WHERE
+                        id = $1;
+                `,
+                [params?.ban_id]
             );
             return (true);
         } catch (e) {
