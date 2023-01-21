@@ -6,7 +6,6 @@ import './Chat.scss';
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { MessagerieInterface } from "../../interfaces/messagerie";
 import Cookies from 'universal-cookie';
-
 const socket = io('http://localhost:5000', { transports: ['websocket'] });
 
 const Chat = () => {
@@ -73,6 +72,10 @@ const Chat = () => {
             content: data?.content,
             nickname: data?.nickname,
         }]);
+    });
+
+    socket.on(`ban-${chat_id}-${cookies.get('nickname')}`, () => {
+        navigate('/messagerie');
     });
 
     useEffect(() => {

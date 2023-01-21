@@ -149,7 +149,7 @@ const Messaging = () => {
                                                 )) {
                                                     navigateToChat(discussion.id);
                                                 } else {
-                                                    toast.error('Wrong password');
+                                                    toast.error('Wrong password or banned from chat');
                                                 }
                                             }
                                         }
