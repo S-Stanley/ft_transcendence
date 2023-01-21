@@ -13,6 +13,11 @@ export class FriendRequestController {
         return this.friendRequestService.getSentRequests(user);
     }
 
+    @Get('/requests/friendlist')
+    getFriendList(@UserConnected() user: Users): Promise<any> {
+        return this.friendRequestService.getFriendList(user);
+    }
+
     @Get('/requests/:user')
     getFriendshipStatusAction(@Param('user') otherUser: string, @UserConnected() user: Users): Promise<any> {
         return this.friendRequestService.getFriendshipStatus(otherUser, user);

@@ -122,4 +122,39 @@ export class FriendRequestService {
         }
         return usersProfile;
     }
+
+    async getFriendList(user: Users): Promise<any> {
+        const usersProfile = [];
+        const friendSender = await this.friendRequestRepository.findBy({
+            sender: user.id,
+            current_status: 'accepted'
+        });
+        let sender;
+        const senderId = friendSender.map(friend => friend.receiver);
+        for (let i = 0; i < senderId.length; i++) {
+            sender = await this.userRepository.findOneBy({
+                id: senderId[i]
+            });
+            usersProfile.push({
+                nickname: sender.nickname,
+                avatar: sender.avatar
+            });
+        }
+        const friendReceiver = await this.friendRequestRepository.findBy({
+            receiver: user.id,
+            current_status: 'accepted'
+        });
+        let receiver;
+        const receiverIds = friendReceiver.map(req => req.sender);
+        for (let i = 0; i < receiverIds.length; i++) {
+            receiver = await this.userRepository.findOneBy({
+                id: receiverIds[i]
+            });
+            usersProfile.push({
+                nickname: receiver.nickname,
+                avatar: receiver.avatar
+            });
+        }
+        return usersProfile;
+    }
 }
