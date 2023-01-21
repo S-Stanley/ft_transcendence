@@ -127,6 +127,6 @@ CREATE TABLE IF NOT EXISTS public.blocked_users(
 
     CONSTRAINT  fk_user_id FOREIGN KEY (user_id) REFERENCES public.users (id),
     CONSTRAINT  fk_blocked_user FOREIGN KEY (blocked_user_id) REFERENCES public.users (id),
-    CONSTRAINT  fk_chat_id FOREIGN KEY (chat_id) REFERENCES public.chat (id) 
+    CONSTRAINT  fk_chat_id FOREIGN KEY (chat_id) REFERENCES public.chat (id)
 );
 
