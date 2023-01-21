@@ -248,6 +248,17 @@ const   get_all_user_blocked_by_user_id = async(user_id: string) => {
     }
 };
 
+const   get_owner_chat = async (chat_id: string) => {
+    try {
+        const req = await axios.get(`${Config.Api.url}/chat/owner/${chat_id}`);
+        return (req.data);
+    } catch (e) {
+        console.error(e);
+        toast.error("There was an error from our side, please try again later");
+        return (null);
+    }
+};
+
 const Messagerie = {
     create_or_get_discussion,
     send_message_to_discussion,
@@ -268,6 +279,7 @@ const Messagerie = {
     add_baned_users,
     delete_baned_users,
     get_all_user_blocked_by_user_id,
+    get_owner_chat,
 };
 
 export default Messagerie;

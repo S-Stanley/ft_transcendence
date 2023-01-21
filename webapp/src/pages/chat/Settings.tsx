@@ -22,6 +22,7 @@ const Settings = () => {
     const [banUserInput, setBanUserInput] = useState<string>('');
     const [allUsersBlocked, setAllUsersBlocked] = useState<{id: string, nickname: string}[]>([]);
     const [allBannedUser, setAllBannedUser] = useState<{id: string, nickname: string}[]>([]);
+    const [chatOwner, setChatOwner] = useState<{nickname: string, chat_id: string}>();
 
     const handleSubmit = async() => {
         const req = await Helpers.Messagerie.update_password_chat(
@@ -31,6 +32,13 @@ const Settings = () => {
         );
         if (req) {
             toast.success('The password for this chat has been update');
+        }
+    };
+
+    const get_owner_chat = async () => {
+        const req = await Helpers.Messagerie.get_owner_chat(chat_id ?? '');
+        if (req) {
+            setChatOwner(req);
         }
     };
 
@@ -68,7 +76,11 @@ const Settings = () => {
         }
     };
 
-    const handleBlockUserSubmit = async() => {
+    const handleBlockUserSubmit = async(): Promise<void> => {
+        if (blockUserInput === chatOwner?.nickname) {
+            toast.error('You cannot block the chanel owner');
+            return ;
+        }
         const req = await Helpers.Messagerie.block_user_in_public_chat(
             chat_id ?? '',
             blockUserInput,
@@ -89,6 +101,10 @@ const Settings = () => {
     };
 
     const handleBanUserSubmit = async() => {
+        if (banUserInput === chatOwner?.nickname) {
+            toast.error('You cannot ban the chanel owner');
+            return ;
+        }
         const req = await Helpers.Messagerie.add_baned_users(chat_id ?? '', banUserInput);
         if (req) {
             toast.success('user succefully banned');
@@ -114,6 +130,7 @@ const Settings = () => {
         getMembersAndAdmin();
         getAllUsersBlocked();
         get_all_banned_users();
+        get_owner_chat();
     }, [false]);
 
     return (
