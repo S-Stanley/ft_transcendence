@@ -542,6 +542,31 @@ export class ChatController {
         }
     }
 
+    @Get('/block/:user_id')
+    async getAllUserBlockedByUserId(@Param() params) {
+        try {
+            const get_all_user_block_by_user_id = await this.db.query(
+                `
+                    SELECT
+                        users.nickname
+                    FROM
+                        public.blocked_users
+                    JOIN
+                        public.users
+                    ON
+                        users.id = blocked_users.blocked_user_id
+                    WHERE
+                        user_id = $1;
+                `,
+                [params?.user_id]
+            );
+            return (get_all_user_block_by_user_id?.rows ?? []);
+        } catch (e) {
+            console.error(e);
+            throw new HttpException('There was an error from our side, please try again later', 500);
+        }
+    }
+
     @Post('/public/block')
     async BlockUserInPublicChat(@Body() body){
         try {
