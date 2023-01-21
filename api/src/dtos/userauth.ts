@@ -6,4 +6,5 @@ export interface UserAuth {
     avatar: string,
     nickname: string,
     two_factor_enabled: boolean,
+    first_connexion: boolean
 }

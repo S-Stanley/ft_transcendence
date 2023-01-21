@@ -16,6 +16,7 @@ export class UserService {
 
     async authUser(code: string): Promise<UserAuth> {
         const token = await this.getToken(code);
+        let first_connexion = false;
         const user42 = await this.getUserInformationFrom42(token.data.access_token);
         let user = await this.userRepository.findOneBy({
             id_42: user42.id
@@ -28,6 +29,7 @@ export class UserService {
             user.pass = '';
             user.avatar = user42.image.link;
             user.two_factor_enabled = false;
+            first_connexion = true;
         }
         user.access_token = token.data.access_token;
         user.refresh_token = token.data.refresh_token;
@@ -41,6 +43,7 @@ export class UserService {
             nickname: usr.nickname,
             avatar: usr.avatar,
             two_factor_enabled: usr.two_factor_enabled,
+            first_connexion: first_connexion
         });
     }
 
