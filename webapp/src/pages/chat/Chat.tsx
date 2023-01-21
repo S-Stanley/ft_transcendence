@@ -16,6 +16,7 @@ const Chat = () => {
     const [chatMembers, setChatMembers] = useState<{ nickname: string, avatar: string }[]>();
     const [allMessages, setAllMessages] = useState<{content: string, nickname: string}[]>([]);
     const [answer, setAnswer] = useState<string>('');
+    const [user42, setUser42] = useState<number>(0);
     const location = useLocation();
     const navigate = useNavigate();
     const { chat_id } = useParams();
@@ -61,6 +62,12 @@ const Chat = () => {
         }
     };
 
+    const get42Ids = async() => {
+        const data = await Helpers.Users.me();
+        if (data?.id_42 !== undefined)
+            setUser42(data?.id_42);
+    };
+
     socket.on(location?.state?.chat_id, (data: { content: string, nickname: string, chat_id: string, avatar: string, msg_id: string }) => {
         setAllMessages([...allMessages, {
             content: data?.content,
@@ -72,6 +79,7 @@ const Chat = () => {
         getAllMessages();
         isUserAdmin();
         getChatInfo();
+        get42Ids();
     }, [false]);
 
     return (
@@ -116,7 +124,12 @@ const Chat = () => {
                                             Do you want to play a pong game ?&nbsp;
                                             <u
                                                 className='invitation-chat-ling'
-                                                onClick={() => navigate(msg?.content.split('http://localhost:3000')[1])}
+                                                onClick={() => navigate(msg?.content.split('http://localhost:3000')[1], {
+                                                    state: {
+                                                        my_id: user42,
+                                                        nickname: localStorage.getItem('nickname'),
+                                                    }
+                                                })}
                                             >
                                                 Click here to join
                                             </u>

@@ -1,19 +1,14 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
-export class Matchmaking {
+export class Invitations {
     @PrimaryGeneratedColumn()
         id: number;
 
     @Column({
         nullable: false
     })
-        id_42: number;
-
-    @Column({
-        nullable: false
-    })
-        type: number;
+        game_id: string;
 
     @Column({
         default: new Date(),

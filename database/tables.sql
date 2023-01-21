@@ -48,6 +48,13 @@ CREATE TABLE IF NOT EXISTS public.history(
 CREATE TABLE IF NOT EXISTS public.matchmaking(
     id                  SERIAL PRIMARY KEY NOT NULL UNIQUE,
     id_42               INT NOT NULL,
+    type                INT NOT NULL,
+    created_at          DATE DEFAULT NOW() NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS public.invitations(
+    id                  SERIAL PRIMARY KEY NOT NULL UNIQUE,
+    game_id             VARCHAR(255) NOT NULL,
     created_at          DATE DEFAULT NOW() NOT NULL
 );
 

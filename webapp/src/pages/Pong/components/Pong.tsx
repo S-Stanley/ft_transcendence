@@ -67,8 +67,7 @@ const Pong = () => {
         }
         if (parseInt(computerScoreElem.textContent) === 1 || parseInt(playerScoreElem.textContent) === 1)
         {
-            const add = await Helpers.History.add_match(parseInt(playerScoreElem.textContent), playerPongs, parseInt(computerScoreElem.textContent), 'computer (hc)');
-            console.log(add);
+            await Helpers.History.add_match(parseInt(playerScoreElem.textContent), playerPongs, parseInt(computerScoreElem.textContent), 'computer (hc)');
             stop = true;
             setEnd(true);
         }

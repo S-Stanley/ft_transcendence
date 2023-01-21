@@ -2,10 +2,11 @@ import Config from "../config/Config";
 import axios from 'axios';
 import { MatchmakingRequest } from "../interfaces/mathmaking";
 
-const matchRequest = async (id_42:number): Promise<MatchmakingRequest | null> => {
+const matchRequest = async (id_42:number, type:number): Promise<MatchmakingRequest | null> => {
     try {
         const res = await axios.post(`${Config.Api.url}/matchmaking/add`, {
             id_42: id_42,
+            type: type,
         });
         return (res.data);
     } catch (e) {
@@ -14,9 +15,9 @@ const matchRequest = async (id_42:number): Promise<MatchmakingRequest | null> =>
     }
 };
 
-const getRequests = async (): Promise<any> => {
+const getRequests = async (type:number): Promise<any> => {
     try {
-        const res = await axios.get(`${Config.Api.url}/matchmaking/requests`);
+        const res = await axios.get(`${Config.Api.url}/matchmaking/requests/${type}`);
         return (res.data);
     } catch (e) {
         console.error(e);
@@ -24,10 +25,11 @@ const getRequests = async (): Promise<any> => {
     }
 };
 
-const matchCancel = async (id_42:number): Promise<null> => {
+const matchCancel = async (id_42:number, type:number): Promise<null> => {
     try {
         await axios.post(`${Config.Api.url}/matchmaking/cancel`, {
             id_42: id_42,
+            type: type,
         });
         return (null);
     } catch (e) {

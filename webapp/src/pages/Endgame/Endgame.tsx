@@ -14,25 +14,11 @@ const Endgame = () => {
         opp_id: 0,
         my_nickname: "",
         opp_nickname: "",
+        type: 0,
     });
 
     const [waiting, setWaiting] = useState<boolean>(false);
     const [oppWaiting, setOppWaiting] = useState<boolean>(false);
-    // let my_id = 0;
-    // let opp_id = 0;
-    // let my_nickname = "";
-    // let opp_nickname = "";
-
-    // {
-    //     // eslint-disable-next-line no-unused-expressions
-    //     data.is_one ? (my_id = data.id_one) : (my_id = data.id_two);
-    //     // eslint-disable-next-line no-unused-expressions
-    //     data.is_one ? (opp_id = data.id_two) : (opp_id = data.id_one);
-    //     // eslint-disable-next-line no-unused-expressions
-    //     data.is_one ? (my_nickname = data.player_one) : (opp_id = data.player_two);
-    //     // eslint-disable-next-line no-unused-expressions
-    //     data.is_one ? (opp_nickname = data.player_two) : (opp_nickname = data.player_one);
-    // }
 
     useEffect(() => {
         if (location?.state?.is_one) {
@@ -41,6 +27,8 @@ const Endgame = () => {
                 opp_id: location?.state?.id_two,
                 my_nickname: location?.state?.player_one,
                 opp_nickname: location?.state?.player_two,
+                type: location?.state?.type,
+
             });
         } else {
             setLocations({
@@ -48,6 +36,7 @@ const Endgame = () => {
                 opp_id: location?.state?.id_one,
                 my_nickname: location?.state?.player_two,
                 opp_nickname: location?.state?.player_one,
+                type: location?.state?.type,
             });
         }
     }, [false]);
@@ -65,15 +54,30 @@ const Endgame = () => {
                 },
             });
             setWaiting(false);
-            navigate("/play/bonus", {
-                state: {
-                    my_id: locations.my_id,
-                    opp_id: locations.opp_id,
-                    opp_nickname: locations.opp_nickname,
-                    nickname: locations.my_nickname,
-                    player: 2,
-                },
-            });
+            if (locations.type === 1)
+            {
+                navigate("/play/bonus", {
+                    state: {
+                        my_id: locations.my_id,
+                        opp_id: locations.opp_id,
+                        opp_nickname: locations.opp_nickname,
+                        nickname: locations.my_nickname,
+                        player: 2,
+                    },
+                });
+            }
+            else
+            {
+                navigate("/play/classic", {
+                    state: {
+                        my_id: locations.my_id,
+                        opp_id: locations.opp_id,
+                        opp_nickname: locations.opp_nickname,
+                        nickname: locations.my_nickname,
+                        player: 2,
+                    },
+                });
+            }
         } else {
             setWaiting(true);
             socket.emit("replay", {
@@ -113,15 +117,30 @@ const Endgame = () => {
             confirmation: boolean;
         }) => {
             if (data.confirmation) {
-                navigate("/play/bonus", {
-                    state: {
-                        my_id: locations.my_id,
-                        opp_id: locations.opp_id,
-                        opp_nickname: locations.opp_nickname,
-                        nickname: locations.my_nickname,
-                        player: 1,
-                    },
-                });
+                if (locations.type == 1)
+                {
+                    navigate("/play/bonus", {
+                        state: {
+                            my_id: locations.my_id,
+                            opp_id: locations.opp_id,
+                            opp_nickname: locations.opp_nickname,
+                            nickname: locations.my_nickname,
+                            player: 1,
+                        },
+                    });
+                }
+                else
+                {
+                    navigate("/play/classic", {
+                        state: {
+                            my_id: locations.my_id,
+                            opp_id: locations.opp_id,
+                            opp_nickname: locations.opp_nickname,
+                            nickname: locations.my_nickname,
+                            player: 1,
+                        },
+                    });
+                }
             } else {
                 if (data.cancel) {
                     setOppWaiting(false);

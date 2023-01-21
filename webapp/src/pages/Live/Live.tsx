@@ -28,9 +28,7 @@ export const Live = () => {
         try {
             const res = await Helpers.Live.liveRequest();
             if (res != undefined) setValues(res);
-        } catch (e) {
-            console.log(e);
-        }
+        } catch (e) {}
     };
 
     useEffect(() => {

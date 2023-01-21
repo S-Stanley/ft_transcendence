@@ -8,7 +8,6 @@ import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 const Statistics = (props:any) => {
 
     const statistics_list = ['ratio', 'wins', 'loses', 'default', 'pongs', 'scored', 'taken', 'default'];
-    console.log(props);
 
     return (
         <Container maxWidth={false}>

@@ -44,6 +44,8 @@ import Spectating from '../Spectating';
 import Endgame from '../Endgame/Endgame';
 import Forfait from '../Forfait/Forfait';
 import PrivateGame from '../Matchmaking/PrivateGame';
+import Classic from '../Classic/Classic';
+import ClassicMatch from '../Matchmaking/ClassicMatch';
 
 
 
@@ -125,7 +127,7 @@ export default function PersistentDrawerLeft() {
     };
 
     const is_public_page = [
-        '/', '/login/email', '/oauth2-redirect', '/2fa', '/login/email/', '/oauth2-redirect/', '/2fa/', '/play/pong', '/play/plong/', '/play/bonus', '/login', '/play/spectating'].includes(window.location.pathname);
+        '/', '/login/email', '/oauth2-redirect', '/2fa', '/login/email/', '/oauth2-redirect/', '/2fa/', '/play/pong', '/play/plong/', '/play/bonus', '/login', '/play/spectating', '/play/classic'].includes(window.location.pathname);
 
     const handleCloseTab = () => {
         Helpers.Users.updateStatus(cookies.get('nickname')!, 'offline');
@@ -267,6 +269,8 @@ export default function PersistentDrawerLeft() {
                     <Route path="/play/spectating" element={<Spectating/>}/>
                     <Route path="/play/endgame" element={<Endgame/>}/>
                     <Route path="/play/forfait" element={<Forfait/>}/>
+                    <Route path="/play/classic" element={<Classic/>}/>
+                    <Route path="/play/classic_search" element={<ClassicMatch/>}/>
                 </Routes>
             ) : (
                 <Main open={open}>
@@ -298,6 +302,8 @@ export default function PersistentDrawerLeft() {
                         <Route path="/play/spectating" element={<Spectating/>}/>
                         <Route path="/play/endgame" element={<Endgame/>}/>
                         <Route path="/play/forfait" element={<Forfait/>}/>
+                        <Route path="/play/classic" element={<Classic/>}/>
+                        <Route path="/play/classic_search" element={<ClassicMatch/>}/>
                     </Routes>
                 </Main>
             )}

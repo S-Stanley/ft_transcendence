@@ -1,82 +1,109 @@
-import { Box, Button } from "@mui/material";
+import {
+    Button,
+    FormControlLabel,
+    Paper,
+    Switch,
+    Typography,
+} from "@mui/material";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { v4 } from 'uuid';
+import { v4 } from "uuid";
 
 export const Play = () => {
+    const [checked, setChecked] = useState(true);
+    const [invit, setInvit] = useState(true);
+
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setChecked(event.target.checked);
+    };
+
+    const handleInvit = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setInvit(event.target.checked);
+    };
+
+    const navigate = useNavigate();
+
+    const handleMatchType = () => {
+        if (checked) navigate("/play/matchmaking");
+        else navigate("/play/classic_search");
+    };
 
     return (
         <>
-            <Box
+            <Paper
                 sx={{
-                    alignItems: 'center',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    mt:'100px',
+                    p: 2,
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                    height: 220,
+                    mt: "100px",
                 }}
             >
+                <Typography sx={{ mb: "100px", mt: "50px" }} variant="h4">
+                    Choose mode
+                </Typography>
                 <Button
                     color="secondary"
                     variant="contained"
                     size="large"
-                    href="/play/pong"
+                    onClick={handleMatchType}
                 >
-                    Play Pong
+                    Quick Game
                 </Button>
-            </Box>
-            <Box
-                sx={{
-                    alignItems: 'center',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    mt:'100px',
-                }}
-            >
+                <FormControlLabel
+                    sx={{ ml: "15px" }}
+                    control={
+                        <Switch
+                            checked={checked}
+                            onChange={handleChange}
+                            inputProps={{
+                                "aria-label": "controlled",
+                            }}
+                        />
+                    }
+                    label="With Bonus"
+                />
                 <Button
-                    color="secondary"
-                    variant="contained"
-                    size="large"
-                    href="/play/matchmaking"
-                >
-                    Matchmaking
-                </Button>
-            </Box>
-            <Box
-                sx={{
-                    alignItems: 'center',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    mt:'100px',
-                }}
-            >
-                <Button
+                    sx={{ mt: "30px" }}
                     color="secondary"
                     variant="contained"
                     size="large"
                     onClick={() => {
-                        navigator.clipboard.writeText(`http://localhost:3000/play/matchmaking/${v4()}`);
-                        toast.success('Private link has been copied into your clipboard');
+                        navigator.clipboard.writeText(
+                            `http://localhost:3000/play/matchmaking/${v4()}-${invit}`
+                        );
+                        toast.success(
+                            "Private link has been copied into your clipboard"
+                        );
                     }}
                 >
-                    Create private game
+                    Create Game
                 </Button>
-            </Box>
-            <Box
-                sx={{
-                    alignItems: 'center',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    mt:'100px',
-                }}
-            >
+                <FormControlLabel
+                    sx={{ ml: "15px" }}
+                    control={
+                        <Switch
+                            checked={invit}
+                            onChange={handleInvit}
+                            inputProps={{
+                                "aria-label": "controlled",
+                            }}
+                        />
+                    }
+                    label="With Bonus"
+                />
                 <Button
+                    sx={{ mt: "30px" }}
                     color="secondary"
                     variant="contained"
                     size="large"
                     href="/play/live"
                 >
-                    Live
+                    Watch Live
                 </Button>
-            </Box>
+            </Paper>
         </>
     );
 };

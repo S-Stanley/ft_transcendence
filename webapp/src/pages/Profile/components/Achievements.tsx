@@ -11,7 +11,6 @@ import Diversity3Icon from '@mui/icons-material/Diversity3';
 const Achievements = (props:any) => {
 
     const achievements_list = ['sparta', 'legendary', 'devil', 'friend', 'veteran', 'effort', 'winner', 'alone'];
-    console.log(props);
 
     return (
         <Container maxWidth={false}>
