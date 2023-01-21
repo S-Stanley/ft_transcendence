@@ -16,6 +16,7 @@ const Chat = () => {
     const [allMessages, setAllMessages] = useState<{content: string, nickname: string}[]>([]);
     const [answer, setAnswer] = useState<string>('');
     const [user42, setUser42] = useState<number>(0);
+    const [alllUsersBlocked, setAllUsersBlocked] = useState<{nickname: string}[]>([]);
     const location = useLocation();
     const navigate = useNavigate();
     const { chat_id } = useParams();
@@ -77,12 +78,19 @@ const Chat = () => {
     socket.on(`ban-${chat_id}-${cookies.get('nickname')}`, () => {
         navigate('/messagerie');
     });
+    const get_all_users_blocked = async(): Promise<void> => {
+        const req = await Helpers.Messagerie.get_all_user_blocked_by_user_id(cookies.get('user_id'));
+        if (req) {
+            setAllUsersBlocked(req);
+        }
+    };
 
     useEffect(() => {
         getAllMessages();
         isUserAdmin();
         getChatInfo();
         get42Ids();
+        get_all_users_blocked();
     }, [false]);
 
     return (
@@ -138,11 +146,17 @@ const Chat = () => {
                                             </u>
                                         </div>
                                     ): (
-                                        msg?.content
+                                        <div>
+                                            { alllUsersBlocked.find((usr) => usr.nickname === msg?.nickname) ? (
+                                                <span><i>You cannot see this message because you blocked this user</i></span>
+                                            ) : (
+                                                msg?.content
+                                            )}
+                                        </div>
                                     )}
                                 </div>
                                 <div className={`nickname-message-${msg?.nickname === cookies.get('nickname') ? 'right' : 'left'}`}>
-                                    Posted by { msg?.nickname }
+                                    Posted by <span onClick={() => navigate(`/users/${msg?.nickname}`)}>{ msg?.nickname }</span>
                                 </div>
                             </div>
                         );
