@@ -47,7 +47,6 @@ import { InvitationsService } from './services/invitations.service';
             port: +process.env.POSTGRES_PORT,
             username: process.env.POSTGRES_USER,
             password: '',
-            database: process.env.POSTGRES_DB,
             entities: [Users, History, Matchmaking, FriendRequest, Live, Invitations],               // On renseigne ici les entités voulant être mappées en base de données
         }),
         TypeOrmModule.forFeature([Users, History, Matchmaking, FriendRequest, Live, Invitations]),     // On renseigne ici les entités possédant un repository
