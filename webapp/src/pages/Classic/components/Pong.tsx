@@ -180,6 +180,7 @@ const Pong = (props: {
                         data: {
                             target: props.opp_id.toString(),
                             endgame: 1,
+                            winner: winner,
                         },
                     });
                     navigate("/play/endgame", {
