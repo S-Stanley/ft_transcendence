@@ -45,6 +45,7 @@ import { InvitationsService } from './services/invitations.service';
             type: 'postgres',
             port: +process.env.POSTGRES_PORT,
             username: process.env.POSTGRES_USER,
+            host: process.env.POSTGRES_HOST,
             password: '',
             entities: [Users, History, Matchmaking, FriendRequest, Live, Invitations],               // On renseigne ici les entités voulant être mappées en base de données
         }),
