@@ -3,6 +3,7 @@ import {
     FormControlLabel,
     Paper,
     Switch,
+    TextField
 } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +13,7 @@ import { v4 } from "uuid";
 export const Play = () => {
     const [checked, setChecked] = useState(true);
     const [invit, setInvit] = useState(true);
+    const [urlToCopy, setUrlToCopy] = useState<string>('');
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setChecked(event.target.checked);
@@ -72,16 +74,18 @@ export const Play = () => {
                     variant="contained"
                     size="large"
                     onClick={() => {
-                        navigator.clipboard.writeText(
-                            `http://${window.location.hostname}:3000/play/matchmaking/${v4()}-${invit}`
-                        );
+                        setUrlToCopy(`http://${window.location.hostname}:3000/play/matchmaking/${v4()}-${invit}`);
                         toast.success(
-                            "Private link has been copied into your clipboard"
+                            "New link created"
                         );
                     }}
                 >
                     Create Game
                 </Button>
+                <TextField
+                    variant="standard"
+                    value={urlToCopy}
+                />
                 <FormControlLabel
                     sx={{
                         ml: "15px",

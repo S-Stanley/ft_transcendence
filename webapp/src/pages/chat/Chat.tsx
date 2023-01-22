@@ -23,6 +23,9 @@ const Chat = () => {
     const cookies = new Cookies();
 
     const handleSubmit = async(): Promise<void> => {
+        if (!answer.replaceAll(' ', '')){
+            return;
+        }
         const req = await Helpers.Messagerie.send_message_to_discussion(location?.state?.chat_id ?? '', answer);
         if (req) {
             setAnswer('');

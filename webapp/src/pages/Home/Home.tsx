@@ -7,6 +7,7 @@ import {
     Paper,
     Switch,
     Typography,
+    TextField
 } from "@mui/material";
 // import { MatchHistory } from "./components/match-history";
 import Copyright from "../Utils/Copyright";
@@ -26,6 +27,7 @@ const Home = () => {
 
     const [checked, setChecked] = useState(true);
     const [invit, setInvit] = useState(true);
+    const [urlToCopy, setUrlToCopy] = useState<string>('');
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setChecked(event.target.checked);
@@ -89,16 +91,18 @@ const Home = () => {
                                 variant="contained"
                                 size="large"
                                 onClick={() => {
-                                    navigator.clipboard.writeText(
-                                        `http://${window.location.hostname}:3000/play/matchmaking/${v4()}-${invit}`
-                                    );
+                                    setUrlToCopy(`http://${window.location.hostname}:3000/play/matchmaking/${v4()}-${invit}`);
                                     toast.success(
-                                        "Private link has been copied into your clipboard"
+                                        "New link created"
                                     );
                                 }}
                             >
                                 Create Game
                             </Button>
+                            <TextField
+                                variant="standard"
+                                value={urlToCopy}
+                            />
                             <FormControlLabel
                                 sx={{
                                     ml: "15px",
