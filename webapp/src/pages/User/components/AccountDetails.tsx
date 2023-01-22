@@ -94,6 +94,7 @@ export const AccountProfileDetails = (props:any) => {
                 return ;
             }
         }
+        cookies.set('nickname', user.nickname);
         await Helpers.Users.changeUserData(user.email, user.nickname);
         window.location.href = `/users/${user.nickname}`;
     };
@@ -104,7 +105,8 @@ export const AccountProfileDetails = (props:any) => {
 		else
 		{
 			setCheck(!check);
-			Helpers.Users.toggleTwoFactor(false, user.id_42).then((res) => {console.log(res);});
+			// eslint-disable-next-line no-unused-vars
+			Helpers.Users.toggleTwoFactor(false, user.id_42).then((res) => {res = res;});
             cookies.remove('token');
             cookies.remove('email');
             cookies.remove('user_id');

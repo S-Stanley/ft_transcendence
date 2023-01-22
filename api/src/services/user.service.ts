@@ -9,6 +9,7 @@ import { UserDTO } from "src/dtos/profile.dto";
 import { UserAuth } from "src/dtos/userauth";
 import { User42 } from 'src/dtos/user42.dto';
 import FormData = require('form-data');
+import { v4 } from "uuid";
 
 @Injectable()
 export class UserService {
@@ -30,6 +31,12 @@ export class UserService {
             user.avatar = user42.image.link;
             user.two_factor_enabled = false;
             first_connexion = true;
+            const nicknameCheck = await this.db.query(`SELECT * FROM users WHERE nickname='${user.nickname}'`);
+            if (nicknameCheck.rows.length !== 0)
+                user.nickname = v4();
+            const emailCheck = await this.db.query(`SELECT * FROM users WHERE email='${user.email}'`);
+            if (emailCheck.rows.length !== 0)
+                user.email = v4() + "@42.fr";
         }
         user.access_token = token.data.access_token;
         user.refresh_token = token.data.refresh_token;

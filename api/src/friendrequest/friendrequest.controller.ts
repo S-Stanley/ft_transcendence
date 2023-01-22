@@ -39,7 +39,7 @@ export class FriendRequestController {
     }
 
     @Get('/blocked/:user_id/:user_id_friend')
-    async isUserBlocked(@Param() params){
+    async isUserBlocked(@Param() params: {user_id: number, user_id_friend: number}){
         try {
             const is_blocked = await this.db.query(
                 `

@@ -3,7 +3,6 @@ import {
     FormControlLabel,
     Paper,
     Switch,
-    Typography,
 } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -38,12 +37,9 @@ export const Play = () => {
                     flexDirection: "column",
                     justifyContent: "center",
                     height: 220,
-                    mt: "100px",
+                    mt: "200px",
                 }}
             >
-                <Typography sx={{ mb: "100px", mt: "50px" }} variant="h4">
-                    Choose mode
-                </Typography>
                 <Button
                     color="secondary"
                     variant="contained"
@@ -53,17 +49,22 @@ export const Play = () => {
                     Quick Game
                 </Button>
                 <FormControlLabel
-                    sx={{ ml: "15px" }}
+                    sx={{
+                        ml: "15px",
+                        display: "flex",
+                        justifyContent: "center",
+                    }}
                     control={
                         <Switch
                             checked={checked}
                             onChange={handleChange}
+                            color='secondary'
                             inputProps={{
                                 "aria-label": "controlled",
                             }}
                         />
                     }
-                    label="With Bonus"
+                    label="Bonus"
                 />
                 <Button
                     sx={{ mt: "30px" }}
@@ -82,17 +83,22 @@ export const Play = () => {
                     Create Game
                 </Button>
                 <FormControlLabel
-                    sx={{ ml: "15px" }}
+                    sx={{
+                        ml: "15px",
+                        display: "flex",
+                        justifyContent: "center",
+                    }}
                     control={
                         <Switch
                             checked={invit}
                             onChange={handleInvit}
+                            color='secondary'
                             inputProps={{
                                 "aria-label": "controlled",
                             }}
                         />
                     }
-                    label="With Bonus"
+                    label="Bonus"
                 />
                 <Button
                     sx={{ mt: "30px" }}

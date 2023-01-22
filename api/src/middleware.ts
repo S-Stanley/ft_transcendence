@@ -8,7 +8,7 @@ import { Users } from './entities/user.entity';
 export class LoggerMiddleware implements NestMiddleware {
     constructor(@InjectRepository(Users) private userRepository: Repository<Users>, @Inject("PG_CONNECTION") private db: any) {}
 
-    async use(req /*Request*/, res: Response, next: NextFunction) {
+    async use(req: { headers: { authorization: any; }; user: Users; } /*Request*/, res: Response, next: NextFunction) {
         const token = req.headers?.authorization;
         if (!token) {
             throw new HttpException('No token was provided.', 401);

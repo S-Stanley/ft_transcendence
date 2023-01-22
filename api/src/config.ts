@@ -9,7 +9,7 @@ const database = {
     useValue: new Pool({
         user: process.env.POSTGRES_USER,
         host: process.env.POSTGRES_HOST,
-        port: process.env.POSTGRES_PORT,
+        port: parseInt(process.env.POSTGRES_PORT),
     })
 };
 

@@ -5,7 +5,7 @@ import { SeverityPill } from './severity-pill';
 import { useEffect, useState } from 'react';
 import Helpers from '../../../helpers/Helpers';
 
-export const MatchHistory = (props) => {
+export const MatchHistory = (props:any) => {
 
     const [values, setValues] = useState([]);
 
@@ -41,7 +41,7 @@ export const MatchHistory = (props) => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {values.map((value) => (
+                            {values.map((value:any) => (
                                 <TableRow
                                     hover
                                     key={value.id}
@@ -58,11 +58,11 @@ export const MatchHistory = (props) => {
                                     <TableCell>
                                         <SeverityPill
                                             color={
-                                                ((value.player_score === 1) && 'success')
-                                            || ((value.player_score === 0) && 'error')
+                                                ((value.player_score > 1) && 'success')
+                                            || ((value.player_score <= 1) && 'error')
                                             || 'secondary'}
                                         >
-                                            {value.player_score.toString() + " - " + value.opp_score.toString()}
+                                            {value.player_score + " - " + value.opp_score}
                                         </SeverityPill>
                                     </TableCell>
                                 </TableRow>

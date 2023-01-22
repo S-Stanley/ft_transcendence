@@ -1,16 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import "./Pong.scss";
 
-import Ball from "./Ball.js";
-import Paddle from "./Paddle.js";
 import React from "react";
-import { End } from "./End";
 import { io } from "socket.io-client";
 
 import Power from "./Power";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import Paddle from "./Paddle";
+import Ball from "./Ball";
 
 let lastTime: any = null;
 let ball: any = null;
@@ -66,8 +65,6 @@ const SpectatePong = (props: {
     };
 
     const navigate = useNavigate();
-
-    const [end, setEnd] = useState<boolean>(false);
 
     const updating_ball = (delta: number, collision: number) => {
         if (
@@ -214,11 +211,13 @@ const SpectatePong = (props: {
                 timeoutPowerUps(time);
                 updatingPower(delta);
             }
-            computerPaddle.position = socket_position;
-            playerPaddle.position = another_socket_position;
-            if (isLose()) {
-                handleLose();
-            }
+            if (socket_position !== null)
+                computerPaddle.position = socket_position;
+            if (another_socket_position !== null)
+                playerPaddle.position = another_socket_position;
+            // if (isLose()) {
+            //     handleLose();
+            // }
             const hue = parseFloat(
                 getComputedStyle(document.documentElement).getPropertyValue(
                     "--hue"
@@ -242,50 +241,49 @@ const SpectatePong = (props: {
         );
     }
 
-    function isLose() {
-        const rect = ball.rect();
-        return rect.right >= window.innerWidth || rect.left <= 0;
-    }
+    // function isLose() {
+    //     const rect = ball.rect();
+    //     return rect.right >= window.innerWidth || rect.left <= 0;
+    // }
 
-    function handleLose() {
-        if (stop) return;
-        const rect = ball.rect();
-        if (rect.right >= window.innerWidth) {
-            if (
-                props.player === 2 &&
-                computerPower.textContent === "immunity"
-            ) {
-                ball.invert();
-                computerPower.textContent = "";
-                return;
-            }
-            playerScoreElem.textContent =
-                parseInt(playerScoreElem.textContent) + 1;
-        } else {
-            if (props.player === 1 && playerPower.textContent === "immunity") {
-                ball.invert();
-                playerPower.textContent = "";
-                return;
-            }
-            computerScoreElem.textContent =
-                parseInt(computerScoreElem.textContent) + 1;
-        }
-        if (
-            parseInt(computerScoreElem.textContent) === 1 ||
-            parseInt(playerScoreElem.textContent) === 1
-        ) {
-            navigate("/play/live", {});
-            stop = true;
-            setEnd(true);
-        }
-        ball.reset();
-        power.reset();
-        computerPower.textContent = "no powerups";
-        playerPower.textContent = "no powerups";
-        playerTime -= 4000;
-        computerTime -= 4000;
-        computerPaddle.reset();
-    }
+    // function handleLose() {
+    //     if (stop) return;
+    //     const rect = ball.rect();
+    //     if (rect.right >= window.innerWidth) {
+    //         if (
+    //             props.player === 2 &&
+    //             computerPower.textContent === "immunity"
+    //         ) {
+    //             ball.invert();
+    //             computerPower.textContent = "";
+    //             return;
+    //         }
+    //         playerScoreElem.textContent =
+    //             parseInt(playerScoreElem.textContent) + 1;
+    //     } else {
+    //         if (props.player === 1 && playerPower.textContent === "immunity") {
+    //             ball.invert();
+    //             playerPower.textContent = "";
+    //             return;
+    //         }
+    //         computerScoreElem.textContent =
+    //             parseInt(computerScoreElem.textContent) + 1;
+    //     }
+    //     if (
+    //         parseInt(computerScoreElem.textContent) > 1 ||
+    //         parseInt(playerScoreElem.textContent) > 1
+    //     ) {
+    //         navigate("/play/live", {});
+    //         stop = true;
+    //     }
+    //     ball.reset();
+    //     power.reset();
+    //     computerPower.textContent = "no powerups";
+    //     playerPower.textContent = "no powerups";
+    //     playerTime -= 4000;
+    //     computerTime -= 4000;
+    //     computerPaddle.reset();
+    // }
 
     socket.on(
         user.id_42.toString() + "paddle",
@@ -308,6 +306,16 @@ const SpectatePong = (props: {
             playerScoreElem.textContent = data.player;
         }
     );
+
+    socket.on(user.id_42.toString() + "endgame", () => {
+        stop = true;
+        navigate("/play/live", {});
+    });
+
+    socket.on(props.my_id.toString() + "endgame", () => {
+        stop = true;
+        navigate("/play/live", {});
+    });
 
     socket.on(
         user.id_42.toString() + "ball",
@@ -358,28 +366,18 @@ const SpectatePong = (props: {
         <>
             <Button href="/play/live">Exit</Button>
             <section id="pong-section">
-                {end ? (
-                    <End
-                        scoreOne={parseInt(playerScoreElem.textContent)}
-                        scoreTwo={parseInt(computerScoreElem.textContent)}
-                        player={props.player}
-                        nickname={props.nickname}
-                        opp_nickname={props.opp_nickname}
-                    />
-                ) : (
-                    <>
-                        <div className="powerleft">
-                            <div id="power-left">bloup</div>
-                        </div>
-                        <div className="powerright">
-                            <div id="power-right">bloup</div>
-                        </div>
-                        <div className="score">
-                            <div id="player-score">0</div>
-                            <div id="computer-score">0</div>
-                        </div>
-                    </>
-                )}
+                <>
+                    <div className="powerleft">
+                        <div id="power-left">bloup</div>
+                    </div>
+                    <div className="powerright">
+                        <div id="power-right">bloup</div>
+                    </div>
+                    <div className="score">
+                        <div id="player-score">0</div>
+                        <div id="computer-score">0</div>
+                    </div>
+                </>
                 <div className="ball" id="ball"></div>
                 <div className="power" id="power"></div>
                 <div className="paddle left" id="player-paddle"></div>

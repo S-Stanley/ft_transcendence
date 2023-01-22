@@ -30,10 +30,9 @@ export class MatchmakingService {
                     result: result.rows,
                 });
             })
-            .catch((e: any) => {
-                console.error(e);
+            .catch(() => {
                 return ({
-                    result: [],
+                    result: [{}],
                 });
             });
         return (res);

@@ -10,7 +10,7 @@ export class TwoFactorAuthController {
     ) {}
 
     @Post('/generate')
-    async register(@Response() response, @Body() body: { id_42: number}) {
+    async register(@Response() response:any, @Body() body: { id_42: number}) {
         const { otpAuthUrl } =
             await this.twoFactorAuthService.generateTwoFactorAuthenticationSecret(
                 body.id_42,

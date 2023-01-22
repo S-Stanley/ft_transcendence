@@ -2,7 +2,10 @@ const INITIAL_VELOCITY = .025;
 let tmp = false;
 
 export default class Power {
-    constructor(powerElem) {
+    powerElem: HTMLElement;
+    direction: any;
+    velocity!: number;
+    constructor(powerElem: any) {
         this.powerElem = powerElem;
         this.reset();
     }
@@ -12,7 +15,7 @@ export default class Power {
     }
 
     set x(value){
-        this.powerElem.style.setProperty("--x", value);
+        this.powerElem.style.setProperty("--x", value.toString());
     }
 
     get y(){
@@ -20,7 +23,7 @@ export default class Power {
     }
 
     set y(value){
-        this.powerElem.style.setProperty("--y", value);
+        this.powerElem.style.setProperty("--y", value.toString());
     }
 
     rect() {
@@ -35,11 +38,11 @@ export default class Power {
         return this.y;
     }
 
-    set_x(value) {
+    set_x(value: number) {
         this.x = value;
     }
 
-    set_y(value) {
+    set_y(value: number) {
         this.y = value;
     }
 
@@ -75,7 +78,7 @@ export default class Power {
         this.velocity = 0;
     }
 
-    update(delta, collision){
+    update(delta: number, collision: number){
         const rect = this.rect();
         if (collision === 1) {
             this.direction.x *= -1;
@@ -98,6 +101,6 @@ export default class Power {
     }
 }
 
-function randomNumberBetween(min, max) {
+function randomNumberBetween(min: number, max: number) {
     return Math.random() * (max-min) + min;
 }

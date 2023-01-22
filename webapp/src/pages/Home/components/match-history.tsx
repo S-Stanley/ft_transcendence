@@ -1,21 +1,11 @@
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import {
-    Box,
-    Button,
-    Card,
-    CardHeader,
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableRow,
-} from '@mui/material';
+import { Box, Button, Card, CardHeader, Table, TableBody, TableCell, TableHead, TableRow, } from '@mui/material';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { SeverityPill } from './severity-pill';
 import { useEffect, useState } from 'react';
 import Helpers from '../../../helpers/Helpers';
 
-export const MatchHistory = (props) => {
+export const MatchHistory = (props:any) => {
 
     const [values, setValues] = useState([]);
 
@@ -26,9 +16,7 @@ export const MatchHistory = (props) => {
         } catch (e) {}
     };
 
-    useEffect(() => {
-        getHistory();
-    }, [false]);
+    useEffect(() => {getHistory();}, []);
 
     return (
         <Card {...props}>
@@ -53,7 +41,7 @@ export const MatchHistory = (props) => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {values.map((value) => (
+                            {values.map((value:any) => (
                                 <TableRow
                                     hover
                                     key={value.id}
