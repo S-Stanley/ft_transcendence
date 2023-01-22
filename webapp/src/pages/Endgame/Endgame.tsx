@@ -30,6 +30,13 @@ const Endgame = () => {
                 0,
                 location?.state?.player_two,
             );
+        } else if (!location?.state?.is_one && !location?.state?.winner) {
+            Helpers.History.add_match(
+                2,
+                location?.state?.pongs,
+                0,
+                location?.state?.player_two,
+            );
         }
         else
         {
