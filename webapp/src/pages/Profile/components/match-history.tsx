@@ -30,9 +30,6 @@ export const MatchHistory = (props:any) => {
                                 Opponent
                                 </TableCell>
                                 <TableCell>
-                                Number Pongs
-                                </TableCell>
-                                <TableCell>
                                 Score
                                 </TableCell>
                             </TableRow>
@@ -47,16 +44,13 @@ export const MatchHistory = (props:any) => {
                                         {value.opp_name}
                                     </TableCell>
                                     <TableCell>
-                                        {value.player_pongs}
-                                    </TableCell>
-                                    <TableCell>
                                         <SeverityPill
                                             color={
                                                 ((value.player_score > 1) && 'success')
                                             || ((value.player_score <= 1) && 'error')
                                             || 'secondary'}
                                         >
-                                            {value.player_score + " - " + value.opp_score}
+                                            {value.player_score == 2 ? 'WIN' : 'LOSE'}
                                         </SeverityPill>
                                     </TableCell>
                                 </TableRow>

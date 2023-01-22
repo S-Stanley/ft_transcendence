@@ -24,6 +24,7 @@ let stop: boolean = false;
 let collision_tmp = false;
 let collision_power_tmp = false;
 let unique_match = 0;
+let winner: boolean = false;
 
 let power: any = null;
 let playerPower: any = null;
@@ -311,6 +312,10 @@ const Pong = (props: {
             parseInt(computerScoreElem.textContent) > 1 ||
             parseInt(playerScoreElem.textContent) > 1
         ) {
+            if (parseInt(computerScoreElem.textContent) > 1)
+                winner = false;
+            else
+                winner = true;
             if (props.player === 1) await Helpers.Live.liveCancel(props.my_id);
             if (props.player === 1) {
                 if (forfait !== true) {
@@ -320,14 +325,15 @@ const Pong = (props: {
                     socket.emit("score", {
                         data: {
                             target: props.opp_id.toString(),
-                            player: parseInt(playerScoreElem.textContent),
-                            computer: parseInt(computerScoreElem.textContent),
+                            player: parseInt(computerScoreElem.textContent),
+                            computer: parseInt(playerScoreElem.textContent),
                         },
                     });
                     socket.emit("endgame", {
                         data: {
                             target: props.opp_id.toString(),
                             endgame: 1,
+                            winner: winner,
                         },
                     });
                     navigate("/play/endgame", {
@@ -340,6 +346,7 @@ const Pong = (props: {
                             score_two: parseInt(computerScoreElem.textContent),
                             pongs: playerPongs,
                             is_one: 1,
+                            winner: winner,
                             type: 1,
                         },
                     });
@@ -390,7 +397,7 @@ const Pong = (props: {
         });
     });
 
-    socket.on(user.id_42.toString() + "endgame", () => {
+    socket.on(user.id_42.toString() + "endgame", (data: { winner: boolean }) => {
         navigate("/play/endgame", {
             state: {
                 id_one: props.opp_id,
@@ -400,6 +407,7 @@ const Pong = (props: {
                 score_one: parseInt(computerScoreElem.textContent),
                 score_two: parseInt(playerScoreElem.textContent),
                 pongs: playerPongs,
+                winner: data.winner,
                 is_one: 0,
                 type: 1,
             },
@@ -453,6 +461,7 @@ const Pong = (props: {
         playerTime = 0;
         computerTime = 0;
         renderStop = 0;
+        winner = false;
         // stopAdd = false;
 
         if (props.player === 1 && unique_match == 0) {

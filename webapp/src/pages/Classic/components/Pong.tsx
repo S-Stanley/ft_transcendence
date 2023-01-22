@@ -23,6 +23,7 @@ let playerPongs: number = 0;
 let stop: boolean = false;
 let collision_tmp = false;
 let unique_match = 0;
+let winner: boolean = false;
 
 let forfait: boolean = false;
 
@@ -158,6 +159,10 @@ const Pong = (props: {
             parseInt(computerScoreElem.textContent) > 1 ||
             parseInt(playerScoreElem.textContent) > 1
         ) {
+            if (parseInt(computerScoreElem.textContent) > 1)
+                winner = false;
+            else
+                winner = true;
             if (props.player === 1) await Helpers.Live.liveCancel(props.my_id);
             if (props.player === 1) {
                 if (forfait !== true) {
@@ -183,10 +188,11 @@ const Pong = (props: {
                             id_two: props.opp_id,
                             player_one: props.nickname,
                             player_two: props.opp_nickname,
-                            score_one: parseInt(computerScoreElem.textContent),
+                            score_one: parseInt(playerScoreElem.textContent),
                             score_two: parseInt(computerScoreElem.textContent),
                             pongs: playerPongs,
                             is_one: 1,
+                            winner: winner,
                             type: 2,
                         },
                     });
@@ -232,7 +238,7 @@ const Pong = (props: {
         });
     });
 
-    socket.on(user.id_42.toString() + "endgame", () => {
+    socket.on(user.id_42.toString() + "endgame", (data: { winner: boolean }) => {
         navigate("/play/endgame", {
             state: {
                 id_one: props.opp_id,
@@ -242,6 +248,7 @@ const Pong = (props: {
                 score_one: parseInt(computerScoreElem.textContent),
                 score_two: parseInt(playerScoreElem.textContent),
                 pongs: playerPongs,
+                winner: data.winner,
                 is_one: 0,
                 type: 2,
             },
@@ -285,6 +292,7 @@ const Pong = (props: {
         collision_tmp = false;
         unique_match = 0;
         renderStop = 0;
+        winner = false;
 
         if (props.player === 1 && unique_match == 0) {
             Helpers.Live.liveAdd(

@@ -8,7 +8,7 @@ import DiamondIcon from '@mui/icons-material/Diamond';
 
 const Achievements = (props:any) => {
 
-    const achievements_list = ['sparta', 'legendary', 'devil', 'friend', 'veteran', 'effort', 'winner', 'alone'];
+    const achievements_list = ['veteran', 'winner'];
 
     return (
         <Container maxWidth={false}>
@@ -18,7 +18,7 @@ const Achievements = (props:any) => {
             <Grid container spacing={3}>
                 {
                     achievements_list.map((achievement) => (
-                        <Grid item xl={3} lg={3} sm={6} xs={12}>
+                        <Grid item xs={12}>
                             <Card variant="outlined" sx={{ height: '100%' }}>
                                 <CardContent>
                                     <Grid container spacing={2} sx={{ justifyContent: 'space-between' }}>

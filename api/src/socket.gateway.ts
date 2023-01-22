@@ -69,9 +69,10 @@ export class SocketGateway {
     }
 
     @SubscribeMessage('endgame')
-    announceEndgame(@MessageBody() message: { data: { target: string, endgame:number } }): void {
+    announceEndgame(@MessageBody() message: { data: { target: string, endgame:number, winner:boolean } }): void {
         this.server.emit(message.data.target + 'endgame', {
             endgame:message.data?.endgame,
+            winner:message.data?.winner,
         });
     }
 

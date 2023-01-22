@@ -22,21 +22,21 @@ const Endgame = () => {
     const [oppWaiting, setOppWaiting] = useState<boolean>(false);
 
     useEffect(() => {
-        if (location?.state?.is_one)
+        if (location?.state?.is_one && location?.state?.winner)
         {
             Helpers.History.add_match(
-                location?.state?.score_one,
+                2,
                 location?.state?.pongs,
-                location?.state?.score_two,
+                0,
                 location?.state?.player_two,
             );
         }
         else
         {
             Helpers.History.add_match(
-                location?.state?.score_two,
+                0,
                 location?.state?.pongs,
-                location?.state?.score_one,
+                2,
                 location?.state?.player_one,
             );
         }

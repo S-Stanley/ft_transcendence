@@ -6,7 +6,7 @@ import AirlineStopsIcon from '@mui/icons-material/AirlineStops';
 import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 const Statistics = (props:any) => {
 
-    const statistics_list = ['ratio', 'wins', 'loses', 'default', 'pongs', 'scored', 'taken', 'default'];
+    const statistics_list = ['wins', 'loses'];
 
     return (
         <Container maxWidth={false}>
@@ -16,7 +16,7 @@ const Statistics = (props:any) => {
             <Grid container spacing={3}>
                 {
                     statistics_list.map((achievement) => (
-                        <Grid item xl={3} lg={3} sm={6} xs={12}>
+                        <Grid item xs={12}>
                             <Card variant="outlined" sx={{ height: '100%' }}>
                                 <CardContent>
                                     <Grid container spacing={2} sx={{ justifyContent: 'space-between' }}>

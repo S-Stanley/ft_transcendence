@@ -44,13 +44,13 @@ const UserInfos = () => {
         let taken = 0;
         props.map((value:any) => {
             pongs += value.player_pongs;
-            if (value.player_score === 1)
+            if (value.player_score === 2)
                 won += 1;
             else
                 lost += 1;
             scored += value.player_score;
             taken += value.opp_score;
-            if (value.player_score === 1 && value.opp_score === 0)
+            if (value.player_score === 2 && value.opp_score === 0)
             {
                 check.sparta = true;
                 check.effort = true;
