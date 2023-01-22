@@ -6,7 +6,8 @@ import { toast } from "react-toastify";
 const login = async(code: string): Promise<User | null> => {
     try {
         const res = await axios.post(`${Config.Api.url}/users/auth`, {
-            code: code
+            code: code,
+            hostname: window.location.hostname,
         });
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + res?.data?.token;
         return (res.data);

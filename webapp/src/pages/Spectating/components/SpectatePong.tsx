@@ -40,7 +40,7 @@ const SpectatePong = (props: {
     player: number;
     opp_nickname: string;
 }) => {
-    const socket = io("http://localhost:5000", { transports: ["websocket"] });
+    const socket = io(`http://${window.location.hostname}:5000`, { transports: ["websocket"] });
 
     const poweringUp = (side: number) => {
         const random = Math.floor(Math.random() * 10);

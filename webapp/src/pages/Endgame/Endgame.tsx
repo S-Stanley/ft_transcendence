@@ -7,7 +7,7 @@ import Helpers from "../../helpers/Helpers";
 
 const Endgame = () => {
     const location = useLocation();
-    const socket = io("http://localhost:5000", { transports: ["websocket"] });
+    const socket = io(`http://${window.location.hostname}:5000`, { transports: ["websocket"] });
     const navigate = useNavigate();
 
     const [locations, setLocations] = useState({

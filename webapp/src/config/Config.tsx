@@ -1,5 +1,5 @@
 const Api = {
-    url: 'http://localhost:5000'
+    url: `http://${window.location.hostname}:5000`
 };
 
 const Config = {

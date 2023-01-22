@@ -15,8 +15,8 @@ import { v4 } from "uuid";
 export class UserService {
     constructor(@Inject("PG_CONNECTION") private db: any,private readonly httpService: HttpService, @InjectRepository(Users) private userRepository: Repository<Users>, @InjectRepository(History) private historyRepository: Repository<History>) {}
 
-    async authUser(code: string): Promise<UserAuth> {
-        const token = await this.getToken(code);
+    async authUser(code: string, hostname: string): Promise<UserAuth> {
+        const token = await this.getToken(code, hostname);
         let first_connexion = false;
         const user42 = await this.getUserInformationFrom42(token.data.access_token);
         let user = await this.userRepository.findOneBy({
@@ -54,13 +54,13 @@ export class UserService {
         });
     }
 
-    getToken(code: string): Promise<any> {
+    getToken(code: string, hostname: string): Promise<any> {
         const bodyFormData = new FormData();
         bodyFormData.append('grant_type', 'authorization_code');
         bodyFormData.append('client_id', process.env.CLIENT_ID);
         bodyFormData.append('client_secret', process.env.CLIENT_SECRET);
         bodyFormData.append('code', code);
-        bodyFormData.append('redirect_uri', 'http://localhost:3000/oauth2-redirect');
+        bodyFormData.append('redirect_uri', `http://${hostname}:3000/oauth2-redirect`);
         const response = firstValueFrom(this.httpService.post(
             'https://api.intra.42.fr/oauth/token',
             bodyFormData, {

@@ -23,7 +23,7 @@ export const AccountProfile = () => {
         const file = e.target[0].files[0];
         try {
             const res = await Helpers.Users.uploadPicture(file);
-            await Helpers.Users.saveProfilePicture('http://localhost:5000/' + res.data.file.filename, user.id_42);
+            await Helpers.Users.saveProfilePicture(`http://${window.location.hostname}:5000/` + res.data.file.filename, user.id_42);
             window.location.href = `/users/${user.nickname}`;
         } catch (e) {
             console.error(e);

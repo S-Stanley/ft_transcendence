@@ -41,7 +41,7 @@ const Pong = (props: {
     player: number;
     opp_nickname: string;
 }) => {
-    const socket = io("http://localhost:5000", { transports: ["websocket"] });
+    const socket = io(`http://${window.location.hostname}:5000`, { transports: ["websocket"] });
     const navigate = useNavigate();
 
     const poweringUp = (side: number) => {
