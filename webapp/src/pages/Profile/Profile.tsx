@@ -1,5 +1,5 @@
 import './Profile.scss';
-import { Fragment, useMemo, useReducer, useState } from 'react';
+import { Fragment, useEffect, useReducer, useState } from 'react';
 import Typography from '@mui/material/Typography';
 import { Avatar, Badge, Button, IconButton } from '@mui/material';
 import Helpers from '../../helpers/Helpers';
@@ -117,7 +117,6 @@ const Profile = () => {
         setButtonText('Request sent');
         Helpers.Friends.sendFriendRequest(user.nickname, cookies.get('nickname')!);
     };
-    getFriendStatus();
 
     const blockUser = async() => {
         const req = await Helpers.Users.blockUser(
@@ -140,12 +139,14 @@ const Profile = () => {
         }
     };
 
-    useMemo(() => {
+    getFriendStatus();
+
+    useEffect(() => {
         Helpers.Users.getUser(userToGet).then((res) => {
             setUser(res!);
             is_user_blocked(res?.id);
         });
-    }, [false]);
+    }, [window.location.href]);
 
     if (!user?.nickname) {
         return (null);
