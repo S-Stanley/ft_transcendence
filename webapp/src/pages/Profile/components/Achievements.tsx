@@ -2,11 +2,9 @@ import { Container, Typography, Grid, Card, CardContent, Avatar } from "@mui/mat
 import LocalPoliceIcon from '@mui/icons-material/LocalPolice';
 import AirlineStopsIcon from '@mui/icons-material/AirlineStops';
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
-import SportsKabaddiIcon from '@mui/icons-material/SportsKabaddi';
 import MilitaryTechIcon from '@mui/icons-material/MilitaryTech';
 import AssistWalkerIcon from '@mui/icons-material/AssistWalker';
 import DiamondIcon from '@mui/icons-material/Diamond';
-import Diversity3Icon from '@mui/icons-material/Diversity3';
 
 const Achievements = (props:any) => {
 
@@ -77,24 +75,6 @@ const Achievements = (props:any) => {
                                                 </Grid>
                                             </>
                                         }
-                                        {achievement === 'friend' &&
-                                            <>
-                                                <Grid item>
-                                                    <Typography color="textSecondary" gutterBottom variant="overline">No hard feelings</Typography>
-                                                </Grid>
-                                                <Grid item>
-                                                    {props.achievements.friend
-                                                        ?
-                                                        <Avatar sx={{ backgroundColor: 'success.main', height: 56, width: 56}}><SportsKabaddiIcon /></Avatar>
-                                                        :
-                                                        <Avatar sx={{ backgroundColor: 'text.disabled', height: 56, width: 56}}><SportsKabaddiIcon /></Avatar>
-                                                    }
-                                                </Grid>
-                                                <Grid item>
-                                                    <Typography color="textPrimary" gutterBottom variant="overline">Win a game against a friend (not checked)</Typography>
-                                                </Grid>
-                                            </>
-                                        }
                                         {achievement === 'veteran' &&
                                             <>
                                                 <Grid item>
@@ -146,24 +126,6 @@ const Achievements = (props:any) => {
                                                 </Grid>
                                                 <Grid item>
                                                     <Typography color="textPrimary" gutterBottom variant="overline">Win 2 games</Typography>
-                                                </Grid>
-                                            </>
-                                        }
-                                        {achievement === 'alone' &&
-                                            <>
-                                                <Grid item>
-                                                    <Typography color="textSecondary" gutterBottom variant="overline">You'll never be lone</Typography>
-                                                </Grid>
-                                                <Grid item>
-                                                    {props.achievements.alone
-                                                        ?
-                                                        <Avatar sx={{ backgroundColor: 'success.main', height: 56, width: 56}}><Diversity3Icon /></Avatar>
-                                                        :
-                                                        <Avatar sx={{ backgroundColor: 'text.disabled', height: 56, width: 56}}><Diversity3Icon /></Avatar>
-                                                    }
-                                                </Grid>
-                                                <Grid item>
-                                                    <Typography color="textPrimary" gutterBottom variant="overline">Send a friend request (not checked)</Typography>
                                                 </Grid>
                                             </>
                                         }

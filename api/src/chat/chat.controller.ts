@@ -17,7 +17,6 @@ export class ChatController {
             }
             return (req.rows[0]?.id ?? null);
         } catch (e){
-            console.error(e);
             return (null);
         }
     }
@@ -29,7 +28,6 @@ export class ChatController {
             }
             return (req.rows[0] ?? null);
         } catch (e){
-            console.error(e);
             return (null);
         }
     }
@@ -278,7 +276,6 @@ export class ChatController {
             );
             return (publicChatCreated.rows[0].create_new_chat);
         } catch (e) {
-            console.error(e);
             return (null);
         }
     }
@@ -357,7 +354,6 @@ export class ChatController {
             );
             return (owner_chan?.rows[0]);
         } catch (e) {
-            console.error(e);
             throw new HttpException('There was an error from our side', 500);
         }
     }
@@ -383,7 +379,6 @@ export class ChatController {
             }
             return (true);
         } catch (e) {
-            console.error(e);
             return (false);
         }
     }
@@ -414,7 +409,6 @@ export class ChatController {
             );
             return (join_chat.rows[0].join_public_chat);
         } catch (e) {
-            console.error(e);
             return (false);
         }
     }
@@ -452,7 +446,6 @@ export class ChatController {
             );
             return (all_members.rows);
         } catch (e) {
-            console.error(e);
             return (false);
         }
     }
@@ -476,7 +469,6 @@ export class ChatController {
             }
             return (true);
         } catch (e) {
-            console.error(e);
             throw new HttpException('Wront permissions', 500);
         }
     }
@@ -517,7 +509,6 @@ export class ChatController {
                 members: members.rows,
             });
         } catch (e) {
-            console.error(e);
             throw new HttpException('Error from our side', 500);
         }
     }
@@ -563,7 +554,6 @@ export class ChatController {
             );
             return (true);
         } catch (e) {
-            console.error(e);
             throw new HttpException('There was an error from our side, please try again later', 500);
         }
     }
@@ -588,7 +578,6 @@ export class ChatController {
             );
             return (get_all_user_block_by_user_id?.rows ?? []);
         } catch (e) {
-            console.error(e);
             throw new HttpException('There was an error from our side, please try again later', 500);
         }
     }
@@ -661,7 +650,6 @@ export class ChatController {
             );
             return (true);
         } catch (e) {
-            console.error(e);
             throw new HttpException('Error from our side', 500);
         }
     }
@@ -689,7 +677,6 @@ export class ChatController {
             );
             return (all_users_blocked?.rows ?? []);
         } catch (e) {
-            console.error(e);
             throw new HttpException('Error from our side', 500);
         }
     }
@@ -725,7 +712,6 @@ export class ChatController {
             );
             return (true);
         } catch (e) {
-            console.error(e);
             throw new HttpException('Error from our side', 500);
         }
     }
@@ -751,7 +737,6 @@ export class ChatController {
             );
             return (all_banned_users?.rows ?? []);
         } catch (e) {
-            console.error(e);
             throw new HttpException('Error from our side', 500);
         }
     }
@@ -800,7 +785,6 @@ export class ChatController {
             );
             return (true);
         } catch (e) {
-            console.error(e);
             throw new HttpException('Error from our side', 500);
         }
     }
@@ -819,7 +803,6 @@ export class ChatController {
             );
             return (true);
         } catch (e) {
-            console.error(e);
             throw new HttpException('Error from our side', 500);
         }
     }

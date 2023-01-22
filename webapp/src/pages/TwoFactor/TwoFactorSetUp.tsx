@@ -27,7 +27,6 @@ const TwoFactorSetUp = () => {
             });
             setQrLink(req.data);
         } catch (e) {
-            console.error(e);
             return (null);
         }
         setQr(true);

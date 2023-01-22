@@ -12,7 +12,6 @@ const login = async(code: string): Promise<User | null> => {
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + res?.data?.token;
         return (res.data);
     } catch (e) {
-        console.error(e);
         return (null);
     }
 };
@@ -22,7 +21,6 @@ const me = async(): Promise<User | null> => {
         const user = await axios.get(`${Config.Api.url}/users/me`).then((res) => res.data);
         return user;
     } catch (e) {
-        console.error(e);
         return (null);
     }
 };
@@ -36,7 +34,6 @@ const findUserByEmail = async(email: string): Promise<User | null> => {
         const req = await axios.get(`${Config.Api.url}/users/email/${email}`);
         return (req.data);
     } catch (e) {
-        console.error(e);
         alert('User not found');
         return (null);
     }
@@ -51,7 +48,6 @@ const login_with_email = async(email: string, password: string): Promise<User | 
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + req?.data?.token;
         return (req.data);
     } catch (e) {
-        console.error(e);
         return (null);
     }
 };
@@ -67,7 +63,6 @@ const changeUserData = async (email:string, nickname:string): Promise<User | nul
         if (req.data.row[0])
             return (req.data.rows[0]);
     } catch (e) {
-        console.error(e);
         return (null);
     }
 };
@@ -80,7 +75,6 @@ const updateStatus = async(nickname: string, current_status: string): Promise<an
         });
         return (res.data);
     } catch (e) {
-        console.error(e);
         return (null);
     }
 };
@@ -94,7 +88,6 @@ const checkNickname = async (nickname:string): Promise<boolean | undefined> => {
             return (true);
         return (false);
     } catch (e) {
-        console.error(e);
         return (false);
     }
 };
@@ -108,7 +101,6 @@ const checkEmail = async (email:string): Promise<boolean | undefined> => {
             return (true);
         return (false);
     } catch (e) {
-        console.error(e);
         return (false);
     }
 };
@@ -132,7 +124,6 @@ const saveProfilePicture = async (avatar:string, id_42:number): Promise<User | n
         });
         return (req.data);
     } catch (e) {
-        console.error(e);
         return (null);
     }
 };
@@ -141,7 +132,6 @@ const getAllUsers = async(): Promise<any> => {
         const res = await axios.get(`${Config.Api.url}/users/all`);
         return (res.data);
     } catch (e) {
-        console.error(e);
         return (null);
     }
 };
@@ -154,7 +144,6 @@ const toggleTwoFactor = async (twoFactor: boolean, id_42:number): Promise<User |
         });
         return (req.data);
     } catch (e) {
-        console.error(e);
         return (null);
     }
 };
@@ -171,7 +160,6 @@ const blockUser = async (user_id: string, blocked_user_id: string) => {
         });
         return (req.data);
     } catch (e) {
-        console.error(e);
         toast.error('Error, please try again later');
         return (null);
     }

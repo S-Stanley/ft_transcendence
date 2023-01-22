@@ -59,10 +59,6 @@ const Matchmaking = () => {
         Helpers.Matchmaking.matchCancel(user.id_42, 1).then((res) => res = res);
     };
 
-    const showDemands = () => {
-        Helpers.Matchmaking.getRequests(1).then((res) => res = res);
-    };
-
     socket.on(user.id_42.toString() + 'matchmaking', (data: { id_incoming: number, confirmation:boolean, nickname: string }) => {
         if (!data.confirmation)
         {
@@ -141,9 +137,6 @@ const Matchmaking = () => {
                         </Button>
                     </Box>
             }
-            <Button onClick={showDemands}>
-                    See demands
-            </Button>
         </>
     );
 };

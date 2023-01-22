@@ -58,7 +58,6 @@ export class FriendRequestController {
                 return (false);
             return (true);
         } catch (e) {
-            console.error(e);
             throw new HttpException('There was an error from our side, please try again later', 500);
         }
     }
