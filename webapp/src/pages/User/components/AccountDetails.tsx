@@ -95,6 +95,7 @@ export const AccountProfileDetails = (props:any) => {
             }
         }
         cookies.set('nickname', user.nickname);
+        cookies.set('email', user.email);
         await Helpers.Users.changeUserData(user.email, user.nickname);
         window.location.href = `/users/${user.nickname}`;
     };

@@ -26,18 +26,18 @@ const Endgame = () => {
         {
             Helpers.History.add_match(
                 location?.state?.score_one,
-                1,
+                location?.state?.pongs,
                 location?.state?.score_two,
-                location?.state?.opp_nickname,
+                location?.state?.player_two,
             );
         }
         else
         {
             Helpers.History.add_match(
                 location?.state?.score_two,
-                1,
+                location?.state?.pongs,
                 location?.state?.score_one,
-                location?.state?.opp_nickname,
+                location?.state?.player_one,
             );
         }
 
