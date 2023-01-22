@@ -462,6 +462,7 @@ const Pong = (props: {
         computerTime = 0;
         renderStop = 0;
         winner = false;
+        forfait = false;
         // stopAdd = false;
 
         if (props.player === 1 && unique_match == 0) {

@@ -294,6 +294,7 @@ const Pong = (props: {
         unique_match = 0;
         renderStop = 0;
         winner = false;
+        forfait = false;
 
         if (props.player === 1 && unique_match == 0) {
             Helpers.Live.liveAdd(
