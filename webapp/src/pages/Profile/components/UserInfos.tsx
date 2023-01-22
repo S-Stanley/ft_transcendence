@@ -4,8 +4,11 @@ import { MatchHistory } from './match-history';
 import Helpers from '../../../helpers/Helpers';
 import Achievements from './Achievements';
 import Statistics from './Statistics';
+import { useParams } from "react-router-dom";
 
 const UserInfos = () => {
+
+    const { nickname } = useParams();
 
     const [values, setValues] = useState({
         numberPongs: '',
@@ -77,7 +80,7 @@ const UserInfos = () => {
     };
 
     const getHistory = async () => {
-        const res = await Helpers.History.get_match();
+        const res = await Helpers.History.get_match(nickname ?? '');
         calculateStats(res.data.result.reverse());
     };
 

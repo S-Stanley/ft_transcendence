@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Inject } from '@nestjs/common';
+import { Controller, Post, Body, Get, Inject, Param } from '@nestjs/common';
 import { Injectable } from '@nestjs/common';
 import { UserConnected } from 'src/configs/userconnected.decorator';
 import { Match } from 'src/dtos/match.dto';
@@ -16,9 +16,9 @@ export class HistoryController {
         return this.historyService.addMatch(body.player_id, body.player_score, body.player_pongs, body.opp_score, body.opp_name);
     }
 
-    @Get('/all')
-    async getMatch(@UserConnected() user: Users) {
-        const user_id = await this.userService.findUserFromEmail(user.email);
+    @Get('/all/:nickname')
+    async getMatch(@UserConnected() user: Users, @Param() params: { nickname: string }) {
+        const user_id = await this.userService.findUserFromNickname(params?.nickname);
         return this.historyService.findHistoryFromId(user_id);
     }
 }

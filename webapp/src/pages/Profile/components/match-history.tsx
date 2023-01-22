@@ -4,14 +4,16 @@ import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { SeverityPill } from './severity-pill';
 import { useEffect, useState } from 'react';
 import Helpers from '../../../helpers/Helpers';
+import { useParams } from "react-router-dom";
 
 export const MatchHistory = (props:any) => {
 
     const [values, setValues] = useState([]);
+    const { nickname } = useParams();
 
     const getHistory = async () => {
         try{
-            const res = await Helpers.History.get_match();
+            const res = await Helpers.History.get_match(nickname ?? '');
             setValues(res.data.result.reverse());
         } catch (e) {}
     };

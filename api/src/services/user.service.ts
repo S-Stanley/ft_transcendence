@@ -122,6 +122,18 @@ export class UserService {
         return (data.user_id);
     }
 
+    async findUserFromNickname(nickname:string): Promise<number> {
+        const data = await this.db.query(`SELECT * FROM users WHERE nickname='${nickname}'`)
+            .then((result: { rows: any }) => {
+                if (result.rows.length === 0) {
+                    throw new HttpException('Cant find id of the user', 500);
+                } else {
+                    return ({user_id: result.rows[0].id,});
+                }
+            });
+        return (data.user_id);
+    }
+
     async updateStatus(nickname: string, current_status: string): Promise<void> {
         const user = await this.userRepository.findOneBy({
             nickname: nickname

@@ -16,7 +16,7 @@ const add_match = async (player_score: number, player_pongs: number, opp_score: 
     }
 };
 
-const get_match = () => (axios.get(`${Config.Api.url}/history/all`));
+const get_match = (nickname: string) => (axios.get(`${Config.Api.url}/history/all/${nickname}`));
 
 const History = {
     add_match,
