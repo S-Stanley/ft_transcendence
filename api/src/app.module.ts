@@ -43,7 +43,6 @@ import { InvitationsService } from './services/invitations.service';
         HttpModule,
         TypeOrmModule.forRoot({
             type: 'postgres',
-            host: process.env.POSTGRES_HOST,
             port: +process.env.POSTGRES_PORT,
             username: process.env.POSTGRES_USER,
             password: '',
