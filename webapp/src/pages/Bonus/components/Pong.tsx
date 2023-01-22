@@ -325,8 +325,8 @@ const Pong = (props: {
                     socket.emit("score", {
                         data: {
                             target: props.opp_id.toString(),
-                            player: parseInt(computerScoreElem.textContent),
-                            computer: parseInt(playerScoreElem.textContent),
+                            player: parseInt(playerScoreElem.textContent),
+                            computer: parseInt(computerScoreElem.textContent),
                         },
                     });
                     socket.emit("endgame", {
