@@ -39,8 +39,7 @@ export class UsersController {
                     return ({user_id: result.rows[0].id,});
                 }
             })
-            .catch((e: any) => {
-                console.error(e);
+            .catch(() => {
                 throw new HttpException('Problem occured while fetching user_id', 500);
             });
     }
@@ -64,8 +63,7 @@ export class UsersController {
                 }
                 return (false);
             })
-            .catch((e: any) => {
-                console.error(e);
+            .catch(() => {
                 throw new HttpException('Problem occured while checking nickname in db', 500);
             });
     }
@@ -79,8 +77,7 @@ export class UsersController {
                 }
                 return (false);
             })
-            .catch((e: any) => {
-                console.error(e);
+            .catch(() => {
                 throw new HttpException('Problem occured while checking email in db', 500);
             });
     }
@@ -155,8 +152,7 @@ export class UsersController {
                     });
                 }
             })
-            .catch((e: any) => {
-                console.error(e);
+            .catch(() => {
                 throw new HttpException('Email or password incorrect', 500);
             });
     }
@@ -228,7 +224,6 @@ export class UsersController {
             }
             return (true);
         } catch (e) {
-            console.error(e);
             throw new HttpException('There was an error from our side, please try again later', 500);
         }
     }

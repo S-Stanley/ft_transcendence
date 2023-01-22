@@ -13,7 +13,6 @@ const add_match = async (player_score: number, player_pongs: number, opp_score: 
         });
         return (req.data);
     } catch (e) {
-        console.error(e);
     }
 };
 

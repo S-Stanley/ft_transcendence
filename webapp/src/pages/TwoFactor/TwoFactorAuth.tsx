@@ -32,7 +32,6 @@ const TwoFactorAuth = () => {
             });
             setQrLink(req.data);
         } catch (e) {
-            console.error(e);
             return (null);
         }
         setQr(true);
@@ -58,7 +57,6 @@ const TwoFactorAuth = () => {
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + req?.data?.token;
             navigate('/home');
         } catch (e) {
-            console.error(e);
             setWrongCode(true);
         }
     };

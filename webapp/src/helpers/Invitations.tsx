@@ -9,7 +9,6 @@ const invitationsRequest = async (game_id:string): Promise<InvitationsRequest | 
         });
         return (res.data);
     } catch (e) {
-        console.error(e);
         return (null);
     }
 };
@@ -19,7 +18,6 @@ const getInvitations = async (game_id:string): Promise<any> => {
         const res = await axios.get(`${Config.Api.url}/invitations/${game_id}`);
         return (res.data);
     } catch (e) {
-        console.error(e);
         return (null);
     }
 };

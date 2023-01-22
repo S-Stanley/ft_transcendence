@@ -74,12 +74,6 @@ export const FriendList = (props: { users:any }) => {
                                     Username
                                 </TableCell>
                                 <TableCell>
-                                    Ratio
-                                </TableCell>
-                                <TableCell>
-                                    Last Connection
-                                </TableCell>
-                                <TableCell>
                                     Email
                                 </TableCell>
                                 <TableCell>
@@ -108,12 +102,6 @@ export const FriendList = (props: { users:any }) => {
                                                 {users.nickname}
                                             </Typography>
                                         </Box>
-                                    </TableCell>
-                                    <TableCell>
-                                        0.75 (hc)
-                                    </TableCell>
-                                    <TableCell>
-                                        07/12/2022 (hc)
                                     </TableCell>
                                     <TableCell>
                                         {users.email}

@@ -18,7 +18,6 @@ const create_or_get_discussion = async (email: string) => {
         });
         return (req.data);
     } catch (e) {
-        console.error(e);
     }
 };
 
@@ -31,7 +30,6 @@ const send_message_to_discussion = async (chat_id: string, content: string) => {
         });
         return (req.data);
     } catch (e) {
-        console.error(e);
         toast.error('Error, cannot send msg because you are blocked');
     }
 };
@@ -45,7 +43,6 @@ const get_message_of_discussion = async (chat_id: string) => {
         });
         return (req.data);
     } catch (e) {
-        console.error(e);
     }
 };
 
@@ -54,7 +51,6 @@ const   get_all_chat_by_user_id = async (user_id: string): Promise<MessagerieInt
         const req = await axios.get(`${Config.Api.url}/chat/all/${user_id}`);
         return (req.data);
     } catch (e) {
-        console.error(e);
         return ([]);
     }
 };
@@ -70,7 +66,6 @@ const   create_new_public_chat = async (
         });
         return (req.data);
     } catch (e) {
-        console.error(e);
         return (null);
     }
 };
@@ -84,7 +79,6 @@ const   update_password_chat = async(chat_id: string, password: string, user_id:
         });
         return (req.data);
     } catch (e) {
-        console.error(e);
         toast.error('There was an error, you may not have enought permissions');
         return (null);
     }
@@ -95,7 +89,6 @@ const   is_user_admin = async (chat_id: string, user_id: string) => {
         const req = await axios.get(`${Config.Api.url}/chat/admin/${chat_id}/${user_id}`);
         return (req.data);
     } catch (e) {
-        console.error(e);
         return (null);
     }
 };
@@ -109,7 +102,6 @@ const   join_chat = async (chat_id: string, password: string, user_id: string) =
         });
         return (req.data);
     } catch (e) {
-        console.error(e);
         return (null);
     }
 };
@@ -119,7 +111,6 @@ const   get_all_members_and_admin = async (chat_id: string) => {
         const req = await axios.get(`${Config.Api.url}/chat/members/${chat_id}`);
         return (req.data);
     } catch (e) {
-        console.error(e);
         return (null);
     }
 };
@@ -134,7 +125,6 @@ const   update_admin_list = async (chat_id: string, list_to_add: number[], list_
         });
         return (req.data);
     } catch (e) {
-        console.error(e);
         toast.error('There was an error, please try again later');
         return (null);
     }
@@ -145,7 +135,6 @@ const   get_chat_info = async (chat_id: string) => {
         const req = await axios.get(`${Config.Api.url}/chat/info/${chat_id}`);
         return (req.data);
     } catch (e) {
-        console.error(e);
         toast.error('There was an error from our side, please try again later');
     }
 };
@@ -158,7 +147,6 @@ const   leave_public_chat = async (chat_id: string, user_id: string) => {
         });
         return (req.data);
     } catch (e) {
-        console.error(e);
         return (null);
     }
 };
@@ -172,7 +160,6 @@ const   block_user_in_public_chat = async (chat_id: string, user_to_block: strin
         });
         return (req.data);
     } catch (e) {
-        console.error(e);
         toast.error("There was an error from our side, please try again later");
         return (null);
     }
@@ -183,7 +170,6 @@ const   get_all_users_blocked_by_public_chat = async(chat_id: string) => {
         const req = await axios.get(`${Config.Api.url}/chat/public/${chat_id}/blocked`);
         return (req.data);
     } catch (e) {
-        console.error(e);
         toast.error("There was an error from our side, please try again later");
         return (null);
     }
@@ -198,7 +184,6 @@ const   delete_blocked_users = async (chat_id: string, blocked_row_id: string) =
         });
         return (req.data);
     } catch (e) {
-        console.error(e);
         toast.error("There was an error from our side, please try again later");
         return (null);
     }
@@ -209,7 +194,6 @@ const   get_all_baned_users = async(chat_id: string) => {
         const req = await axios.get(`${Config.Api.url}/chat/${chat_id}/ban`);
         return (req.data);
     } catch (e) {
-        console.error(e);
         toast.error("There was an error from our side, please try again later");
         return (null);
     }
@@ -220,7 +204,6 @@ const   add_baned_users = async(chat_id: string, nickname: string) => {
         const req = await axios.post(`${Config.Api.url}/chat/${chat_id}/ban/${nickname}`);
         return (req.data);
     } catch (e) {
-        console.error(e);
         toast.error("There was an error from our side, please try again later");
         return (null);
     }
@@ -231,7 +214,6 @@ const   delete_baned_users = async(chat_id: string, ban_id: string) => {
         const req = await axios.delete(`${Config.Api.url}/chat/${chat_id}/ban/${ban_id}`);
         return (req.data);
     } catch (e) {
-        console.error(e);
         toast.error("There was an error from our side, please try again later");
         return (null);
     }
@@ -242,7 +224,6 @@ const   get_all_user_blocked_by_user_id = async(user_id: string) => {
         const req = await axios.get(`${Config.Api.url}/chat/block/${user_id}`);
         return (req.data);
     } catch (e) {
-        console.error(e);
         toast.error("There was an error from our side, please try again later");
         return (null);
     }
@@ -253,7 +234,6 @@ const   get_owner_chat = async (chat_id: string) => {
         const req = await axios.get(`${Config.Api.url}/chat/owner/${chat_id}`);
         return (req.data);
     } catch (e) {
-        console.error(e);
         toast.error("There was an error from our side, please try again later");
         return (null);
     }

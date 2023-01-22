@@ -12,7 +12,6 @@ const liveAdd = async (id_one:number, id_two:number, player_one: string, player_
         });
         return (res.data);
     } catch (e) {
-        console.error(e);
         return (null);
     }
 };
@@ -21,10 +20,7 @@ const liveRequest = async (): Promise<LiveRequest[] | undefined> => {
     try {
         const res = await axios.get(`${Config.Api.url}/live/requests`);
         return (res.data.result);
-    } catch (e) {
-        console.error(e);
-        // return (null);
-    }
+    } catch (e) {}
 };
 
 const liveCancel = async (id_one:number): Promise<null> => {
@@ -34,7 +30,6 @@ const liveCancel = async (id_one:number): Promise<null> => {
         });
         return (null);
     } catch (e) {
-        console.error(e);
         return (null);
     }
 };

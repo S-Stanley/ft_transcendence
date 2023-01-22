@@ -2,7 +2,6 @@ import { Container, Typography, Grid, Card, CardContent, Avatar, LinearProgress,
 import WorkspacePremiumIcon from '@mui/icons-material/WorkspacePremium';
 import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 import SickIcon from '@mui/icons-material/Sick';
-import DisabledByDefaultIcon from '@mui/icons-material/DisabledByDefault';
 import AirlineStopsIcon from '@mui/icons-material/AirlineStops';
 import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 const Statistics = (props:any) => {
@@ -54,17 +53,6 @@ const Statistics = (props:any) => {
                                                 </Grid>
                                                 <Grid item>
                                                     <Avatar sx={{ backgroundColor: 'error.main', height: 56, width: 56}}><SickIcon /></Avatar>
-                                                </Grid>
-                                            </>
-                                        }
-                                        {achievement === 'default' &&
-                                            <>
-                                                <Grid item>
-                                                    <Typography color="textSecondary" gutterBottom variant="overline">DEFAULT</Typography>
-                                                    <Typography color="textPrimary" variant="h4">...</Typography>
-                                                </Grid>
-                                                <Grid item>
-                                                    <Avatar sx={{ backgroundColor: '#839192', height: 56, width: 56}}><DisabledByDefaultIcon /></Avatar>
                                                 </Grid>
                                             </>
                                         }

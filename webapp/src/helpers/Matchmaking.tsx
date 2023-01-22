@@ -10,7 +10,6 @@ const matchRequest = async (id_42:number, type:number): Promise<MatchmakingReque
         });
         return (res.data);
     } catch (e) {
-        console.error(e);
         return (null);
     }
 };
@@ -20,7 +19,6 @@ const getRequests = async (type:number): Promise<any> => {
         const res = await axios.get(`${Config.Api.url}/matchmaking/requests/${type}`);
         return (res.data);
     } catch (e) {
-        console.error(e);
         return (null);
     }
 };
@@ -33,7 +31,6 @@ const matchCancel = async (id_42:number, type:number): Promise<null> => {
         });
         return (null);
     } catch (e) {
-        console.error(e);
         return (null);
     }
 };

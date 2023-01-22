@@ -26,7 +26,6 @@ export const AccountProfile = () => {
             await Helpers.Users.saveProfilePicture('http://localhost:5000/' + res.data.file.filename, user.id_42);
             window.location.href = `/users/${user.nickname}`;
         } catch (e) {
-            console.error(e);
             return (null);
         }
     };

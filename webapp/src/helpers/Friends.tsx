@@ -10,7 +10,6 @@ const sendFriendRequest = async(friend: string, nickname: string): Promise<any> 
         toast.success(`Friend request to ${friend} has been sent`);
         return (res.data);
     } catch (e) {
-        console.error(e);
         return (null);
     }
 };
@@ -31,7 +30,6 @@ const acceptFriendRequest = async(otherUser: string, nickname: string, accept: b
         });
         return (res.data);
     } catch (e) {
-        console.error(e);
         return (null);
     }
 };
@@ -49,7 +47,6 @@ const is_user_blocked = async(user_id: string, user_id_profile: string) => {
         const req = await axios.get(`${Config.Api.url}/friends/blocked/${user_id}/${user_id_profile}`);
         return (req.data);
     } catch (e) {
-        console.error(e);
         toast.error('There was an error from ou side, please try again later');
     }
 };

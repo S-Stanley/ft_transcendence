@@ -27,9 +27,6 @@ export const MatchHistory = (props:any) => {
                         <TableHead>
                             <TableRow>
                                 <TableCell>
-                                Date
-                                </TableCell>
-                                <TableCell>
                                 Opponent
                                 </TableCell>
                                 <TableCell>
@@ -46,9 +43,6 @@ export const MatchHistory = (props:any) => {
                                     hover
                                     key={value.id}
                                 >
-                                    <TableCell>
-                                        01/12/2022 (hc)
-                                    </TableCell>
                                     <TableCell>
                                         {value.opp_name}
                                     </TableCell>
