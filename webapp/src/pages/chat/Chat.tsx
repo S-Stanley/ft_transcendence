@@ -6,7 +6,7 @@ import './Chat.scss';
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { MessagerieInterface } from "../../interfaces/messagerie";
 import Cookies from 'universal-cookie';
-const socket = io('http://localhost:5000', { transports: ['websocket'] });
+const socket = io(`http://${window.location.hostname}:5000`, { transports: ['websocket'] });
 
 const Chat = () => {
 
@@ -130,12 +130,12 @@ const Chat = () => {
                                 className='chat-item'
                             >
                                 <div className={`content-message-${msg?.nickname === cookies.get('nickname') ? 'right' : 'left'}`}>
-                                    { (msg?.content.indexOf('http://localhost:3000/play/matchmaking/') >= 0) ? (
+                                    { (msg?.content.indexOf(`http://${window.location.hostname}:3000/play/matchmaking/`) >= 0) ? (
                                         <div>
                                             Do you want to play a pong game ?&nbsp;
                                             <u
                                                 className='invitation-chat-ling'
-                                                onClick={() => navigate(msg?.content.split('http://localhost:3000')[1], {
+                                                onClick={() => navigate(msg?.content.split(`http://${window.location.hostname}:3000`)[1], {
                                                     state: {
                                                         my_id: user42,
                                                         nickname: cookies.get('nickname'),

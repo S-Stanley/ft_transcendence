@@ -90,7 +90,7 @@ const Home = () => {
                                 size="large"
                                 onClick={() => {
                                     navigator.clipboard.writeText(
-                                        `http://localhost:3000/play/matchmaking/${v4()}-${invit}`
+                                        `http://${window.location.hostname}:3000/play/matchmaking/${v4()}-${invit}`
                                     );
                                     toast.success(
                                         "Private link has been copied into your clipboard"

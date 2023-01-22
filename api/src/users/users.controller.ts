@@ -15,8 +15,8 @@ export class UsersController {
     constructor(@Inject("PG_CONNECTION") private db: any, private userService: UserService) {}
 
     @Post('/auth')
-    authAction(@Body() body: { code: string }): Promise<UserAuth> {
-        return this.userService.authUser(body.code);
+    authAction(@Body() body: { code: string, hostname: string }): Promise<UserAuth> {
+        return this.userService.authUser(body.code, body.hostname);
     }
 
     @Get('/me')
