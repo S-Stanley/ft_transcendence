@@ -2,14 +2,13 @@ import { useEffect, useState } from "react";
 
 import "./Pong.scss";
 
-import Ball from "./Ball.js";
-import Paddle from "./Paddle.js";
 import React from "react";
-import { End } from "./End";
 import { io } from "socket.io-client";
 
 import Helpers from "../../../helpers/Helpers";
 import { useNavigate } from "react-router-dom";
+import Ball from "./Ball";
+import Paddle from "./Paddle";
 
 let renderStop: number = 0;
 let lastTime: any = null;
@@ -52,8 +51,6 @@ const Pong = (props: {
     useEffect(() => {
         Helpers.Users.me().then((res) => setUser(res!));
     }, []);
-
-    const [end, setEnd] = useState<boolean>(false);
 
     const updating_ball = (delta: number, collision: number) => {
         ball.update(
@@ -150,32 +147,30 @@ const Pong = (props: {
     async function handleLose() {
         if (stop) return;
         const rect = ball.rect();
-        if (rect.right >= window.innerWidth) {
+        if (rect.right >= window.innerWidth && props.player === 1) {
             playerScoreElem.textContent =
                 parseInt(playerScoreElem.textContent) + 1;
-        } else {
+        } else if (props.player === 1) {
             computerScoreElem.textContent =
                 parseInt(computerScoreElem.textContent) + 1;
         }
         if (
-            parseInt(computerScoreElem.textContent) === 1 ||
-            parseInt(playerScoreElem.textContent) === 1
+            parseInt(computerScoreElem.textContent) > 1 ||
+            parseInt(playerScoreElem.textContent) > 1
         ) {
-            await Helpers.History.add_match(
-                parseInt(playerScoreElem.textContent),
-                playerPongs,
-                parseInt(computerScoreElem.textContent),
-                props.opp_nickname
-            );
             if (props.player === 1) await Helpers.Live.liveCancel(props.my_id);
-            if (props.player == 1) {
-                const score_uno = parseInt(playerScoreElem.textContent);
-                const score_doss = parseInt(computerScoreElem.textContent);
-                playerScoreElem.textContent = 0;
-                computerScoreElem.textContent = 0;
+            if (props.player === 1) {
                 if (forfait !== true) {
-                    if (props.player === 1) await Helpers.Live.liveCancel(props.my_id);
+                    if (props.player === 1)
+                        await Helpers.Live.liveCancel(props.my_id);
                     else await Helpers.Live.liveCancel(props.opp_id);
+                    socket.emit("score", {
+                        data: {
+                            target: props.opp_id.toString(),
+                            player: parseInt(playerScoreElem.textContent),
+                            computer: parseInt(computerScoreElem.textContent),
+                        },
+                    });
                     socket.emit("endgame", {
                         data: {
                             target: props.opp_id.toString(),
@@ -188,8 +183,8 @@ const Pong = (props: {
                             id_two: props.opp_id,
                             player_one: props.nickname,
                             player_two: props.opp_nickname,
-                            score_one: score_uno,
-                            score_two: score_doss,
+                            score_one: parseInt(computerScoreElem.textContent),
+                            score_two: parseInt(computerScoreElem.textContent),
                             is_one: 1,
                             type: 2,
                         },
@@ -197,7 +192,6 @@ const Pong = (props: {
                 }
             }
             stop = true;
-            setEnd(true);
         }
         socket.emit("score", {
             data: {
@@ -320,22 +314,12 @@ const Pong = (props: {
 
     return (
         <section id="pong-section">
-            {end ? (
-                <End
-                    scoreOne={parseInt(playerScoreElem.textContent)}
-                    scoreTwo={parseInt(computerScoreElem.textContent)}
-                    player={props.player}
-                    nickname={props.nickname}
-                    opp_nickname={props.opp_nickname}
-                />
-            ) : (
-                <>
-                    <div className="score">
-                        <div id="player-score">0</div>
-                        <div id="computer-score">0</div>
-                    </div>
-                </>
-            )}
+            <>
+                <div className="score">
+                    <div id="player-score">0</div>
+                    <div id="computer-score">0</div>
+                </div>
+            </>
             <div className="ball" id="ball"></div>
             <div className="paddle left" id="player-paddle"></div>
             <div className="paddle right" id="computer-paddle"></div>

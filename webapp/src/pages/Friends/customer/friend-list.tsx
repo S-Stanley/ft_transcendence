@@ -5,13 +5,13 @@ import { useNavigate } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import { useState, useEffect } from 'react';
 
-const AddFriendButton = ( { friendUser }) => {
+const AddFriendButton = ( props: { friendUser:any }) => {
 
     const [friendStatus, setFriendStatus] = useState('initial');
     const cookies = new Cookies();
 
     useEffect(() => {
-        Helpers.Friends.getFriendRequestStatus(friendUser).then((res) => setFriendStatus(res));
+        Helpers.Friends.getFriendRequestStatus(props.friendUser).then((res) => setFriendStatus(res));
     }, [false]);
 
     switch (friendStatus) {
@@ -47,7 +47,7 @@ const AddFriendButton = ( { friendUser }) => {
             <Box>
                 <Button
                     onClick={() => {
-                        Helpers.Friends.sendFriendRequest(friendUser, cookies.get('nickname'));
+                        Helpers.Friends.sendFriendRequest(props.friendUser, cookies.get('nickname'));
                         setFriendStatus('pending');
                     }}
                     size="small"
@@ -59,7 +59,7 @@ const AddFriendButton = ( { friendUser }) => {
     }
 };
 
-export const FriendList = ({ users }) => {
+export const FriendList = (props: { users:any }) => {
 
     const navigate = useNavigate();
 
@@ -87,7 +87,7 @@ export const FriendList = ({ users }) => {
                             </TableRow>
                         </TableHead>
                         <TableBody>
-                            {users.map((users) => (
+                            {props.users.map((users:any) => (
                                 <TableRow key={users.id}>
                                     <TableCell>
                                         <Box

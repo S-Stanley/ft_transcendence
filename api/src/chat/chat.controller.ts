@@ -35,7 +35,7 @@ export class ChatController {
     }
 
     @Post()
-    async CreateOrGetChatId(@Body() body): Promise<{ chat_id: string }> {
+    async CreateOrGetChatId(@Body() body: {email: string, from:string}): Promise<{ chat_id: string }> {
         if (!body?.email || !body?.from) {
             throw new HttpException('Missing body params', 500);
         }
@@ -54,7 +54,7 @@ export class ChatController {
     }
 
     @Post('/send')
-    async sendMessageToChat(@Body() body): Promise<boolean> {
+    async sendMessageToChat(@Body() body: {chat_id: string, sender_id: string, content: string}): Promise<boolean> {
         if (!body?.chat_id || !body?.sender_id || !body?.content) {
             throw new HttpException('Missing params', 500);
         }
@@ -150,13 +150,13 @@ export class ChatController {
     }
 
     @Get('/:chat_id')
-    async getMessagesByChatId(@Param() params) {
+    async getMessagesByChatId(@Param() params: {chat_id:string}) {
         const get_messages = await this.db.query(
             'SELECT * FROM public.chat_message WHERE chat_id=$1 ORDER BY created_at ASC LIMIT 25',
             [params.chat_id]
         );
         const messages_with_email = await Promise.all(
-            get_messages.rows.map(async(msg: {sent_by: string}) => {
+            get_messages.rows.map(async(msg: {sent_by: string, email:string, nickname: string, avatar: string}) => {
                 const usr = await this.findUserById(msg?.sent_by);
                 msg['email'] = usr?.email;
                 msg['nickname'] = usr?.nickname;
@@ -168,7 +168,7 @@ export class ChatController {
     }
 
     @Get('/all/:user_id')
-    async getAllChatByUserId(@Param() params) {
+    async getAllChatByUserId(@Param() params: {user_id:string}) {
         const all_chats = await this.db.query(
             `
                 WITH all_privates_chats AS (
@@ -268,7 +268,7 @@ export class ChatController {
     }
 
     @Put()
-    async createNewPublicChat(@Body() body){
+    async createNewPublicChat(@Body() body: {chat_name: string, user_id:string}){
         if (!body?.chat_name || !body?.user_id)
             throw new HttpException('Missing body parameters', 500);
         try {
@@ -284,7 +284,7 @@ export class ChatController {
     }
 
     @Patch('/password')
-    async updatePasswordChat(@Body() body){
+    async updatePasswordChat(@Body() body: {chat_id:string, user_id:string, password:string}){
         const checkUserOwnerOfChat = await this.db.query(
             `
                 SELECT
@@ -337,7 +337,7 @@ export class ChatController {
     }
 
     @Get('/owner/:chat_id')
-    async getOwnerByChatId(@Param() params){
+    async getOwnerByChatId(@Param() params: {chat_id:string}){
         try {
             const owner_chan = await this.db.query(
                 `
@@ -363,7 +363,7 @@ export class ChatController {
     }
 
     @Get('/admin/:chat_id/:user_id')
-    async IsUserAdmin(@Param() params){
+    async IsUserAdmin(@Param() params: {chat_id:string, user_id:string}){
         try {
             const isUserAdm = await this.db.query(
                 `
@@ -389,7 +389,7 @@ export class ChatController {
     }
 
     @Post('/join')
-    async joinChat(@Body() body){
+    async joinChat(@Body() body:{chat_id:string, user_id:string, password:string}){
         try {
             const can_it_join = await this.db.query (
                 `
@@ -420,7 +420,7 @@ export class ChatController {
     }
 
     @Get('/members/:chat_id')
-    async getAllMembers(@Param() params) {
+    async getAllMembers(@Param() params: {chat_id:string}) {
         try {
             const all_members = await this.db.query(
                 `
@@ -458,7 +458,7 @@ export class ChatController {
     }
 
     @Post('/admin')
-    async updateChatAdmin(@Body() body){
+    async updateChatAdmin(@Body() body:{list_to_add: number[], list_to_delete: number[], chat_id:string, user_id:string}){
         try {
             const updated_list = await this.db.query(
                 `
@@ -482,7 +482,7 @@ export class ChatController {
     }
 
     @Get('/info/:chat_id')
-    async getInfoChat(@Param() params) {
+    async getInfoChat(@Param() params:{chat_id:string}) {
         try {
             const req = await this.db.query(
                 `
@@ -523,7 +523,7 @@ export class ChatController {
     }
 
     @Post('/public/leave')
-    async leavePublicChat(@Body() body) {
+    async leavePublicChat(@Body() body:{chat_id:string, user_id:string}) {
         try {
             const is_admin = await this.db.query(
                 `
@@ -569,7 +569,7 @@ export class ChatController {
     }
 
     @Get('/block/:user_id')
-    async getAllUserBlockedByUserId(@Param() params) {
+    async getAllUserBlockedByUserId(@Param() params: {user_id:string}) {
         try {
             const get_all_user_block_by_user_id = await this.db.query(
                 `
@@ -594,7 +594,7 @@ export class ChatController {
     }
 
     @Post('/public/block')
-    async BlockUserInPublicChat(@Body() body){
+    async BlockUserInPublicChat(@Body() body:{chat_id:string, user_to_block:string, user_id:string}){
         try {
             const is_user_admin = await this.db.query(
                 `
@@ -609,7 +609,7 @@ export class ChatController {
             );
             if (
                 is_user_admin?.rows?.length === 0 ||
-                !is_user_admin?.rows.find((chat_admin) => chat_admin.user_id == body?.user_id)
+                !is_user_admin?.rows.find((chat_admin:{user_id:string}) => chat_admin.user_id == body?.user_id)
             ){
                 throw new HttpException('User is not admin or chat does not exist', 500);
             }
@@ -667,7 +667,7 @@ export class ChatController {
     }
 
     @Get('/public/:chat_id/blocked')
-    async getAllUsersBlockByChatId(@Param() params){
+    async getAllUsersBlockByChatId(@Param() params:{chat_id:string}){
         try {
             const all_users_blocked = await this.db.query(
                 `
@@ -695,7 +695,7 @@ export class ChatController {
     }
 
     @Post('/public/blocked')
-    async deleteBlockedUsers(@Body() body){
+    async deleteBlockedUsers(@Body() body:{chat_id:string, blocked_row_id: string, user_id:string}){
         try {
             const is_user_admin = await this.db.query(
                 `
@@ -710,7 +710,7 @@ export class ChatController {
             );
             if (
                 is_user_admin?.rows?.length === 0 ||
-                !is_user_admin?.rows.find((chat_admin) => chat_admin.user_id == body?.user_id)
+                !is_user_admin?.rows.find((chat_admin:{user_id:string}) => chat_admin.user_id == body?.user_id)
             ){
                 throw new HttpException('User is not admin or chat does not exist', 500);
             }
@@ -731,7 +731,7 @@ export class ChatController {
     }
 
     @Get('/:chat_id/ban')
-    async getAllBannedUsers(@Param() params){
+    async getAllBannedUsers(@Param() params:{chat_id:string}){
         try {
             const all_banned_users = await this.db.query(
                 `
@@ -757,7 +757,7 @@ export class ChatController {
     }
 
     @Post('/:chat_id/ban/:nickname')
-    async createAllBannedUsers(@Param() params){
+    async createAllBannedUsers(@Param() params:{nickname:string, chat_id:string}){
         try {
             await this.db.query(
                 `
@@ -806,7 +806,7 @@ export class ChatController {
     }
 
     @Delete('/:chat_id/ban/:ban_id')
-    async patchAllBannedUsers(@Param() params){
+    async patchAllBannedUsers(@Param() params:{ban_id:string}){
         try {
             await this.db.query(
                 `

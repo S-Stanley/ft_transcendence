@@ -3,7 +3,12 @@ const VELOCITY_INCREASE = 0.0000001;
 let tmp = false;
 
 export default class Ball {
-    constructor(ballElem) {
+    ballElem: HTMLElement;
+    direction: any;
+    velocity!: number;
+    velocity_toleft!: number;
+    velocity_toright!: number;
+    constructor(ballElem: any) {
         this.ballElem = ballElem;
         this.reset();
     }
@@ -13,7 +18,7 @@ export default class Ball {
     }
 
     set x(value){
-        this.ballElem.style.setProperty("--x", value);
+        this.ballElem.style.setProperty("--x", value.toString());
     }
 
     get y(){
@@ -21,7 +26,7 @@ export default class Ball {
     }
 
     set y(value){
-        this.ballElem.style.setProperty("--y", value);
+        this.ballElem.style.setProperty("--y", value.toString());
     }
 
     rect() {
@@ -36,11 +41,11 @@ export default class Ball {
         return this.y;
     }
 
-    set_x(value) {
+    set_x(value: number) {
         this.x = value;
     }
 
-    set_y(value) {
+    set_y(value: number) {
         this.y = value;
     }
 
@@ -66,13 +71,13 @@ export default class Ball {
         this.direction.x *= -1;
         if (this.direction.x > 0)
         {
-            this.x += this.direction.x * this.velocity_toright * delta * 10;
-            this.y += this.direction.y * this.velocity_toright * delta * 10;
+            this.x += this.direction.x * this.velocity_toright * 10;
+            this.y += this.direction.y * this.velocity_toright * 10;
         }
         else
         {
-            this.x += this.direction.x * this.velocity_toleft * delta * 10;
-            this.y += this.direction.y * this.velocity_toleft * delta * 10;
+            this.x += this.direction.x * this.velocity_toleft * 10;
+            this.y += this.direction.y * this.velocity_toleft * 10;
         }
     }
 
@@ -92,7 +97,7 @@ export default class Ball {
         this.velocity = 0;
     }
 
-    update(delta, paddleRects, collision, power){
+    update(delta: number, paddleRects: any, collision: number, power: number){
         const rect = this.rect();
         if (collision === 1) {
             this.direction.x *= -1;
@@ -141,8 +146,6 @@ export default class Ball {
             this.velocity_toleft += (VELOCITY_INCREASE * delta);
             this.velocity_toright += (VELOCITY_INCREASE * delta);
         }
-        else if (power === 1)
-            ;
         else if (power === 2)
         {
             this.velocity_toleft += (VELOCITY_INCREASE * delta) * 2;
@@ -173,6 +176,6 @@ export default class Ball {
     }
 }
 
-function randomNumberBetween(min, max) {
+function randomNumberBetween(min: number, max: number) {
     return Math.random() * (max-min) + min;
 }

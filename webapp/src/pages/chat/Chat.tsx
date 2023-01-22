@@ -138,7 +138,7 @@ const Chat = () => {
                                                 onClick={() => navigate(msg?.content.split('http://localhost:3000')[1], {
                                                     state: {
                                                         my_id: user42,
-                                                        nickname: localStorage.getItem('nickname'),
+                                                        nickname: cookies.get('nickname'),
                                                     }
                                                 })}
                                             >

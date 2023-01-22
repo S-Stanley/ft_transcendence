@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { styled, useTheme } from '@mui/material/styles';;
 import Drawer from '@mui/material/Drawer';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
@@ -21,7 +20,6 @@ import Cookies from 'universal-cookie';
 import Login from '../Login/Login';
 import EmailLogin from '../Login/EmailLogin';
 import 'react-toastify/dist/ReactToastify.css';
-import Game from '../Pong/Game';
 import { Play } from '../Play';
 import Account from '../User/Account';
 import Profile from '../Profile/Profile';
@@ -46,8 +44,6 @@ import Forfait from '../Forfait/Forfait';
 import PrivateGame from '../Matchmaking/PrivateGame';
 import Classic from '../Classic/Classic';
 import ClassicMatch from '../Matchmaking/ClassicMatch';
-
-
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -186,9 +182,9 @@ export default function PersistentDrawerLeft() {
                                         variant="h6"
                                         color="white"
                                         noWrap
-                                        sx={{ flexGrow: 1 }}
+                                        sx={{ flexGrow: 1, }}
                                     >
-                                        Transcendance
+                                        Mighty Pong
                                     </Typography>
                                 </Button>
                             </Typography>
@@ -257,7 +253,6 @@ export default function PersistentDrawerLeft() {
                     <Route path='/messagerie' element={<Messaging/>} />
                     <Route path='/chat/:chat_id' element={<Chat/>} />
                     <Route path="/play" element={<Play />} />
-                    <Route path="/play/pong" element={<Game />} />
                     <Route path="/play/bonus" element={<Bonus />} />
                     <Route path="/user" element={<Account />} />
                     <Route path='/users/:nickname' element={<Profile/>} />
@@ -290,7 +285,6 @@ export default function PersistentDrawerLeft() {
                         <Route path='/chat/:chat_id' element={<Chat/>} />
                         <Route path='/chat/:chat_id/settings' element={<Settings/>} />
                         <Route path="/play" element={<Play />} />
-                        <Route path="/play/pong" element={<Game />} />
                         <Route path="/play/bonus" element={<Bonus />} />
                         <Route path="/user" element={<Account />} />
                         <Route path='/users/:nickname' element={<Profile/>} />

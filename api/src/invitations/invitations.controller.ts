@@ -9,7 +9,7 @@ export class InvitationsController {
     constructor(@Inject("PG_CONNECTION") private db: any, private invitationsService: InvitationsService) {}
 
     @Post('/add')
-    addInvitations(@Body() body: {game_id:string}): Promise<InvitationsRequest> {
+    addInvitations(@Body() body: {game_id: string}): Promise<InvitationsRequest> {
         return this.invitationsService.addInvitations(body.game_id);
     }
 

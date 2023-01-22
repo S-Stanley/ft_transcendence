@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
 import CancelIcon from "@mui/icons-material/Cancel";
+import Helpers from "../../helpers/Helpers";
 
 const Endgame = () => {
     const location = useLocation();
@@ -21,6 +22,25 @@ const Endgame = () => {
     const [oppWaiting, setOppWaiting] = useState<boolean>(false);
 
     useEffect(() => {
+        if (location?.state?.is_one)
+        {
+            Helpers.History.add_match(
+                location?.state?.score_one,
+                1,
+                location?.state?.score_two,
+                location?.state?.opp_nickname,
+            );
+        }
+        else
+        {
+            Helpers.History.add_match(
+                location?.state?.score_two,
+                1,
+                location?.state?.score_one,
+                location?.state?.opp_nickname,
+            );
+        }
+
         if (location?.state?.is_one) {
             setLocations({
                 my_id: location?.state?.id_one,
@@ -28,7 +48,6 @@ const Endgame = () => {
                 my_nickname: location?.state?.player_one,
                 opp_nickname: location?.state?.player_two,
                 type: location?.state?.type,
-
             });
         } else {
             setLocations({
@@ -54,8 +73,7 @@ const Endgame = () => {
                 },
             });
             setWaiting(false);
-            if (locations.type === 1)
-            {
+            if (locations.type === 1) {
                 navigate("/play/bonus", {
                     state: {
                         my_id: locations.my_id,
@@ -65,9 +83,7 @@ const Endgame = () => {
                         player: 2,
                     },
                 });
-            }
-            else
-            {
+            } else {
                 navigate("/play/classic", {
                     state: {
                         my_id: locations.my_id,
@@ -117,8 +133,7 @@ const Endgame = () => {
             confirmation: boolean;
         }) => {
             if (data.confirmation) {
-                if (locations.type == 1)
-                {
+                if (locations.type == 1) {
                     navigate("/play/bonus", {
                         state: {
                             my_id: locations.my_id,
@@ -128,9 +143,7 @@ const Endgame = () => {
                             player: 1,
                         },
                     });
-                }
-                else
-                {
+                } else {
                     navigate("/play/classic", {
                         state: {
                             my_id: locations.my_id,
@@ -144,8 +157,7 @@ const Endgame = () => {
             } else {
                 if (data.cancel) {
                     setOppWaiting(false);
-                }
-                else {
+                } else {
                     setOppWaiting(true);
                 }
             }
@@ -154,19 +166,23 @@ const Endgame = () => {
 
     return (
         <>
-            <Typography sx={{ m: 1 }} variant="h2">
-                End Game
-            </Typography>
-            {location?.state?.score_one > location?.state?.score_two &&
-            location?.state?.is_one ? (
-                    <div>you won as player one</div>
-                ) : location?.state?.score_one < location?.state?.score_two &&
-              !location?.state?.is_one ? (
-                        <div>you won as player 2</div>
-                    ) : (
-                        <div>you lost</div>
-                    )}
-            <Button href="/play">Exit</Button>
+            <Box
+                sx={{
+                    mt: "100px",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "center",
+                }}
+            >
+                <Button
+                    href="/play"
+                    color="primary"
+                    variant="contained"
+                    size="large"
+                >
+                    Exit
+                </Button>
+            </Box>
             {waiting ? (
                 <Box
                     sx={{
@@ -175,7 +191,10 @@ const Endgame = () => {
                         flexDirection: "column",
                     }}
                 >
-                    <CircularProgress color="secondary" sx={{ mb: "50px" }} />
+                    <CircularProgress
+                        color="secondary"
+                        sx={{ mb: "20px", mt: "50px" }}
+                    />
                     <Typography
                         component="h2"
                         variant="h6"
@@ -191,18 +210,19 @@ const Endgame = () => {
             ) : (
                 <Box
                     sx={{
-                        alignItems: "center",
                         display: "flex",
                         flexDirection: "column",
+                        justifyContent: "center",
                     }}
                 >
                     <Button
                         onClick={replay_on}
                         color="primary"
                         variant="contained"
-                        sx={{ mt: "90px" }}
+                        sx={{ mt: "50px" }}
+                        size="large"
                     >
-                        Find opponent
+                        Replay Match
                     </Button>
                 </Box>
             )}

@@ -21,7 +21,7 @@ import { useNavigate } from "react-router-dom";
 
 const Home = () => {
     useEffect(() => {
-        Helpers.Users.me().then((res: any) => res = res);
+        Helpers.Users.me().then((res: any) => (res = res));
     }, []);
 
     const [checked, setChecked] = useState(true);
@@ -54,7 +54,7 @@ const Home = () => {
                                 flexDirection: "column",
                                 justifyContent: "center",
                                 height: 220,
-                                mt:'50px',
+                                mt: "50px",
                             }}
                         >
                             <Button
@@ -66,17 +66,22 @@ const Home = () => {
                                 Quick Game
                             </Button>
                             <FormControlLabel
-                                sx={{ ml: "15px" }}
+                                sx={{
+                                    ml: "15px",
+                                    display: "flex",
+                                    justifyContent: "center",
+                                }}
                                 control={
                                     <Switch
                                         checked={checked}
                                         onChange={handleChange}
+                                        color='secondary'
                                         inputProps={{
                                             "aria-label": "controlled",
                                         }}
                                     />
                                 }
-                                label="With Bonus"
+                                label="Bonus"
                             />
                             <Button
                                 sx={{ mt: "30px" }}
@@ -95,17 +100,22 @@ const Home = () => {
                                 Create Game
                             </Button>
                             <FormControlLabel
-                                sx={{ ml: "15px" }}
+                                sx={{
+                                    ml: "15px",
+                                    display: "flex",
+                                    justifyContent: "center",
+                                }}
                                 control={
                                     <Switch
                                         checked={invit}
                                         onChange={handleInvit}
+                                        color='secondary'
                                         inputProps={{
                                             "aria-label": "controlled",
                                         }}
                                     />
                                 }
-                                label="With Bonus"
+                                label="Bonus"
                             />
                         </Paper>
                     </Grid>
@@ -117,11 +127,11 @@ const Home = () => {
                                 flexDirection: "column",
                                 justifyContent: "center",
                                 height: 220,
-                                mt:'35px',
+                                mt: "35px",
                             }}
                         >
                             <Button
-                                color="primary"
+                                color="warning"
                                 onClick={() => {
                                     window.location.href =
                                         "https://github.com/JulesMaisonneuve";
@@ -131,7 +141,7 @@ const Home = () => {
                             </Button>
                             <Button
                                 sx={{ justifyContent: "center" }}
-                                color="primary"
+                                color="warning"
                                 onClick={() => {
                                     window.location.href =
                                         "https://github.com/Anysiia";
@@ -140,7 +150,7 @@ const Home = () => {
                                 Anysiia
                             </Button>
                             <Button
-                                color="primary"
+                                color="warning"
                                 onClick={() => {
                                     window.location.href =
                                         "https://github.com/S-Stanley";
@@ -149,7 +159,7 @@ const Home = () => {
                                 S-Stanley
                             </Button>
                             <Button
-                                color="primary"
+                                color="warning"
                                 onClick={() => {
                                     window.location.href =
                                         "https://github.com/automaths";

@@ -3,7 +3,7 @@ import { WebSocketGateway, SubscribeMessage, MessageBody, WebSocketServer } from
 @WebSocketGateway()
 export class SocketGateway {
     @WebSocketServer()
-        server;
+        server: any;
 
     @SubscribeMessage('message')
     handleMessage(@MessageBody() message: { data: { content: string, nickname: string, chat_id: string, avatar: string } }): void {

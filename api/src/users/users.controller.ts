@@ -112,8 +112,7 @@ export class UsersController {
         return this.db.query('SELECT * FROM users').then((result: {rows: any}) => {
             return (result);
         })
-            .catch((e:any) => {
-                console.error(e);
+            .catch(() => {
                 throw new HttpException('Problem occured when fetching all users', 500);
             });
     }
@@ -142,7 +141,7 @@ export class UsersController {
     }
 
     @Post('/auth/login')
-    Login(@Body() body): string {
+    Login(@Body() body:{email:string, password:string}): string {
         return this.db.query("SELECT * FROM public.login($1, $2)", [body.email, body.password])
             .then((result: { rows: any }) => {
                 if (result.rows.length === 0) {
@@ -184,7 +183,7 @@ export class UsersController {
     }
 
     @Post('/blocked')
-    async blockUserById(@Body() body) {
+    async blockUserById(@Body() body:{user_id:string, blocked_user_id:string}) {
         try {
             const is_user_already_blocked = await this.db.query(
                 `

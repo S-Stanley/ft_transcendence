@@ -1,26 +1,42 @@
-import { Avatar, Box, Card, Button, Table, TableBody, TableRow, TableCell, Typography } from '@mui/material';
+import { Avatar, Button, Card, Table, TableBody, TableCell, TableRow, Typography } from "@mui/material";
+import { Box } from "@mui/system";
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Helpers from '../../../helpers/Helpers';
+import { useState } from "react";
+import Cookies from 'universal-cookie';
 
-export const UserFriendList = () => {
+export const RequestSentButton = (props: {otherUser:any}) => {
+    const [cancelled, setCancelled] = useState(0);
+    const cookies = new Cookies();
 
-    const navigate = useNavigate();
-
-    const [userFriend, setUserFriends] = useState([{
-        nickname: '',
-        avatar: '',
-    }]);
-
-    useEffect(() => {
-        Helpers.Friends.getFriendList().then((res) => setUserFriends(res));
-    }, [false]);
-
-    return (userFriend.length === 0 ?
+    return (cancelled === 0 ?
+        <Button sx={{ ml: 2 }}
+            size="small"
+            variant="contained"
+            color="error"
+            onClick={() => {
+                Helpers.Friends.acceptFriendRequest(cookies.get('nickname'), props.otherUser, false);
+                setCancelled(1);
+            }}>
+                Cancel
+        </Button>
+        :
+        <Button sx={{ ml: 2 }}
+            size="small"
+            variant="contained" disabled
+        >
+                Cancelled
+        </Button>
+    );
+};
+export const FriendRequestsSent = (props: {requests:any}) => {
+    const toUserProfile = (nickname:any) => {
+        window.location.href = `users/${nickname}`;
+    };
+    return (props.requests.length === 0 ?
         <Card>
             <Box>
-                <Table>
+                <Table  >
                     <TableBody>
                         <TableRow>
                             <TableCell>
@@ -28,7 +44,7 @@ export const UserFriendList = () => {
                                     color="textPrimary"
                                     variant="body1"
                                 >
-                                    You haven't any friend yet
+                                    No requests sent...
                                 </Typography>
                             </TableCell>
                         </TableRow>
@@ -42,8 +58,8 @@ export const UserFriendList = () => {
                 <Box>
                     <Table>
                         <TableBody>
-                            {userFriend.map((req) => (
-                                <TableRow key={req.id ? req.id : 'def'}>
+                            {props.requests.map((req:any) => (
+                                <TableRow key={req.nickname}>
                                     <TableCell>
                                         <Box
                                             sx={{
@@ -62,11 +78,12 @@ export const UserFriendList = () => {
                                             >
                                                 {req.nickname}
                                             </Typography>
+                                            <RequestSentButton key={req.nickname} otherUser={req.nickname} />
                                         </Box>
                                     </TableCell>
                                     <TableCell>
-                                        <Button sx={{mr: 55}}
-                                            onClick={() => navigate(`/users/${req.nickname}`)}
+                                        <Button sx={{mr: 70}}
+                                            onClick={() => {toUserProfile(req.nickname);}}
                                             size="small"
                                             color="secondary"
                                             variant="outlined"

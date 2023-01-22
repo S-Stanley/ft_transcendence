@@ -1,59 +1,23 @@
+import { Avatar, Box, Card, Button, Table, TableBody, TableRow, TableCell, Typography } from '@mui/material';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-import { Avatar, Box, Card, Button, Table, TableBody, TableCell, TableRow, Typography, IconButton } from '@mui/material';
-import DoneIcon from '@mui/icons-material/Done';
-import ClearIcon from '@mui/icons-material/Clear';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Helpers from '../../../helpers/Helpers';
-import { useState } from 'react';
-import Cookies from 'universal-cookie';
 
-export const RequestButton = ({otherUser}) => {
-    const [requestStatus, setRequestStatus] = useState('');
-    const cookies = new Cookies();
+export const UserFriendList = () => {
 
-    Helpers.Friends.getFriendRequestStatus(otherUser).then(res => {
-        setRequestStatus(res);});
-    switch (requestStatus) {
-    case 'accepted':
-        return(
-            <Box>
-                <Button sx={{ ml: 2 }}
-                    size="small"
-                    variant="contained" disabled>
-                        Friends
-                </Button>
-            </Box>);
-    case 'cancelled':
-        return(
-            <Box>
-                <Button sx={{ ml: 2 }}
-                    size="small"
-                    variant="contained" disabled>
-                        Declined
-                </Button>
-            </Box>);
-    default:
-        return(
-            <Box>
-                <IconButton sx={{ml: 2}} onClick={() => {
-                    Helpers.Friends.acceptFriendRequest(otherUser, cookies.get('nickname'), true);
-                    setRequestStatus('accepted');
-                }}>
-                    <DoneIcon/>
-                </IconButton>
-                <IconButton onClick={() => {
-                    Helpers.Friends.acceptFriendRequest(otherUser, cookies.get('nickname'), false);
-                    setRequestStatus('cancelled');
-                }}>
-                    <ClearIcon/>
-                </IconButton>
-            </Box>);
-    }
-};
-export const FriendRequests = ({ requests }) => {
-    const toUserProfile = (nickname) => {
-        window.location.href = `users/${nickname}`;
-    };
-    return (requests.length === 0 ?
+    const navigate = useNavigate();
+
+    const [userFriend, setUserFriends] = useState([{
+        nickname: '',
+        avatar: '',
+    }]);
+
+    useEffect(() => {
+        Helpers.Friends.getFriendList().then((res:any) => setUserFriends(res));
+    }, [false]);
+
+    return (userFriend.length === 0 ?
         <Card>
             <Box>
                 <Table>
@@ -64,7 +28,7 @@ export const FriendRequests = ({ requests }) => {
                                     color="textPrimary"
                                     variant="body1"
                                 >
-                                    No requests yet...
+                                    You haven't any friend yet
                                 </Typography>
                             </TableCell>
                         </TableRow>
@@ -78,7 +42,7 @@ export const FriendRequests = ({ requests }) => {
                 <Box>
                     <Table>
                         <TableBody>
-                            {requests.map((req) => (
+                            {userFriend.map((req:any) => (
                                 <TableRow key={req.id ? req.id : 'def'}>
                                     <TableCell>
                                         <Box
@@ -98,12 +62,11 @@ export const FriendRequests = ({ requests }) => {
                                             >
                                                 {req.nickname}
                                             </Typography>
-                                            <RequestButton key={req.nickname} otherUser={req.nickname} />
                                         </Box>
                                     </TableCell>
                                     <TableCell>
                                         <Button sx={{mr: 55}}
-                                            onClick={() => {toUserProfile(req.nickname);}}
+                                            onClick={() => navigate(`/users/${req.nickname}`)}
                                             size="small"
                                             color="secondary"
                                             variant="outlined"
