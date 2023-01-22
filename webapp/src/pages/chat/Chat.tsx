@@ -169,6 +169,11 @@ const Chat = () => {
                         variant="standard"
                         value={answer}
                         onChange={(e) => setAnswer(e.target.value)}
+                        onKeyDown={(e: { key: string }) => {
+                            if (e.key === 'Enter') {
+                                handleSubmit();
+                            }
+                        }}
                         inputProps={{
                             'id': "answer-chat-input"
                         }}
